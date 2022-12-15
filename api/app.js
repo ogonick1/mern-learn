@@ -1,10 +1,10 @@
-const express = require('express')
-const config = require('config')
+const express = require('express');
+const config = require('config');
 
-const app = express()
+const app = express();
 
-app.use('/api', require('./routes/ok.routes'))
+app.use('/api', require('./routes/ok.routes'));
 
-const PORT = config.get('port') || 5000
+const PORT = config.get('port') || 5000;
 
-app.listen(PORT, () => console.log(`App started on port${PORT}...`))
+app.listen(PORT, () => console.log(`App started on port${PORT}...`));
