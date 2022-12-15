@@ -1,0 +1,8 @@
+@import "./variables";
+
+body {
+  background: $body-bg;
+  color: $text-primary;
+  overflow-y: scroll;
+  font-family: Roboto, sans-serif !important;
+}
