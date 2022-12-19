@@ -10,18 +10,17 @@ const _create = (model) => {
     lastName,
   } = model;
 
-  const user = new User({
+  return new User({
     email,
     password: hashedPassword,
     login,
     firstName,
     lastName,
   }).save();
-  return user.save();
 };
 
 const _findOne = (filter) => {
-  return User.findOne(filter);
+  return User.findOne(filter).lean();
 };
 
 const create = async (req, res) => {
@@ -36,8 +35,15 @@ const create = async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  return Promise.resolve(User);
+  const user = new User({
+    email, password: hashedPassword, login, firstName, lastName,
+  });
+  // await user.save();
+  // return Promise.resolve(User);
+  const reds = await _create({
+    email, hashedPassword, login, firstName, lastName,
+  });
+  console.log(reds);
 };
 
 const getByEmail = (email) => {

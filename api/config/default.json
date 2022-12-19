@@ -1,5 +1,5 @@
 {
   "port": 5000,
   "jwtSecretKey": "ogonick",
-  "mongoUri": "mongodb://localhost:27017"
+  "mongoUri": "mongodb+srv://ogonick:28zt1sPrmEx4U8M3@cluster0.whioyyw.mongodb.net/?retryWrites=true&w=majority"
 }
