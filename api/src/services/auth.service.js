@@ -1,20 +1,30 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('config');
+const { BadRequestError, NotFoundError } = require('../errors');
+const { errorCodes } = require('../errors/error-codes');
 const userRepository = require('../repositories/user.repository');
 
-const login = async (req, res) => {
+const login = async (req) => {
   const { email, password } = req.body;
   const user = await userRepository.getByEmail({ email });
 
   if (!user) {
-    return res.status(400).json({ message: 'user email not found' });
+    throw new NotFoundError({
+      errorCode: errorCodes.USER_BY_EMAIL_NOT_FOUND,
+      message: 'user email not found',
+      details: {
+        email,
+      },
+    });
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    return res.status(400).json({ message: 'invalid password, try again' });
+    throw new BadRequestError({
+      message: 'invalid password, try again',
+    });
   }
 
   const token = jwt.sign(

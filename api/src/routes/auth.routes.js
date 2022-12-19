@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { loginController, registration } = require('../controllers/auth.controller');
+const { validatorErrorHandlerMiddleware } = require('../middlewares/validator-error-handler.middleware');
 
 const router = Router();
 
@@ -10,6 +11,7 @@ router.post(
     check('email', 'incorrect email address').isEmail(),
     check('password', 'incorrect password, min 5 symbols').isLength({ min: 5 }),
   ],
+  validatorErrorHandlerMiddleware,
   loginController,
 );
 router.post(
@@ -21,6 +23,7 @@ router.post(
     check('firstName', 'incorrect name').isLength({ min: 2 }),
     check('lastName', 'incorrect lastName').isLength({ min: 3 }),
   ],
+  validatorErrorHandlerMiddleware,
   registration,
 );
 

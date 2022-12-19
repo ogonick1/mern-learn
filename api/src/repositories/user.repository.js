@@ -1,14 +1,28 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
-// const mockUser = {
-//   _id: 'id',
-//   login: 'login',
-//   password: 'password',
-//   email: 'email',
-//   firstName: 'firstName',
-//   lastName: 'lastName',
-// };
+const _create = (model) => {
+  const {
+    email,
+    hashedPassword,
+    login,
+    firstName,
+    lastName,
+  } = model;
+
+  const user = new User({
+    email,
+    password: hashedPassword,
+    login,
+    firstName,
+    lastName,
+  }).save();
+  return user.save();
+};
+
+const _findOne = (filter) => {
+  return User.findOne(filter);
+};
 
 const create = async (req, res) => {
   const {
@@ -22,10 +36,7 @@ const create = async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({
-    email, password: hashedPassword, login, firstName, lastName,
-  });
-  await user.save();
+
   return Promise.resolve(User);
 };
 

@@ -1,0 +1,10 @@
+const errorCodes = {
+  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+  DEFAULT: 'DEFAULT',
+  USER_BY_EMAIL_NOT_FOUND: 'USER_BY_EMAIL_NOT_FOUND',
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+};
+
+module.exports = {
+  errorCodes,
+};
