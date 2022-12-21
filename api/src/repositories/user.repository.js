@@ -1,4 +1,5 @@
-const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const User = require('../models/User');
 
 const _create = (model) => {
@@ -18,39 +19,34 @@ const _create = (model) => {
     lastName,
   }).save();
 };
+const createToken = (user) => {
+  const {
+    id,
+    login,
+    firstName,
+    lastName,
+  } = user;
+
+  return (
+    jwt.sign(
+      {
+        userId: id,
+        userLogin: login,
+        userFirstName: firstName,
+        userLastName: lastName,
+      },
+      config.get('jwtSecretKey'),
+      { expiresIn: '11h' },
+    )
+  );
+};
 
 const _findOne = (filter) => {
   return User.findOne(filter).lean();
 };
 
-const create = async (req, res) => {
-  const {
-    email, password, login, firstName, lastName,
-  } = req.body;
-
-  const candidate = await User.findOne({ email });
-
-  if (candidate) {
-    return res.status(400).json({ message: 'this email is already registered' });
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({
-    email, password: hashedPassword, login, firstName, lastName,
-  });
-  // await user.save();
-  // return Promise.resolve(User);
-  const reds = await _create({
-    email, hashedPassword, login, firstName, lastName,
-  });
-  console.log(reds);
-};
-
-const getByEmail = (email) => {
-  return Promise.resolve(User.findOne(email));
-};
-
 module.exports = {
-  create,
-  getByEmail,
+  _create,
+  _findOne,
+  createToken,
 };
