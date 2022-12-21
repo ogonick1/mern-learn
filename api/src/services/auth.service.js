@@ -1,19 +1,41 @@
 const bcrypt = require('bcryptjs');
-const { BadRequestError, NotFoundError } = require('../errors');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const { BadRequestError } = require('../errors');
 const { errorCodes } = require('../errors/error-codes');
 const userRepository = require('../repositories/user.repository');
 
-const loginService = async (req) => {
+const createToken = (user) => {
+  const {
+    id,
+    userName,
+    firstName,
+    lastName,
+  } = user;
+
+  return (
+    jwt.sign(
+      {
+        userId: id,
+        userLogin: userName,
+        userFirstName: firstName,
+        userLastName: lastName,
+      },
+      config.get('jwtSecretKey'),
+      { expiresIn: config.get('expiresIn') },
+    )
+  );
+};
+
+const login = async (req) => {
   const { email, password } = req.body;
-  const user = await userRepository._findOne({ email });
+  const user = await userRepository.findOne({ email });
 
   if (!user) {
-    throw new NotFoundError({
-      errorCode: errorCodes.USER_BY_EMAIL_NOT_FOUND,
-      message: 'invalid email or password try again',
-      details: {
-        email,
-      },
+    throw new BadRequestError({
+      errorCode: errorCodes.LOGIN_ERROR,
+      message: 'Invalid email or password try again',
+      details: {},
     });
   }
 
@@ -21,36 +43,46 @@ const loginService = async (req) => {
 
   if (!isMatch) {
     throw new BadRequestError({
-      message: 'invalid email or password, try again',
+      errorCode: errorCodes.LOGIN_ERROR,
+      message: 'Invalid email or password try again',
+      details: {},
     });
   }
 
-  const token = userRepository.createToken(user);
-  return token;
+  return createToken(user);
 };
 
 const registration = async (req) => {
   const {
-    email, password, login, firstName, lastName,
+    email,
+    password,
+    userName,
+    firstName,
+    lastName,
   } = req.body;
 
-  const candidate = await userRepository._findOne({ email });
+  const candidate = await userRepository.findOne({ email });
 
   if (candidate) {
     throw new BadRequestError({
-      message: 'email already registered',
+      message: 'Email already registered',
+      errorCode: errorCodes.EMAIL_ALREADY_EXISTED,
     });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await userRepository._create({
-    email, hashedPassword, login, firstName, lastName,
+  const user = await userRepository.create({
+    email,
+    hashedPassword,
+    userName,
+    firstName,
+    lastName,
   });
-  const token = userRepository.createToken(user);
-  return token;
+
+  return createToken(user);
 };
 
 module.exports = {
-  loginService,
+  login,
   registration,
 };
