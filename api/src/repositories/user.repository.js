@@ -1,23 +1,28 @@
-const mockUser = {
-  _id: 'id',
-  login: 'login',
-  password: 'password',
-  email: 'email',
-  firstName: 'firstName',
-  lastName: 'lastName',
+const User = require('../models/User');
+
+const create = (model) => {
+  const {
+    email,
+    hashedPassword,
+    userName,
+    firstName,
+    lastName,
+  } = model;
+
+  return new User({
+    email,
+    password: hashedPassword,
+    userName,
+    firstName,
+    lastName,
+  }).save();
 };
 
-const create = async (createModel) => {
-  console.log(createModel);
-  return Promise.resolve(mockUser);
-};
-
-const getById = (id) => {
-  console.log(id);
-  return Promise.resolve(mockUser);
+const findOne = (filter) => {
+  return User.findOne(filter).lean();
 };
 
 module.exports = {
   create,
-  getById,
+  findOne,
 };
