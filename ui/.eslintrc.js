@@ -17,6 +17,7 @@ module.exports = {
     'react',
   ],
   rules: {
+    'linebreak-style': 'off',
     'react/prop-types': 'off',
     'react/no-unstable-nested-components': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',

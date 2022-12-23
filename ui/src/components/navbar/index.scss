@@ -1,0 +1,16 @@
+@import '../../styles/variables';
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  box-flex-group: $background-color_2;
+
+  &__link{
+    text-decoration: none;
+    color:$text-primary;
+  }
+  .active{
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "homePage": {
+    "title": "Home page"
+  },
+  "loginPage": {
+    "title": "Login"
+  },
+  "registration": {
+    "title": "Registration"
+  },
+  "validationErrors": {
+    "email": "Invalid email",
+    "required": "required field",
+    "minMaxLength": "Length must be between {{min}} and {{max}} symbols.",
+    "repeatPassword": "password do not match"
+  },
+  "form": {
+    "email": "Email: ",
+    "password": "Password: ",
+    "repeatPassword": "Repeat password: ",
+    "firstName": "First Name: ",
+    "lastName": "Last Name: ",
+    "registered": "Registered at: "
+  },
+  "languages": {
+    "en": "English",
+    "ua": "Ukraine"
+  },
+  "errors": {
+    "DEFAULT": "Something went wrong",
+    "INTERNAL_SERVER_ERROR": "Server Error",
+    "USER_BY_PROVIDED_TOKEN_NOT_FOUND": "User by provided token not found",
+    "USER_WITH_EMAIL_NOT_EXIST": "User with {{email}} not exist",
+    "USER_WITH_EMAIL_ALREADY_EXIST": "User with {{email}} already exist",
+    "BAD_REQUEST_EMAIL_OR_PASSWORD_NOT_PROVIDED": "Email or password not provided",
+    "BAD_REQUEST_WRONG_PASSWORD": "Wrong password"
+  }
+}

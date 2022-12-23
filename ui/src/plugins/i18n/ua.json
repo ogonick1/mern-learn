@@ -1,0 +1,39 @@
+{
+	"homePage": {
+		"title": "Головна сторінка"
+	},
+	"loginPage": {
+		"title": "Авторизація"
+	},
+	"registration": {
+		"title": "Реєстрація"
+	},
+	"validationErrors": {
+		"email": "Неправильна email адреса",
+		"required": "Обов'язкове поле",
+		"minLength": "Мінімальна довжина {{min}} символів",
+		"minMaxLength": "Повинно бути від {{min}} до {{max}} символів.",
+		"repeatPassword": "Повторіть пароль: "
+	},
+	"form": {
+		"email": "Ваша пошта: ",
+		"password": "Ведіть пароль: ",
+		"repeatPassword": "Повторіть пароль: ",
+		"firstName": "Уведіть ваше ім'я: ",
+		"lastName": "Уведіть ваше прізвище: ",
+		"registered": "Реєстрація: "
+	},
+	"languages": {
+		"en": "Англiйська",
+		"ua": "Українська"
+	},
+	"errors": {
+    "DEFAULT": "Something went wrong -ru",
+    "INTERNAL_SERVER_ERROR": "Server Error -ru",
+    "USER_BY_PROVIDED_TOKEN_NOT_FOUND": "User by provided token not found -ru",
+    "USER_WITH_EMAIL_NOT_EXIST": "User with {{email}} not exist -ru",
+    "USER_WITH_EMAIL_ALREADY_EXIST": "User with {{email}} already exist -ru",
+    "BAD_REQUEST_EMAIL_OR_PASSWORD_NOT_PROVIDED": "Email or password not provided -ru",
+    "BAD_REQUEST_WRONG_PASSWORD": "Wrong password -ru"
+  }
+}
