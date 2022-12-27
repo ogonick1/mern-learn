@@ -4,7 +4,10 @@ import { Provider } from 'react-redux';
 import { App } from './App';
 import './styles/index.scss';
 import { store } from './plugins/store/store';
+import { axiosSetup } from './plugins/axios-setup';
 import './plugins/i18n/i18n';
+
+axiosSetup();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

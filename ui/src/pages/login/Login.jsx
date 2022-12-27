@@ -14,7 +14,7 @@ export const Login = () => {
     reset,
     formState: { errors, isValid },
   } = useForm({
-    mode: 'onBlur',
+    mode: 'all',
   });
   const onSubmit = (value) => {
     dispatch(AuthService.login(value));

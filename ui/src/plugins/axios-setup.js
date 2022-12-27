@@ -17,4 +17,4 @@ const axiosSetup = () => {
   });
 };
 
-export default axiosSetup;
+export { axiosSetup };
