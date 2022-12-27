@@ -1,9 +1,11 @@
 {
 	"homePage": {
-		"title": "Головна сторінка"
+		"title": "Головна сторінка",
+    "welcome": "Ласкаво просимо!"
 	},
 	"loginPage": {
-		"title": "Авторизація"
+		"title": "Авторизація",
+    "logout": "Вийти"
 	},
 	"registration": {
 		"title": "Реєстрація"
@@ -16,12 +18,14 @@
 		"repeatPassword": "Повторіть пароль: "
 	},
 	"form": {
-		"email": "Ваша пошта: ",
-		"password": "Ведіть пароль: ",
+    "userName": "Логін",
+		"email": "Пошта: ",
+		"password": "Пароль: ",
 		"repeatPassword": "Повторіть пароль: ",
-		"firstName": "Уведіть ваше ім'я: ",
-		"lastName": "Уведіть ваше прізвище: ",
-		"registered": "Реєстрація: "
+		"firstName": "Ім'я: ",
+		"lastName": "Прізвище: ",
+		"register": "Зареєструватися",
+    "login": "Увійти"
 	},
 	"languages": {
 		"en": "Англiйська",

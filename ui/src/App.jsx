@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import { Navbar } from './components/navbar/NavBar';
 import { Home } from './pages/home/Home';
 import { Login } from './pages/login/Login';
-import { SignUp } from './pages/signUp/SignUp';
+import { Registration } from './pages/registration/Registration';
 
 export const App = () => {
   return (
@@ -12,7 +12,7 @@ export const App = () => {
       <Container maxWidth="sm">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="registration/*" element={<SignUp />} />
+          <Route path="registration/*" element={<Registration />} />
           <Route path="login/" element={<Login />} />
         </Routes>
       </Container>

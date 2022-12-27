@@ -1,9 +1,11 @@
 {
   "homePage": {
-    "title": "Home page"
+    "title": "Home page",
+    "welcome": "welcome"
   },
   "loginPage": {
-    "title": "Login"
+    "title": "Login",
+    "logout": "logOut"
   },
   "registration": {
     "title": "Registration"
@@ -15,12 +17,14 @@
     "repeatPassword": "password do not match"
   },
   "form": {
+    "userName": "Login",
     "email": "Email: ",
     "password": "Password: ",
     "repeatPassword": "Repeat password: ",
     "firstName": "First Name: ",
     "lastName": "Last Name: ",
-    "registered": "Registered at: "
+    "register": "Register",
+    "login": "Login"
   },
   "languages": {
     "en": "English",

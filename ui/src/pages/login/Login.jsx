@@ -2,11 +2,17 @@ import {
   TextField, Typography, Box, Stack, Button,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import './index.scss';
-import AuthService from '../../services/authService';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { login } from '../../plugins/store/userSlice';
 
 export const Login = () => {
+  const logIn = useSelector((state) => state.login);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
     register,
@@ -17,9 +23,14 @@ export const Login = () => {
     mode: 'all',
   });
   const onSubmit = (value) => {
-    dispatch(AuthService.login(value));
+    dispatch(login(value));
     reset();
   };
+  useEffect(() => {
+    if (logIn) {
+      navigate('/');
+    }
+  }, [logIn]);
   return (
     <Box
       component="div"
@@ -27,10 +38,10 @@ export const Login = () => {
         p: 2,
         maxWidth: '995px',
         margin: '10px',
-        height: '100vh',
+        height: '80vh',
       }}
     >
-      <Typography variant="h4" component="h4">Login</Typography>
+      <Typography variant="h4" component="h4">{t('loginPage.title')}</Typography>
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           {...register(
@@ -39,7 +50,7 @@ export const Login = () => {
               required: true,
               pattern: {
                 value: /^\S+@\S+$/i,
-                message: 'enter corect email',
+                message: t('validationErrors.email'),
               },
             },
           )}
@@ -48,7 +59,7 @@ export const Login = () => {
           helperText={errors.email?.message}
           type="text"
           id="Email"
-          label="Enter Email"
+          label={t('form.email')}
           variant="outlined"
           margin="normal"
         />
@@ -56,7 +67,7 @@ export const Login = () => {
           {...register('password', {
             minLength: {
               value: 5,
-              message: 'min 5 symbols',
+              message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
             },
             required: true,
           })}
@@ -64,13 +75,13 @@ export const Login = () => {
           helperText={errors.password?.message}
           type="password"
           id="Password"
-          label="Enter Password"
+          label={t('form.password')}
           variant="outlined"
           margin="normal"
         />
-        <Stack marginTop={2} spacing={2} direction="row">
-          <Button disabled={!isValid} type="submit" variant="contained">Login</Button>
-          <Button variant="outlined">Registration page</Button>
+        <Stack marginTop={2} spacing={5} direction="row" alignItems="center">
+          <Button disabled={!isValid} type="submit" variant="contained">{t('form.login')}</Button>
+          <NavLink to="/registration">{t('form.register')}</NavLink>
         </Stack>
       </form>
     </Box>
