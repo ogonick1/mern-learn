@@ -1,5 +1,5 @@
 import axios from 'axios';
-import appConfig from '../config';
+import appConfig from '../appConfig';
 
 const axiosSetup = () => {
   axios.interceptors.request.use(

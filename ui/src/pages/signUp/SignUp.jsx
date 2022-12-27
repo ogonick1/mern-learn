@@ -1,19 +1,30 @@
-import './index.scss';
+import {
+  TextField, Typography, Box, Stack, Button,
+} from '@mui/material';
 
 export const SignUp = () => {
   return (
-    <div id="wrapper">
-      <div className="form_div">
-        <p className="form_label">SIGNUP FORM</p>
-        <form method="post" action="">
-          <p><input type="text" placeholder="Enter User Name" /></p>
-          <p><input type="text" placeholder="Enter First Name" /></p>
-          <p><input type="text" placeholder="Enter Last Name" /></p>
-          <p><input type="email" placeholder="Enter Email" /></p>
-          <p><input type="password" placeholder="**********" /></p>
-          <p><button type="submit">SIGNUP </button></p>
-        </form>
-      </div>
-    </div>
+    <Box
+      component="form"
+      sx={{
+        p: 2,
+        maxWidth: '995px',
+        margin: '10px',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Typography variant="h4" component="h4">Register</Typography>
+      <TextField focused id="userName" label="Enter User Name" variant="outlined" margin="normal" />
+      <TextField id="firstName" label="Enter First Name" variant="outlined" margin="normal" />
+      <TextField id="lastName" label="Enter Last Name" variant="outlined" margin="normal" />
+      <TextField id="email" label="Enter Email" variant="outlined" margin="normal" />
+      <TextField id="password" label="Enter Password" variant="outlined" margin="normal" />
+      <Stack spacing={2} direction="row">
+        <Button type="submit" variant="contained">Register</Button>
+        <Button variant="outlined">Login Page</Button>
+      </Stack>
+    </Box>
   );
 };

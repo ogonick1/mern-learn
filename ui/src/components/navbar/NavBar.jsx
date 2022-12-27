@@ -1,5 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {
+  Box, Select, MenuItem,
+} from '@mui/material';
 import './index.scss';
 
 export const Navbar = () => {
@@ -11,24 +14,30 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
+    <Box
+      component="div"
+      sx={{
+        p: 3,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: '30px',
+      }}
+    >
       <NavLink className="navbar__link" to="/">LOGO</NavLink>
       <NavLink className="navbar__link" to="/">{t('homePage.title')}</NavLink>
       <NavLink className="navbar__link" to="/login">{t('loginPage.title')}</NavLink>
       <NavLink className="navbar__link" to="/registration">{t('registration.title')}</NavLink>
-      <div className="btnlng">
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={i18n.resolvedLanguage}
+        onChange={(e) => i18n.changeLanguage(e.target.value)}
+      >
         {Object.keys(langs).map((lng) => (
-          <button
-            key={lng}
-            className={i18n.resolvedLanguage === lng ? 'btn active' : 'btn'}
-            onClick={() => i18n.changeLanguage(lng)}
-            disabled={i18n.resolvedLanguage === lng}
-            type="submit"
-          >
-            {langs[lng].nativeName}
-          </button>
+          <MenuItem key={lng} value={lng}>{langs[lng].nativeName}</MenuItem>
         ))}
-      </div>
-    </div>
+      </Select>
+    </Box>
   );
 };
