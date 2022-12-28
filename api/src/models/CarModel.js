@@ -1,17 +1,23 @@
 const { Schema, model } = require('mongoose');
-const CarBrand = require('./CarBrand');
-const ExtraFeature = require('./ExtraFeature');
+const { carBrandSchemaName } = require('./CarBrand');
+const { extraFeatureSchemaName } = require('./ExtraFeature');
 const FuelType = require('../enums/FuelType.enum');
 const GearBox = require('../enums/GearBox.enum');
 const DriveType = require('../enums/DriveType.enum');
 const BodyType = require('../enums/BodyType.enum');
 
 const schema = new Schema({
-  id: String,
-  name: String,
-  brand: { CarBrand },
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  brand: {
+    type: Schema.Types.ObjectId,
+    ref: carBrandSchemaName,
+  },
   yearStart: Number,
-  yearEnd: { type: Number, default: 'null' },
+  yearEnd: { type: Number, default: null },
   powerUnits: [{
     engineVolume: Number,
     fuelType: {
@@ -23,20 +29,25 @@ const schema = new Schema({
       enum: GearBox,
     },
     driveType: {
-      yupe: String,
+      type: String,
       enum: DriveType,
     },
   }],
   extraFeatures: [
     {
-      ExtraFeature,
+      type: Schema.Types.ObjectId,
+      ref: extraFeatureSchemaName,
     },
   ],
   bodyTypes: [{
     type: String,
     enum: BodyType,
   }],
-
 });
 
-module.exports = model('CarModel', schema);
+const schemaName = 'CarModel';
+
+module.exports = {
+  carModelSchemaName: schemaName,
+  CarModelModel: model(schemaName, schema),
+};

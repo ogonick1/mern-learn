@@ -1,9 +1,19 @@
 const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
-  id: String,
-  name: String,
-  country: String,
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  country: {
+    type: String,
+  },
 });
 
-module.exports = model('CarBrand', schema);
+const schemaName = 'CarBrand';
+
+module.exports = {
+  carBrandSchemaName: schemaName,
+  CarBrandModel: model(schemaName, schema),
+};

@@ -6,4 +6,9 @@ const schema = new Schema({
   description: String,
 });
 
-module.exports = model('ExtraFeature', schema);
+const schemaName = 'ExtraFeature';
+
+module.exports = {
+  extraFeatureSchemaName: schemaName,
+  ExtraFeatureModel: model(schemaName, schema),
+};

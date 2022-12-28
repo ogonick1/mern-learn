@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { UserModel } = require('../models/User');
 
 const create = (model) => {
   const {
@@ -9,7 +9,7 @@ const create = (model) => {
     lastName,
   } = model;
 
-  return new User({
+  return new UserModel({
     email,
     password: hashedPassword,
     userName,
@@ -19,7 +19,7 @@ const create = (model) => {
 };
 
 const findOne = (filter) => {
-  return User.findOne(filter).lean();
+  return UserModel.findOne(filter).lean();
 };
 
 module.exports = {
