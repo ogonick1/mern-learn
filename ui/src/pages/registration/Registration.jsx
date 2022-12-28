@@ -9,7 +9,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { registration } from '../../plugins/store/userSlice';
 
 export const Registration = () => {
-  const logIn = useSelector((state) => state.login);
+  const isAuth = useSelector((state) => state.isAuth);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -26,10 +26,10 @@ export const Registration = () => {
     reset();
   };
   useEffect(() => {
-    if (logIn) {
+    if (isAuth) {
       navigate('/');
     }
-  }, [logIn]);
+  }, [isAuth]);
   return (
     <Box
       component="div"

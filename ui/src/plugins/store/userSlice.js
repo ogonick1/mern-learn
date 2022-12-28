@@ -1,26 +1,26 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import AuthService from '../../services/authService';
 
 const initialState = {
   authToken: null,
-  login: null,
+  isAuth: false,
+  loading: false,
 };
 
 export const login = createAsyncThunk(
   'user/login',
   async (values) => {
     const result = await AuthService.login(values);
-    return result.data.authToken;
+    return result.authToken;
   },
-
 );
+
 export const registration = createAsyncThunk(
   'user/registration',
   async (values) => {
     const result = await AuthService.registration(values);
-    return result.data.authToken;
+    return result.authToken;
   },
-
 );
 
 export const userSlice = createSlice({
@@ -28,19 +28,40 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logOut: (state) => {
-      state.login = false;
+      state.isAuth = false;
       state.authToken = null;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action) => {
-      state.authToken = action.payload;
-      state.login = true;
-    });
-    builder.addCase(registration.fulfilled, (state, action) => {
-      state.authToken = action.payload;
-      state.login = true;
-    });
+    builder.addMatcher(
+      isAnyOf(login.fulfilled, registration.fulfilled),
+      (state, action) => {
+        state.authToken = action.payload;
+        state.isAuth = true;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        login.rejected,
+        login.fulfilled,
+        registration.rejected,
+        registration.fulfilled,
+      ),
+      (state) => {
+        state.loading = false;
+      },
+    );
+    builder.addMatcher(
+      isAnyOf(
+        login.pending,
+        registration.pending,
+      ),
+      (state) => {
+        state.loading = true;
+        state.isAuth = false;
+        state.authToken = null;
+      },
+    );
   },
 });
 export const { logOut } = userSlice.actions;

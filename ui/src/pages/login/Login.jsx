@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { login } from '../../plugins/store/userSlice';
 
 export const Login = () => {
-  const logIn = useSelector((state) => state.login);
+  const isAuth = useSelector((state) => state.isAuth);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -27,10 +27,10 @@ export const Login = () => {
     reset();
   };
   useEffect(() => {
-    if (logIn) {
+    if (isAuth) {
       navigate('/');
     }
-  }, [logIn]);
+  }, [isAuth]);
   return (
     <Box
       component="div"
