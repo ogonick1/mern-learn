@@ -14,8 +14,8 @@ const createCarBrand = async (req, res) => {
 
 const getCarBrandById = async (req, res) => {
   const { id } = req.params;
-  const carBrand = await carBrandService.findById(id);
 
+  const carBrand = await carBrandService.findById(id);
   return res.json({
     id: carBrand._id,
     name: carBrand.name,

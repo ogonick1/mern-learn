@@ -6,7 +6,8 @@ const {
   updateCarBrand,
   removeCarBrand,
 } = require('../controllers/carBrand.controller');
-const { validatorErrorHandlerMiddleware } = require('../middlewares/validator-error-handler.middleware');
+const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
+const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
 
 const router = Router();
 
@@ -20,10 +21,15 @@ router.post(
   createCarBrand,
 );
 
-router.get('/:id', getCarBrandById);
+router.get(
+  '/:id',
+  objectIdParamValidationMiddleware(),
+  getCarBrandById,
+);
 
 router.patch(
   '/:id',
+  objectIdParamValidationMiddleware(),
   [
     check('name', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
     check('country', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
@@ -31,6 +37,10 @@ router.patch(
   updateCarBrand,
 );
 
-router.delete('/:id', removeCarBrand);
+router.delete(
+  '/:id',
+  objectIdParamValidationMiddleware(),
+  removeCarBrand,
+);
 
 module.exports = router;
