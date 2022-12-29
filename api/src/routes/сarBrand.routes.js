@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { login, registration } = require('../controllers/auth.controller');
+const {
+  createCarBrand, getCarBrandById, updateCarBrand, deleteCarBrand,
+} = require('../controllers/carBrand.controller');
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validator-error-handler.middleware');
 
 const router = Router();
@@ -8,26 +10,30 @@ const router = Router();
 router.post(
   '',
   [
-    check('email', 'incorrect email address').isEmail(),
-    check('password', 'incorrect password, min 5 symbols').isLength({ min: 5 }),
+    check('name', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
+    check('country', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
   ],
   validatorErrorHandlerMiddleware,
-  // createCarBrand,
+  createCarBrand,
 );
 
-// router.get(
-//   '/:id',
-//   getCarBrandById,
-// );
+router.get(
+  '/:id',
+  getCarBrandById,
+);
 
-// router.patch(
-//   '/:id',
-//   updateCarBrand,
-// );
+router.patch(
+  '/:id',
+  [
+    check('name', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
+    check('country', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
+  ],
+  updateCarBrand,
+);
 
-// router.delete(
-//   '/:id',
-//   deleteCarBrand,
-// );
+router.delete(
+  '/:id',
+  deleteCarBrand,
+);
 
 module.exports = router;
