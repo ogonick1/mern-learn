@@ -1,27 +1,48 @@
-const { carBrandservice } = require('../services/carBrand.service');
+const carBrandService = require('../services/carBrand.service');
 
 const createCarBrand = async (req, res) => {
-  const carBrand = await carBrandservice.create(req, res);
-  return res.json({ carBrand });
+  const { name, country } = req.body;
+
+  const carBrand = await carBrandService.create({ name, country });
+
+  return res.json({
+    id: carBrand._id,
+    name: carBrand.name,
+    country: carBrand.country,
+  });
 };
 
 const getCarBrandById = async (req, res) => {
-  const carBrandId = await carBrandservice.findOne(req, res);
-  return carBrandId;
+  const { id } = req.params;
+  const carBrand = await carBrandService.findById(id);
+
+  return res.json({
+    id: carBrand._id,
+    name: carBrand.name,
+    country: carBrand.country,
+  });
 };
 
 const updateCarBrand = async (req, res) => {
-  const updateCarBrandById = await carBrandservice.findAndUpdate(req, res);
-  return updateCarBrandById;
+  const { name, country } = req.body;
+  const { id } = req.params;
+
+  await carBrandService.update(id, {
+    name,
+    country,
+  });
+  return res.status(204).send();
 };
-const deleteCarBrand = async (req, res) => {
-  const deleteCarBrandById = await carBrandservice.findAndDelete(req, res);
-  return deleteCarBrandById;
+
+const removeCarBrand = async (req, res) => {
+  const { id } = req.params;
+  await carBrandService.remove(id);
+  return res.status(204).send();
 };
 
 module.exports = {
   createCarBrand,
   getCarBrandById,
   updateCarBrand,
-  deleteCarBrand,
+  removeCarBrand,
 };

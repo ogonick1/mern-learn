@@ -1,28 +1,24 @@
-const { CarBrandRepository } = require('../repositories/carBrand.repository');
+const carBrandRepository = require('../repositories/carBrand.repository');
 
-const createBrand = async (req, res) => {
-  const brand = CarBrandRepository.create(req);
-  return brand;
+const create = (model) => {
+  return carBrandRepository.create(model);
 };
 
-const findBrand = async (req, res) => {
-  const Id = req.params.id;
-  const brandId = CarBrandRepository.findBrandById(Id);
-  return brandId;
+const findById = (id) => {
+  return carBrandRepository.findById(id);
 };
-const findAndUpdate = async (req, res) => {
-  const updateBrandId = CarBrandRepository.findUpdate(req);
-  return updateBrandId;
+
+const update = (id, model) => {
+  return carBrandRepository.update(id, model);
 };
-const findAndDelete = async (req, res) => {
-  const Id = req.params.id;
-  const deleteBrandId = CarBrandRepository.findDelete(Id);
-  return deleteBrandId;
+
+const remove = (id) => {
+  return carBrandRepository.remove(id);
 };
 
 module.exports = {
-  createBrand,
-  findBrand,
-  findAndUpdate,
-  findAndDelete,
+  create,
+  findById,
+  update,
+  remove,
 };

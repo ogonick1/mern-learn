@@ -1,39 +1,25 @@
 const { CarBrandModel } = require('../models/CarBrand');
 
 const create = (model) => {
-  const {
-    name,
-    country,
-  } = model;
-
-  return new CarBrandModel({
-    name,
-    country,
-  }).save();
+  const { name, country } = model;
+  return new CarBrandModel({ name, country }).save();
 };
 
-const findBrandById = (id) => {
-  return CarBrandModel.findById({ _id: id });
-};
-const findUpdate = (req) => {
-  const Id = req.params.id;
-  const {
-    name,
-    country,
-  } = req;
-  return CarBrandModel.findByIdAndUpdate({ _id: Id }, {
-    name,
-    country,
-  });
+const findById = (id) => {
+  return CarBrandModel.findById(id);
 };
 
-const findDelete = (id) => {
-  return CarBrandModel.findByIdAndDelete({ _id: id });
+const update = (id, model) => {
+  return CarBrandModel.findByIdAndUpdate(id, model);
+};
+
+const remove = (id) => {
+  return CarBrandModel.findByIdAndDelete(id);
 };
 
 module.exports = {
   create,
-  findBrandById,
-  findUpdate,
-  findDelete,
+  findById,
+  update,
+  remove,
 };

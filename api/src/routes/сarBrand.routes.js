@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const {
-  createCarBrand, getCarBrandById, updateCarBrand, deleteCarBrand,
+  createCarBrand,
+  getCarBrandById,
+  updateCarBrand,
+  removeCarBrand,
 } = require('../controllers/carBrand.controller');
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validator-error-handler.middleware');
 
@@ -17,10 +20,7 @@ router.post(
   createCarBrand,
 );
 
-router.get(
-  '/:id',
-  getCarBrandById,
-);
+router.get('/:id', getCarBrandById);
 
 router.patch(
   '/:id',
@@ -31,9 +31,6 @@ router.patch(
   updateCarBrand,
 );
 
-router.delete(
-  '/:id',
-  deleteCarBrand,
-);
+router.delete('/:id', removeCarBrand);
 
 module.exports = router;
