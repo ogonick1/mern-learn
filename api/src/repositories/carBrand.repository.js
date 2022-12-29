@@ -9,6 +9,10 @@ const findById = (id) => {
   return CarBrandModel.findById(id);
 };
 
+const findOneByCriteria = (filter = {}) => {
+  return CarBrandModel.findOne(filter);
+};
+
 const update = (id, model) => {
   return CarBrandModel.findByIdAndUpdate(id, model);
 };
@@ -20,6 +24,7 @@ const remove = (id) => {
 module.exports = {
   create,
   findById,
+  findOneByCriteria,
   update,
   remove,
 };

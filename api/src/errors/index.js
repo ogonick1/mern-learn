@@ -10,7 +10,7 @@ class GeneralError extends Error {
   }) {
     super();
     this.message = message || errorCode.message;
-    this.errorCode = errorCode.code;
+    this.errorCode = errorCode;
     this.details = details || '';
   }
 
