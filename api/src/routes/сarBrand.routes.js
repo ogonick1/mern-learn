@@ -14,8 +14,8 @@ const router = Router();
 router.post(
   '',
   [
-    check('name', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
-    check('country', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
+    check('name', 'incorrect name, min 3 symbols').isLength({ min: 3 }),
+    check('country', 'incorrect country, min 3 symbols').isLength({ min: 3 }),
   ],
   validatorErrorHandlerMiddleware,
   createCarBrand,
