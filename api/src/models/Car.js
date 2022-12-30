@@ -7,7 +7,7 @@ const DriveType = require('../enums/DriveType.enum');
 const BodyType = require('../enums/BodyType.enum');
 
 const schema = new Schema({
-  model: {
+  modelId: {
     type: Schema.Types.ObjectId,
     ref: carModelSchemaName,
   },
@@ -31,7 +31,7 @@ const schema = new Schema({
     type: String,
     enum: BodyType,
   },
-  extraFeatures: [
+  extraFeaturesIds: [
     {
       type: Schema.Types.ObjectId,
       ref: extraFeatureSchemaName,

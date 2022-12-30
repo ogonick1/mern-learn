@@ -1,0 +1,20 @@
+{
+  "name": "Sierra",
+  "yearEnd": 1998,
+  "yearStart": 1981,
+  "brandId": "63ae96b2c38d1a5e67038e60",
+  "bodyTypes": [
+      "SEDAN"
+  ],
+  "powerUnits": [
+      {
+          "driveType": "FULL",
+          "gearBox": "MECHANICAL",
+          "fuelType": "DIESEL",
+          "engineVolume": 123
+      }
+  ],
+  "extraFeaturesIds": [
+      "63ae9f9fa24c5a3b99a70945"
+  ]
+}

@@ -7,6 +7,6 @@ const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/car-brand', carBrandRoutes);
-router.use('/extrafeature', extraFeatureRoutes);
+router.use('/extra-feature', extraFeatureRoutes);
 
 module.exports = router;

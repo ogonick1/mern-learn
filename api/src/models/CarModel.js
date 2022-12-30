@@ -10,30 +10,40 @@ const schema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
-  brand: {
+  brandId: {
     type: Schema.Types.ObjectId,
     ref: carBrandSchemaName,
   },
   yearStart: Number,
   yearEnd: { type: Number, default: null },
-  powerUnits: [{
-    engineVolume: Number,
-    fuelType: {
-      type: String,
-      enum: FuelType,
-    },
-    gearBox: {
-      type: String,
-      enum: GearBox,
-    },
-    driveType: {
-      type: String,
-      enum: DriveType,
-    },
-  }],
-  extraFeatures: [
+  powerUnits: {
+    _id: false,
+    type: [
+      {
+        engineVolume: {
+          type: Number,
+          required: true,
+        },
+        fuelType: {
+          type: String,
+          required: true,
+          enum: Object.values(FuelType),
+        },
+        gearBox: {
+          type: String,
+          required: true,
+          enum: Object.values(GearBox),
+        },
+        driveType: {
+          type: String,
+          required: true,
+          enum: Object.values(DriveType),
+        },
+      },
+    ],
+  },
+  extraFeaturesIds: [
     {
       type: Schema.Types.ObjectId,
       ref: extraFeatureSchemaName,
@@ -41,7 +51,7 @@ const schema = new Schema({
   ],
   bodyTypes: [{
     type: String,
-    enum: BodyType,
+    enum: Object.values(BodyType),
   }],
 });
 
