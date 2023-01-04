@@ -23,10 +23,10 @@ const create = async (model) => {
   }
   const extraFeature = await extraFeatureRepository.findAllById(model.extraFeaturesIds);
 
-  if (extraFeature.length < model.extraFeaturesIds.length) {
+  if (!extraFeature) {
     throw new NotFoundError({
       errorCode: errorCodes.EXTRA_FEATURE_NOT_FOUND,
-      message: `Car Brand with id ${model.extraFeaturesIds} was not found`,
+      message: `Extra Feature with id ${model.extraFeaturesIds} was not found`,
       details: {
         model,
       },
