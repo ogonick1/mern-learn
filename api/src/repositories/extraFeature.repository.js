@@ -20,10 +20,15 @@ const remove = (id) => {
   return ExtraFeatureModel.findByIdAndDelete(id);
 };
 
+const findAllById = (ids) => {
+  return ExtraFeatureModel.find({ id: { $in: ids } });
+};
+
 module.exports = {
   create,
   findOneByCriteria,
   findById,
   update,
   remove,
+  findAllById,
 };
