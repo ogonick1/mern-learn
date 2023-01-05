@@ -3,9 +3,9 @@ const { check } = require('express-validator');
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
 const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
 const { getCarModel, createCarModel } = require('../controllers/carModel.controller');
-// const FuelType = require('../enums/FuelType.enum');
-// const GearBox = require('../enums/GearBox.enum');
-// const DriveType = require('../enums/DriveType.enum');
+const { FuelType } = require('../enums/FuelType.enum');
+const { GearBox } = require('../enums/GearBox.enum');
+const { DriveType } = require('../enums/DriveType.enum');
 
 const router = Router();
 
@@ -23,13 +23,11 @@ router.post(
     check('yearStart', 'incorrect yearStart').isInt({ min: 1950 }),
     check('yearEnd', 'incorrect yearEnd').optional().custom((value, { req }) => (value > req.body.yearStart)),
 
-    // check('powerUnits', 'invalid powerUnits').custom((value) => (value === ({
-    //  engineVolume: Number,
-    //  fuelType: FuelType,
-    //  gearBox: GearBox,
-    //  driveType: DriveType,
-    // }))),
-
+    check('powerUnits', 'invalid powerUnits').isArray({ min: 1 }),
+    check('powerUnits.*.engineVolume', 'invalid engineVolume').isInt(),
+    check('powerUnits.*.fuelType', 'invalid fuelType').isIn(Object.values(FuelType)),
+    check('powerUnits.*.gearBox', 'invalid gearBox').isIn(Object.values(GearBox)),
+    check('powerUnits.*.driveType', 'invalid driverType').isIn(Object.values(DriveType)),
     check(
       'extraFeaturesIds',
       'incorect extraFeaturesIds',

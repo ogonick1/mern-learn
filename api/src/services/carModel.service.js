@@ -23,10 +23,25 @@ const create = async (model) => {
   }
   const extraFeature = await extraFeatureRepository.findAllById(model.extraFeaturesIds);
 
-  if (!extraFeature) {
+  if (extraFeature.length < model.extraFeaturesIds.length) {
     throw new NotFoundError({
       errorCode: errorCodes.EXTRA_FEATURE_NOT_FOUND,
       message: `Extra Feature with id ${model.extraFeaturesIds} was not found`,
+      details: {
+        model,
+      },
+    });
+  }
+
+  const uniqumModelNameWithBrand = await carModelRepository.findModelWithBrand({
+    name: model.name,
+    brandId: model.brandId,
+  });
+
+  if (uniqumModelNameWithBrand) {
+    throw new NotFoundError({
+      errorCode: errorCodes.CAR_MODEL_NAME_MUST_BE_UNIQUE_PER_BRAND,
+      message: 'Card Model name must be unique per Brand',
       details: {
         model,
       },

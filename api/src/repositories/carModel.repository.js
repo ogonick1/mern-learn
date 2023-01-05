@@ -13,7 +13,12 @@ const findById = (id) => {
     .exec();
 };
 
+const findModelWithBrand = (filter = {}) => {
+  return CarModelModel.findOne(filter);
+};
+
 module.exports = {
   create,
   findById,
+  findModelWithBrand,
 };

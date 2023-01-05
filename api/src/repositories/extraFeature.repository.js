@@ -21,7 +21,7 @@ const remove = (id) => {
 };
 
 const findAllById = (ids) => {
-  return ExtraFeatureModel.find({ id: { $in: ids } });
+  return ExtraFeatureModel.find({ _id: { $in: ids } });
 };
 
 module.exports = {
