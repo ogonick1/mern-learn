@@ -6,11 +6,11 @@ const create = (model) => {
 };
 
 const findOneByCriteria = (filter = {}) => {
-  return ExtraFeatureModel.findOne(filter);
+  return ExtraFeatureModel.findOne(filter).lean().exec();
 };
 
 const findById = (id) => {
-  return ExtraFeatureModel.findById(id);
+  return ExtraFeatureModel.findById(id).lean().exec();
 };
 const update = (id, model) => {
   return ExtraFeatureModel.findByIdAndUpdate(id, model);
@@ -20,8 +20,8 @@ const remove = (id) => {
   return ExtraFeatureModel.findByIdAndDelete(id);
 };
 
-const findAllById = (ids) => {
-  return ExtraFeatureModel.find({ _id: { $in: ids } });
+const findManyByIds = (ids) => {
+  return ExtraFeatureModel.find({ _id: { $in: ids } }).lean().exec();
 };
 
 module.exports = {
@@ -30,5 +30,5 @@ module.exports = {
   findById,
   update,
   remove,
-  findAllById,
+  findManyByIds,
 };

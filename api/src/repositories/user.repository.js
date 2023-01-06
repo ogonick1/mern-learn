@@ -19,7 +19,7 @@ const create = (model) => {
 };
 
 const findOne = (filter) => {
-  return UserModel.findOne(filter).lean();
+  return UserModel.findOne(filter).lean().exec();
 };
 
 module.exports = {

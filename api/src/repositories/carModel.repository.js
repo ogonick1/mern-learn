@@ -14,7 +14,7 @@ const findById = (id) => {
 };
 
 const findModelWithBrand = (filter = {}) => {
-  return CarModelModel.findOne(filter);
+  return CarModelModel.findOne(filter).lean().exec();
 };
 
 module.exports = {

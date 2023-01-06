@@ -1,7 +1,10 @@
 const carModelRepository = require('../repositories/carModel.repository');
 const carBrandRepository = require('../repositories/carBrand.repository');
 const extraFeatureRepository = require('../repositories/extraFeature.repository');
-const { NotFoundError } = require('../errors');
+const {
+  NotFoundError,
+  BusinessLogicError,
+} = require('../errors');
 const { errorCodes } = require('../errors/error-codes');
 
 const findById = async (id) => {
@@ -21,9 +24,10 @@ const create = async (model) => {
       },
     });
   }
-  const extraFeature = await extraFeatureRepository.findAllById(model.extraFeaturesIds);
 
-  if (extraFeature.length < model.extraFeaturesIds.length) {
+  const extraFeatures = await extraFeatureRepository.findManyByIds(model.extraFeaturesIds);
+
+  if (extraFeatures.length < model.extraFeaturesIds.length) {
     throw new NotFoundError({
       errorCode: errorCodes.EXTRA_FEATURE_NOT_FOUND,
       message: `Extra Feature with id ${model.extraFeaturesIds} was not found`,
@@ -33,17 +37,18 @@ const create = async (model) => {
     });
   }
 
-  const uniqumModelNameWithBrand = await carModelRepository.findModelWithBrand({
+  const existModelByNameAndBrand = await carModelRepository.findModelWithBrand({
     name: model.name,
     brandId: model.brandId,
   });
 
-  if (uniqumModelNameWithBrand) {
-    throw new NotFoundError({
+  if (existModelByNameAndBrand) {
+    throw new BusinessLogicError({
       errorCode: errorCodes.CAR_MODEL_NAME_MUST_BE_UNIQUE_PER_BRAND,
       message: 'Card Model name must be unique per Brand',
       details: {
-        model,
+        name: model.name,
+        brandId: model.brandId,
       },
     });
   }

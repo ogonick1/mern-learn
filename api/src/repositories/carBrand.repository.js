@@ -6,11 +6,11 @@ const create = (model) => {
 };
 
 const findById = (id) => {
-  return CarBrandModel.findById(id);
+  return CarBrandModel.findById(id).lean().exec();
 };
 
 const findOneByCriteria = (filter = {}) => {
-  return CarBrandModel.findOne(filter);
+  return CarBrandModel.findOne(filter).lean().exec();
 };
 
 const update = (id, model) => {
