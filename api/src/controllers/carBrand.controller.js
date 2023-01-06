@@ -40,9 +40,29 @@ const removeCarBrand = async (req, res) => {
   return res.status(204).send();
 };
 
+const searchCarBrands = async (req, res) => {
+  const {
+    limit,
+    skip,
+    sortField,
+    descending,
+  } = req.body;
+  const [carBrands, count] = await carBrandService.search({
+    limit,
+    skip,
+    sortField,
+    descending,
+  });
+  return res.json({
+    count,
+    carBrands,
+  });
+};
+
 module.exports = {
   createCarBrand,
   getCarBrandById,
   updateCarBrand,
   removeCarBrand,
+  searchCarBrands,
 };

@@ -5,9 +5,11 @@ const {
   getCarBrandById,
   updateCarBrand,
   removeCarBrand,
+  searchCarBrands,
 } = require('../controllers/carBrand.controller');
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
 const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
+const { searchRequestValidation } = require('../validation/search-request.validation');
 
 const router = Router();
 
@@ -41,6 +43,13 @@ router.delete(
   '/:id',
   objectIdParamValidationMiddleware(),
   removeCarBrand,
+);
+
+router.post(
+  '/search',
+  searchRequestValidation,
+  validatorErrorHandlerMiddleware,
+  searchCarBrands,
 );
 
 module.exports = router;

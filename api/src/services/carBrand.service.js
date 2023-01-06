@@ -68,9 +68,14 @@ const remove = (id) => {
   return carBrandRepository.remove(id);
 };
 
+const search = (searchModel) => {
+  return carBrandRepository.search(searchModel);
+};
+
 module.exports = {
   create,
   findById,
   update,
   remove,
+  search,
 };

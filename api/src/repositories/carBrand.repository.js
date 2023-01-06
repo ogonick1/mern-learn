@@ -1,4 +1,5 @@
 const { CarBrandModel } = require('../models/CarBrand');
+const { mapSearchRequestToMongoDbFindQuery } = require('../utils/search/mongo-search.utils');
 
 const create = (model) => {
   const { name, country } = model;
@@ -21,10 +22,20 @@ const remove = (id) => {
   return CarBrandModel.findByIdAndDelete(id);
 };
 
+const search = (searchModel) => {
+  const { queryOptions } = mapSearchRequestToMongoDbFindQuery(searchModel);
+
+  return Promise.all([
+    CarBrandModel.find({}, null, queryOptions).lean().exec(),
+    CarBrandModel.countDocuments().exec(),
+  ]);
+};
+
 module.exports = {
   create,
   findById,
   findOneByCriteria,
   update,
   remove,
+  search,
 };
