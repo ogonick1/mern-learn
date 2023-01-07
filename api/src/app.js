@@ -20,13 +20,13 @@ app.use((err, req, res, next) => {
 
   if (err instanceof GeneralError) {
     res.status(err.getCode()).json({
-      code: err.errorCode,
+      errorCode: err.errorCode,
       message: err.message,
       details: err.details,
     });
   } else {
     res.status(500).json({
-      code: err.code || errorCodes.INTERNAL_SERVER_ERROR.code,
+      errorCode: err.errorCode || errorCodes.INTERNAL_SERVER_ERROR,
       message: err.message,
       details: err.details,
     });
