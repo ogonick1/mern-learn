@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { CarBrandsTable } from '../../components/carBrandsTable/CarBrandsTable';
 
-export const Home = () => {
+export const CarBrands = () => {
   const { t } = useTranslation();
   const isAuth = useSelector((state) => state.user.isAuth);
   const navigate = useNavigate();
@@ -19,10 +20,9 @@ export const Home = () => {
         variant="h4"
         component="h4"
       >
-        {t('homePage.welcome')}
+        {t('carBrands.title')}
       </Typography>
-      <Skeleton animation="wave" />
-      <Skeleton animation="wave" />
+      <CarBrandsTable />
     </Box>
   );
 };

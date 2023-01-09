@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { login } from '../../plugins/store/userSlice';
 
 export const Login = () => {
-  const isAuth = useSelector((state) => state.isAuth);
+  const isAuth = useSelector((state) => state.user.isAuth);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();

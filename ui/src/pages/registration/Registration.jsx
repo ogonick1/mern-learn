@@ -9,7 +9,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { registration } from '../../plugins/store/userSlice';
 
 export const Registration = () => {
-  const isAuth = useSelector((state) => state.isAuth);
+  const isAuth = useSelector((state) => state.user.isAuth);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();

@@ -3,6 +3,9 @@
     "title": "Home page",
     "welcome": "welcome"
   },
+  "carBrands": {
+    "title": "Car Brands"
+  },
   "loginPage": {
     "title": "Login",
     "logout": "logOut"

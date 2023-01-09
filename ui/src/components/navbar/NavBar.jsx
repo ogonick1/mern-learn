@@ -10,7 +10,7 @@ import { logOut } from '../../plugins/store/userSlice';
 
 export const Navbar = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.isAuth);
+  const isAuth = useSelector((state) => state.user.isAuth);
   const { t, i18n } = useTranslation();
 
   const langs = {
@@ -26,12 +26,13 @@ export const Navbar = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '30px',
+        backgroundColor: 'primary.dark',
       }}
     >
       <NavLink className="navbar__link" to="/">LOGO</NavLink>
-      <NavLink className="navbar__link" to="/">{t('homePage.title')}</NavLink>
-      {isAuth ? <Button onClick={() => dispatch(logOut())}>{t('loginPage.logout')}</Button> : <NavLink className="navbar__link" to="/login">{t('loginPage.title')}</NavLink>}
-      {!isAuth && <NavLink className="navbar__link" to="/registration">{t('registration.title')}</NavLink>}
+      {isAuth && <NavLink className="navbar__link" to="/">{t('homePage.title')}</NavLink>}
+      {isAuth && <NavLink className="navbar__link" to="car-brands">{t('carBrands.title')}</NavLink>}
+      {isAuth && <Button variant="contained" onClick={() => dispatch(logOut())}>{t('loginPage.logout')}</Button>}
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
