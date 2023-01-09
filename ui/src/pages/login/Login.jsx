@@ -2,16 +2,13 @@ import {
   TextField, Typography, Box, Stack, Button,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import './index.scss';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { login } from '../../plugins/store/userSlice';
 
 export const Login = () => {
-  const isAuth = useSelector((state) => state.user.isAuth);
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
@@ -26,11 +23,7 @@ export const Login = () => {
     dispatch(login(value));
     reset();
   };
-  useEffect(() => {
-    if (isAuth) {
-      navigate('/');
-    }
-  }, [isAuth]);
+
   return (
     <Box
       component="div"

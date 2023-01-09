@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 export default class CarBrandService {
-  static search(params) {
-    return axios.post('car-brand/search', { params });
+  static pathPrefix = 'car-brand';
+
+  static search(searchModel) {
+    return axios.post(`${CarBrandService.pathPrefix}/search`, searchModel);
   }
 }
