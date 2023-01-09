@@ -5,19 +5,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { search } from '../../plugins/store/carSlice';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+import CarBrandService from '../../services/carBrand.service';
 
 export const CarBrandsTable = () => {
-  const carBrands = useSelector((state) => state.cars.carBrands);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(search());
-  }, []);
+  const [carBrands, setCarBrands] = useState(null);
+
+  const searchCarBrands = async () => {
+    const result = await CarBrandService.search();
+    return setCarBrands(result.carBrands);
+  };
 
   return (
     <div>
+      <Button onClick={() => searchCarBrands()}>search</Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 300 }} aria-label="simple table">
           <TableHead>
