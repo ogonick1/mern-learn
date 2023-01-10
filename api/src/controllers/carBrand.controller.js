@@ -43,13 +43,13 @@ const removeCarBrand = async (req, res) => {
 const searchCarBrands = async (req, res) => {
   const {
     limit,
-    skip,
+    offset,
     sortField,
     descending,
   } = req.body;
   const [carBrands, count] = await carBrandService.search({
     limit,
-    skip,
+    offset,
     sortField,
     descending,
   });

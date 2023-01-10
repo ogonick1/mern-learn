@@ -1,10 +1,31 @@
 @import "../../styles/variables";
 
-.navbar__link {
-  text-decoration: none;
-  color: $text-secondary;
+.navbar {
+  &__box {
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 30px;
+    background-color: $nav-bar-primary;
+  }
 
-  &.active {
-    text-decoration: underline;
+  &__link {
+    text-decoration: none;
+    color: $text-secondary;
+
+    &.active {
+      text-decoration: underline;
+    }
+  }
+
+  &__select {
+    div {
+      color: $text-secondary;
+    }
+
+    svg {
+      color: $text-secondary;
+    }
   }
 }

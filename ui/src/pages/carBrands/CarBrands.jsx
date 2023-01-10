@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
-import { CarBrandsTable } from '../../components/carBrandsTable/CarBrandsTable';
+import { CarBrandsTable } from './CarBrandsTable';
 
 export const CarBrands = () => {
   const { t } = useTranslation();
