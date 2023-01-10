@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { CarBrandsTable } from './CarBrandsTable';
 
-export const Home = () => {
+export const CarBrands = () => {
   const { t } = useTranslation();
 
   return (
@@ -10,10 +11,9 @@ export const Home = () => {
         variant="h4"
         component="h4"
       >
-        {t('homePage.welcome')}
+        {t('carBrands.title')}
       </Typography>
-      <Skeleton animation="wave" />
-      <Skeleton animation="wave" />
+      <CarBrandsTable />
     </Box>
   );
 };
