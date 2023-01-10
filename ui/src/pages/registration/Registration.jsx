@@ -1,16 +1,13 @@
 import {
   TextField, Typography, Box, Stack, Button,
 } from '@mui/material';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { registration } from '../../plugins/store/userSlice';
 
 export const Registration = () => {
-  const isAuth = useSelector((state) => state.user.isAuth);
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
@@ -25,11 +22,6 @@ export const Registration = () => {
     dispatch(registration(value));
     reset();
   };
-  useEffect(() => {
-    if (isAuth) {
-      navigate('/');
-    }
-  }, [isAuth]);
   return (
     <Box
       component="div"
