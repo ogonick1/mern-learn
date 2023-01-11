@@ -4,7 +4,10 @@
     "welcome": "welcome"
   },
   "carBrands": {
-    "title": "Car Brands"
+    "title": "Car Brands",
+    "name" : "Name",
+    "country": "Country",
+    "actions": "Actions"
   },
   "loginPage": {
     "title": "Login",

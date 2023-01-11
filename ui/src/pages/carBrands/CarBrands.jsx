@@ -6,7 +6,7 @@ export const CarBrands = () => {
   const { t } = useTranslation();
 
   return (
-    <Box>
+    <Box className="container">
       <Typography
         variant="h4"
         component="h4"

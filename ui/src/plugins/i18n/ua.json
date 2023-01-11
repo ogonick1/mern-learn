@@ -4,7 +4,10 @@
     "welcome": "Ласкаво просимо!"
 	},
   "carBrands": {
-    "title": "Марки Авто"
+    "title": "Марки Авто",
+    "name" : "Ім'я",
+    "country": "Країна",
+    "actions": "Дія"
   },
 	"loginPage": {
 		"title": "Авторизація",
