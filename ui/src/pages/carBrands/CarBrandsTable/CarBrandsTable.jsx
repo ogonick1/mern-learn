@@ -1,4 +1,4 @@
-import { Button, TablePagination, TableSortLabel } from '@mui/material';
+import { TablePagination, TableSortLabel, IconButton } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,7 +17,7 @@ export const CarBrandsTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortBy, setSortBy] = useState('name');
-  const [sort, setSort] = useState(true);
+  const [descending, setDescending] = useState(true);
 
   const getData = async () => {
     try {
@@ -25,7 +25,7 @@ export const CarBrandsTable = () => {
         limit: rowsPerPage,
         offset: rowsPerPage * page,
         sortField: sortBy,
-        descending: sort,
+        descending,
       });
 
       setData(result.carBrands);
@@ -37,7 +37,8 @@ export const CarBrandsTable = () => {
   };
   useEffect(() => {
     getData();
-  }, [rowsPerPage, page, sort, sortBy]);
+  }, [rowsPerPage, page, descending, sortBy]);
+
   const columns = [
     {
       id: 'name',
@@ -70,8 +71,8 @@ export const CarBrandsTable = () => {
     setPage(0);
   };
   const handleRequestSort = (id) => {
-    const thisSort = sortBy === id && sort === true;
-    setSort(!thisSort);
+    const thisSort = sortBy === id && descending === true;
+    setDescending(!thisSort);
     setSortBy(id);
   };
   return (
@@ -85,15 +86,17 @@ export const CarBrandsTable = () => {
                   <TableCell
                     key={id}
                   >
-                    {label}
+
                     {id !== 'actions'
-                      && (
-                      <TableSortLabel
-                        active={sortBy === id}
-                        direction={sort ? 'desc' : 'asc'}
-                        onClick={() => handleRequestSort(id)}
-                      />
-                      )}
+                      ? (
+                        <TableSortLabel
+                          active={sortBy === id}
+                          direction={descending ? 'desc' : 'asc'}
+                          onClick={() => handleRequestSort(id)}
+                        >
+                          {label}
+                        </TableSortLabel>
+                      ) : label}
                   </TableCell>
                 );
               })}
@@ -106,7 +109,12 @@ export const CarBrandsTable = () => {
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.country}</TableCell>
                   <TableCell>
-                    <Button onClick={() => deleteCarBrand(item._id)}><DeleteIcon /></Button>
+                    <IconButton
+                      onClick={() => deleteCarBrand(item._id)}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               );
@@ -123,7 +131,6 @@ export const CarBrandsTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-
     </div>
   );
 };
