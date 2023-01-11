@@ -7,7 +7,8 @@
     "title": "Марки Авто",
     "name" : "Ім'я",
     "country": "Країна",
-    "actions": "Дія"
+    "actions": "Дія",
+    "labelRowsPerPage": "Рядків на сторінці"
   },
 	"loginPage": {
 		"title": "Авторизація",

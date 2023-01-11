@@ -6,6 +6,7 @@ import './styles/index.scss';
 import { store } from './plugins/store/store';
 import { axiosSetup } from './plugins/axios-setup';
 import './plugins/i18n/i18n';
+import { DialogManagerProvider } from './providers/DialogManagerProvider/DialogManagerProvider';
 
 axiosSetup();
 
@@ -15,7 +16,9 @@ root.render(
   // eslint-disable-next-line react/jsx-filename-extension
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <DialogManagerProvider>
+        <App />
+      </DialogManagerProvider>
     </Provider>
   </React.StrictMode>,
 );

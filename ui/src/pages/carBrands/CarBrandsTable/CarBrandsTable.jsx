@@ -9,8 +9,10 @@ import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTranslation } from 'react-i18next';
 import { CarBrandService } from '../../../services/carBrand.service';
+import { useConfirmation } from '../../../hooks/useConfirmation';
 
 export const CarBrandsTable = () => {
+  const openConfirmation = useConfirmation();
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);

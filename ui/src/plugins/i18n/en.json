@@ -7,7 +7,8 @@
     "title": "Car Brands",
     "name" : "Name",
     "country": "Country",
-    "actions": "Actions"
+    "actions": "Actions",
+    "labelRowsPerPage": "Rows per page"
   },
   "loginPage": {
     "title": "Login",
