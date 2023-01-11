@@ -55,11 +55,21 @@ export const CarBrandsTable = () => {
       label: t('carBrands.actions'),
     },
   ];
+
+  const deleteCarBrandConfirmation = (id) => {
+    openConfirmation({
+      title: 'Confirmation',
+      text: 'Do you want delete this Car Model ?',
+      confirmButtonAction: () => {
+        deleteCarBrand(id);
+      },
+    })
+  };
+
   const deleteCarBrand = async (id) => {
     try {
-      openConfirmation({})
-      //await CarBrandService.delete(id);
-      //await getData();
+      await CarBrandService.delete(id);
+      await getData();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -89,7 +99,6 @@ export const CarBrandsTable = () => {
                   <TableCell
                     key={id}
                   >
-
                     {id !== 'actions'
                       ? (
                         <TableSortLabel
@@ -113,7 +122,7 @@ export const CarBrandsTable = () => {
                   <TableCell>{item.country}</TableCell>
                   <TableCell>
                     <IconButton
-                      onClick={() => deleteCarBrand(item._id)}
+                      onClick={() => deleteCarBrandConfirmation(item._id)}
                       color="error"
                     >
                       <DeleteIcon />
