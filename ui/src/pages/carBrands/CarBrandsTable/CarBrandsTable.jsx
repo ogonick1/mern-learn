@@ -88,11 +88,11 @@ export const CarBrandsTable = () => {
                     {label}
                     {id !== 'actions'
                       && (
-                      <TableSortLabel
-                        active={sortBy === id}
-                        direction={sort ? 'desc' : 'asc'}
-                        onClick={() => handleRequestSort(id)}
-                      />
+                        <TableSortLabel
+                          active={sortBy === id}
+                          direction={sort ? 'desc' : 'asc'}
+                          onClick={() => handleRequestSort(id)}
+                        />
                       )}
                   </TableCell>
                 );
@@ -115,6 +115,7 @@ export const CarBrandsTable = () => {
         </Table>
       </TableContainer>
       <TablePagination
+        labelRowsPerPage={t('carBrands.labelRowsPerPage')}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={totalCount}
@@ -122,6 +123,7 @@ export const CarBrandsTable = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+
       />
 
     </div>
