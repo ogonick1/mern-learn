@@ -123,6 +123,7 @@ export const CarBrandsTable = () => {
         </Table>
       </TableContainer>
       <TablePagination
+        labelRowsPerPage={t('carBrands.labelRowsPerPage')}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={totalCount}
@@ -130,6 +131,7 @@ export const CarBrandsTable = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+
       />
     </div>
   );
