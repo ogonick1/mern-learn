@@ -64,7 +64,9 @@ export const CustomDialog = (props) => {
   //  submitButtonTextVariant,
   //  bodyClass,
   // } = props;
-
+const handleClose = () => {
+  
+}
   return (
     <BootstrapDialog
       onClose={handleClose}

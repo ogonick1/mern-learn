@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next';
 import React from 'react';
-import { useDialog } from 'src/providers/DialogManagerProvider/useDialog';
+import { useTranslation } from 'react-i18next';
+import { useDialog } from '../providers/DialogManagerProvider/useDialog';
 import { CustomDialog } from '../components/CustomDialog';
 
 export const useConfirmation = () => {

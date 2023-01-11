@@ -57,8 +57,9 @@ export const CarBrandsTable = () => {
   ];
   const deleteCarBrand = async (id) => {
     try {
-      await CarBrandService.delete(id);
-      await getData();
+      openConfirmation({})
+      //await CarBrandService.delete(id);
+      //await getData();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
