@@ -4,7 +4,17 @@
     "welcome": "welcome"
   },
   "carBrands": {
-    "title": "Car Brands"
+    "title": "Car Brands",
+    "name" : "Name",
+    "country": "Country",
+    "actions": "Actions",
+    "labelRowsPerPage": "Rows per page"
+  },
+  "customDialog": {
+    "buttonClose": "Close",
+    "buttonConfirm": "Confirm",
+    "title": "Confirmation",
+    "text": "Do you want delete this Car Model ?"
   },
   "loginPage": {
     "title": "Login",

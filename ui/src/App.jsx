@@ -17,7 +17,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <Container maxWidth="sm">
+      <Container>
         <Routes>
           {isAuth && <Route path="car-brands" element={<CarBrands />} />}
           {!isAuth && <Route path="login" element={<Login />} />}

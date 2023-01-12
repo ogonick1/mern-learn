@@ -4,7 +4,17 @@
     "welcome": "Ласкаво просимо!"
 	},
   "carBrands": {
-    "title": "Марки Авто"
+    "title": "Марки Авто",
+    "name" : "Ім'я",
+    "country": "Країна",
+    "actions": "Дія",
+    "labelRowsPerPage": "Рядків на сторінці"
+  },
+  "customDialog": {
+    "buttonClose": "Відмінити",
+    "buttonConfirm": "Підтвердити",
+    "title": "Підтвердження",
+    "text": "Ви бажаєте видалити цю модель автомобіля ?"
   },
 	"loginPage": {
 		"title": "Авторизація",
