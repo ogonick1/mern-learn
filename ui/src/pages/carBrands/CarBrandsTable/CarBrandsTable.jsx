@@ -137,7 +137,7 @@ export const CarBrandsTable = () => {
             <TableRow>
               <TableCell>
                 <Link to="/car-brands/create">
-                  <Button>Create Car Brand</Button>
+                  <Button>{t('createCarBrand.title')}</Button>
                 </Link>
               </TableCell>
             </TableRow>
