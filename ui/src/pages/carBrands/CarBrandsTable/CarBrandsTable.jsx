@@ -56,16 +56,6 @@ export const CarBrandsTable = () => {
     },
   ];
 
-  const deleteCarBrandConfirmation = (id) => {
-    openConfirmation({
-      title: 'Confirmation',
-      text: 'Do you want delete this Car Model ?',
-      confirmButtonAction: () => {
-        deleteCarBrand(id);
-      },
-    })
-  };
-
   const deleteCarBrand = async (id) => {
     try {
       await CarBrandService.delete(id);
@@ -74,6 +64,15 @@ export const CarBrandsTable = () => {
       // eslint-disable-next-line no-console
       console.log(error);
     }
+  };
+  const deleteCarBrandConfirmation = (id) => {
+    openConfirmation({
+      title: t('customDialog.title'),
+      text: t('customDialog.text'),
+      confirmButtonAction: () => {
+        deleteCarBrand(id);
+      },
+    });
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

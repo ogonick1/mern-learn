@@ -10,6 +10,12 @@
     "actions": "Actions",
     "labelRowsPerPage": "Rows per page"
   },
+  "customDialog": {
+    "buttonClose": "Close",
+    "buttonConfirm": "Confirm",
+    "title": "Confirmation",
+    "text": "Do you want delete this Car Model ?"
+  },
   "loginPage": {
     "title": "Login",
     "logout": "logOut"

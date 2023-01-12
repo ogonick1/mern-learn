@@ -1,17 +1,15 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useDialog } from '../providers/DialogManagerProvider/useDialog';
 import { CustomDialog } from '../components/CustomDialog';
 
 export const useConfirmation = () => {
-  const { t } = useTranslation(['common']);
   const { openDialog } = useDialog();
 
   return (args) => {
     const {
       title,
       text,
-      confirmButtonText = t('common:buttons.confirm'),
+      confirmButtonText,
       confirmButtonVariant,
       confirmButtonAction,
       cancelButtonText,
@@ -36,7 +34,7 @@ export const useConfirmation = () => {
       };
 
       const props = {
-        title: title || t('common:confirmation'),
+        title,
         cancelButtonVariant,
         cancelButtonText,
         cancelButtonTextVariant,

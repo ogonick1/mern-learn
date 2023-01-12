@@ -6,7 +6,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -43,20 +42,20 @@ function BootstrapDialogTitle(props) {
 }
 
 export const CustomDialog = (props) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
 
   const {
-   title,
-  //  size,
-  //  loading = false,
-   children,
-   closeDialog,
-   onSubmit,
-  //  closeButton = true,
-   cancelButtonText = t('common:buttons.close'),
-   submitButtonText = t('common:buttons.saveChanges'),
-   cancelButtonVariant = 'error',
-   submitButtonVariant = 'primary',
+    title,
+    //  size,
+    //  loading = false,
+    children,
+    closeDialog,
+    onSubmit,
+    //  closeButton = true,
+    cancelButtonText = t('customDialog.buttonClose'),
+    submitButtonText = t('customDialog.buttonConfirm'),
+    cancelButtonVariant = 'error',
+    submitButtonVariant = 'primary',
   //  customFooter,
   //  cancelButtonDisabled = false,
   //  submitButtonDisabled = false,

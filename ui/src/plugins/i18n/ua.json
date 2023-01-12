@@ -10,6 +10,12 @@
     "actions": "Дія",
     "labelRowsPerPage": "Рядків на сторінці"
   },
+  "customDialog": {
+    "buttonClose": "Відмінити",
+    "buttonConfirm": "Підтвердити",
+    "title": "Підтвердження",
+    "text": "Ви бажаєте видалити цю модель автомобіля ?"
+  },
 	"loginPage": {
 		"title": "Авторизація",
     "logout": "Вийти"
