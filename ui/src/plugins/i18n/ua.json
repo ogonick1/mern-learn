@@ -30,6 +30,12 @@
 		"minMaxLength": "Повинно бути від {{min}} до {{max}} символів.",
 		"repeatPassword": "Повторіть пароль: "
 	},
+  "createCarBrand": {
+    "title": "Створити Марку Авто",
+    "name": "Назва",
+    "country": "Країна",
+    "create": "Створити"
+  },
 	"form": {
     "userName": "Логін",
 		"email": "Пошта: ",

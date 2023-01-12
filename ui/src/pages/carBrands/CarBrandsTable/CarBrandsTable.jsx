@@ -1,4 +1,6 @@
-import { TablePagination, TableSortLabel, IconButton } from '@mui/material';
+import {
+  TablePagination, TableSortLabel, IconButton,
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,6 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import { CarBrandService } from '../../../services/carBrand.service';
 import { useConfirmation } from '../../../hooks/useConfirmation';
 
@@ -130,6 +134,13 @@ export const CarBrandsTable = () => {
                 </TableRow>
               );
             }) : null}
+            <TableRow>
+              <TableCell>
+                <Link to="/car-brands/create">
+                  <Button>Create Car Brand</Button>
+                </Link>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
