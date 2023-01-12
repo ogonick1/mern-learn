@@ -3,37 +3,33 @@ import {
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { CarBrandService } from '../../services/carBrand.service';
-import 'react-toastify/dist/ReactToastify.css';
 
-export const CreateCarBrand = () => {
+export const CarBrandEditPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm({
     mode: 'all',
   });
-  const notify = (text) => {
-    toast.error(text);
-  };
-  const createCarBrand = async (value) => {
+  const createCarBrand = async (form) => {
     try {
-      await CarBrandService.create(value);
+      await CarBrandService.create(form);
+      navigate('/car-brands');
     } catch (error) {
-      notify(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     }
   };
-  const onSubmit = (value) => {
+  const onSubmit = async (value) => {
     createCarBrand(value);
-    reset();
   };
   return (
     <Container maxWidth="sm">
-      <ToastContainer />
       <Box
         component="div"
         sx={{ margin: '15px' }}
@@ -84,7 +80,12 @@ export const CreateCarBrand = () => {
             variant="outlined"
             margin="normal"
           />
-          <Stack marginTop={2} spacing={5} direction="row" alignItems="center">
+          <Stack
+            marginTop={2}
+            spacing={5}
+            direction="row"
+            alignItems="center"
+          >
             <Button disabled={!isValid} type="submit" variant="contained">{t('createCarBrand.create')}</Button>
           </Stack>
         </form>

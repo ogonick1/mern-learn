@@ -10,7 +10,7 @@ import { Navbar } from './components/navbar/NavBar';
 import { Login } from './pages/login/Login';
 import { Registration } from './pages/registration/Registration';
 import { CarBrands } from './pages/carBrands/CarBrands';
-import { CreateCarBrand } from './pages/CreateCarBrand/CreateCarBrand';
+import { CarBrandEditPage } from './pages/CarBrandEditPage/CarBrandEditPage';
 
 export const App = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -21,7 +21,7 @@ export const App = () => {
       <Container>
         <Routes>
           {isAuth && <Route path="car-brands" element={<CarBrands />} />}
-          {isAuth && <Route path="car-brands/create" element={<CreateCarBrand />} />}
+          {isAuth && <Route path="car-brands/create" element={<CarBrandEditPage />} />}
           {!isAuth && <Route path="login" element={<Login />} />}
           {!isAuth && <Route path="registration" element={<Registration />} />}
           <Route
