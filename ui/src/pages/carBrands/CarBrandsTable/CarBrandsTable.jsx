@@ -1,4 +1,6 @@
-import { TablePagination, TableSortLabel, IconButton } from '@mui/material';
+import {
+  TablePagination, TableSortLabel, IconButton,
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';

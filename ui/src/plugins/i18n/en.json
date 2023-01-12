@@ -29,6 +29,12 @@
     "minMaxLength": "Length must be between {{min}} and {{max}} symbols.",
     "repeatPassword": "password do not match"
   },
+  "createCarBrand": {
+    "title": "Create Car Brand",
+    "name": "Name",
+    "country": "Country",
+    "create": "Create"
+  },
   "form": {
     "userName": "Login",
     "email": "Email: ",

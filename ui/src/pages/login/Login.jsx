@@ -1,5 +1,5 @@
 import {
-  TextField, Typography, Box, Stack, Button,
+  TextField, Typography, Box, Stack, Button, Container,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -25,58 +25,60 @@ export const Login = () => {
   };
 
   return (
-    <Box
-      component="div"
-      sx={{
-        p: 2,
-        maxWidth: '995px',
-        margin: '10px',
-        height: '80vh',
-      }}
-    >
-      <Typography variant="h4" component="h4">{t('loginPage.title')}</Typography>
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          {...register(
-            'email',
-            {
-              required: true,
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: t('validationErrors.email'),
+    <Container maxWidth="sm">
+      <Box
+        component="div"
+        sx={{
+          p: 2,
+          maxWidth: '995px',
+          margin: '10px',
+          height: '80vh',
+        }}
+      >
+        <Typography variant="h4" component="h4">{t('loginPage.title')}</Typography>
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            {...register(
+              'email',
+              {
+                required: true,
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: t('validationErrors.email'),
+                },
               },
-            },
-          )}
-          focused
-          error={!!errors.email}
-          helperText={errors.email?.message}
-          type="text"
-          id="Email"
-          label={t('form.email')}
-          variant="outlined"
-          margin="normal"
-        />
-        <TextField
-          {...register('password', {
-            minLength: {
-              value: 5,
-              message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
-            },
-            required: true,
-          })}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-          type="password"
-          id="Password"
-          label={t('form.password')}
-          variant="outlined"
-          margin="normal"
-        />
-        <Stack marginTop={2} spacing={5} direction="row" alignItems="center">
-          <Button disabled={!isValid} type="submit" variant="contained">{t('form.login')}</Button>
-          <NavLink to="/registration">{t('form.register')}</NavLink>
-        </Stack>
-      </form>
-    </Box>
+            )}
+            focused
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            type="text"
+            id="Email"
+            label={t('form.email')}
+            variant="outlined"
+            margin="normal"
+          />
+          <TextField
+            {...register('password', {
+              minLength: {
+                value: 5,
+                message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
+              },
+              required: true,
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            type="password"
+            id="Password"
+            label={t('form.password')}
+            variant="outlined"
+            margin="normal"
+          />
+          <Stack marginTop={2} spacing={5} direction="row" alignItems="center">
+            <Button disabled={!isValid} type="submit" variant="contained">{t('form.login')}</Button>
+            <NavLink to="/registration">{t('form.register')}</NavLink>
+          </Stack>
+        </form>
+      </Box>
+    </Container>
   );
 };

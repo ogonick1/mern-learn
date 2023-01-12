@@ -1,5 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Box, Typography } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Typography,
+  Button,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
 import { CarBrandsTable } from './CarBrandsTable';
 
 export const CarBrands = () => {
@@ -7,12 +13,22 @@ export const CarBrands = () => {
 
   return (
     <Box className="container">
-      <Typography
-        variant="h4"
-        component="h4"
+      <Stack
+        marginTop={2}
+        spacing={5}
+        direction="row"
+        alignItems="center"
+        display="flex"
+        justifyContent="space-around"
       >
-        {t('carBrands.title')}
-      </Typography>
+        <Typography
+          variant="h4"
+          component="h4"
+        >
+          {t('carBrands.title')}
+        </Typography>
+        <Button component={Link} to="/car-brands/create">{t('createCarBrand.title')}</Button>
+      </Stack>
       <CarBrandsTable />
     </Box>
   );

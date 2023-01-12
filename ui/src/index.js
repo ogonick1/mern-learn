@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import { App } from './App';
 import './styles/index.scss';
@@ -16,6 +17,7 @@ root.render(
   // eslint-disable-next-line react/jsx-filename-extension
   <React.StrictMode>
     <Provider store={store}>
+      <ToastContainer />
       <DialogManagerProvider>
         <App />
       </DialogManagerProvider>
