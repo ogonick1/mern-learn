@@ -1,4 +1,5 @@
 const { ExtraFeatureModel } = require('../models/ExtraFeature');
+const { mapSearchRequestToMongoDbFindQuery } = require('../utils/search/mongo-search.utils');
 
 const create = (model) => {
   const { title, description } = model;
@@ -24,6 +25,15 @@ const findManyByIds = (ids) => {
   return ExtraFeatureModel.find({ _id: { $in: ids } }).lean().exec();
 };
 
+const search = (searchModel) => {
+  const { queryOptions } = mapSearchRequestToMongoDbFindQuery(searchModel);
+
+  return Promise.all([
+    ExtraFeatureModel.find({}, null, queryOptions).lean().exec(),
+    ExtraFeatureModel.countDocuments().exec(),
+  ]);
+};
+
 module.exports = {
   create,
   findOneByCriteria,
@@ -31,4 +41,5 @@ module.exports = {
   update,
   remove,
   findManyByIds,
+  search,
 };

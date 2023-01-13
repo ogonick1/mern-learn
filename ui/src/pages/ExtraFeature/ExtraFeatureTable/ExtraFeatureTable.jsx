@@ -13,29 +13,29 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { CarBrandService } from '../../../services/carBrand.service';
 import { useConfirmation } from '../../../hooks/useConfirmation';
+import { ExtraFeatureService } from '../../../services/extraFeature.service';
 
-export const CarBrandsTable = () => {
+export const ExtraFeatureTable = () => {
   const openConfirmation = useConfirmation();
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortBy, setSortBy] = useState('name');
+  const [sortBy, setSortBy] = useState('title');
   const [descending, setDescending] = useState(true);
 
   const getData = async () => {
     try {
-      const result = await CarBrandService.search({
+      const result = await ExtraFeatureService.search({
         limit: rowsPerPage,
         offset: rowsPerPage * page,
         sortField: sortBy,
         descending,
       });
 
-      setData(result.carBrands);
+      setData(result.extraFeature);
       setTotalCount(result.count);
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -47,22 +47,22 @@ export const CarBrandsTable = () => {
 
   const columns = [
     {
-      id: 'name',
-      label: t('carBrands.name'),
+      id: 'title',
+      label: t('extraFeature.title'),
     },
     {
-      id: 'country',
-      label: t('carBrands.country'),
+      id: 'description',
+      label: t('extraFeature.description'),
     },
     {
       id: 'actions',
-      label: t('carBrands.actions'),
+      label: t('extraFeature.actions'),
     },
   ];
 
   const deleteCarBrand = async (id) => {
     try {
-      await CarBrandService.delete(id);
+      await ExtraFeatureService.delete(id);
       await getData();
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -121,8 +121,8 @@ export const CarBrandsTable = () => {
             {data.length ? data.map((item) => {
               return (
                 <TableRow key={item._id}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.country}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>{item.description}</TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() => deleteCarBrandConfirmation(item._id)}
@@ -131,7 +131,7 @@ export const CarBrandsTable = () => {
                       <DeleteIcon />
                     </IconButton>
                     <IconButton
-                      onClick={() => navigate(`/car-brands/edit/${item._id}`)}
+                      onClick={() => navigate(`/extra-feature/edit/${item._id}`)}
                     >
                       <EditIcon />
                     </IconButton>

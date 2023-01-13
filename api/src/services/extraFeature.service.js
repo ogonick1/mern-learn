@@ -65,9 +65,14 @@ const remove = (id) => {
   return extraFeatureRepository.remove(id);
 };
 
+const search = (searchModel) => {
+  return extraFeatureRepository.search(searchModel);
+};
+
 module.exports = {
   create,
   findById,
   update,
   remove,
+  search,
 };

@@ -1,4 +1,11 @@
 {
+  "extraFeature": {
+    "title": "Додаткові Функції",
+    "description": "Опис",
+    "actions": "Дії",
+    "create": "Створити додаткову функцію",
+    "edit": "Редагувати"
+},
 	"homePage": {
 		"title": "Головна сторінка",
     "welcome": "Ласкаво просимо!"
@@ -7,7 +14,7 @@
     "title": "Марки Авто",
     "name" : "Ім'я",
     "country": "Країна",
-    "actions": "Дія",
+    "actions": "Дії",
     "labelRowsPerPage": "Рядків на сторінці"
   },
   "customDialog": {

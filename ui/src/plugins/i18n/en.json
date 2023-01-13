@@ -1,4 +1,11 @@
 {
+  "extraFeature": {
+    "title": "Extra Feature",
+    "description": "Description",
+    "actions": "Actions",
+    "create": "Create Extra Feature",
+    "edit": "Edit"
+},
   "homePage": {
     "title": "Home page",
     "welcome": "welcome"
