@@ -14,4 +14,12 @@ export class CarBrandService {
   static delete(id) {
     return axios.delete(`${CarBrandService.pathPrefix}/${id}`);
   }
+
+  static getCarBrandById(id) {
+    return axios.get(`${CarBrandService.pathPrefix}/${id}`);
+  }
+
+  static patchCarBrandById(id, form) {
+    return axios.patch(`${CarBrandService.pathPrefix}/${id}`, form);
+  }
 }

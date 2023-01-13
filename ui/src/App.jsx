@@ -22,6 +22,7 @@ export const App = () => {
         <Routes>
           {isAuth && <Route path="car-brands" element={<CarBrands />} />}
           {isAuth && <Route path="car-brands/create" element={<CarBrandEditPage />} />}
+          {isAuth && <Route path="car-brands/edit/:id" element={<CarBrandEditPage />} />}
           {!isAuth && <Route path="login" element={<Login />} />}
           {!isAuth && <Route path="registration" element={<Registration />} />}
           <Route
