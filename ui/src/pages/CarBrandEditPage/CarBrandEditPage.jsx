@@ -5,11 +5,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CarBrandService } from '../../services/carBrand.service';
 
 export const CarBrandEditPage = () => {
-  const [editMode, setEditMode] = useState(false);
   const { id } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -24,7 +23,11 @@ export const CarBrandEditPage = () => {
   });
   const createCarBrand = async (form) => {
     try {
-      await (editMode ? CarBrandService.patchCarBrandById(id, form) : CarBrandService.create(form));
+      if (id) {
+        await CarBrandService.patchCarBrandById(id, form);
+      } else {
+        await CarBrandService.create(form);
+      }
       navigate('/car-brands');
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -47,7 +50,6 @@ export const CarBrandEditPage = () => {
   };
   useEffect(() => {
     if (id) {
-      setEditMode(true);
       getCarBrandById(id);
     }
   }, []);
@@ -112,7 +114,7 @@ export const CarBrandEditPage = () => {
             alignItems="center"
           >
             <Button disabled={!isValid} type="submit" variant="contained">
-              {editMode ? t('createCarBrand.edit') : t('createCarBrand.create')}
+              {id ? t('createCarBrand.edit') : t('createCarBrand.create')}
             </Button>
           </Stack>
         </form>
