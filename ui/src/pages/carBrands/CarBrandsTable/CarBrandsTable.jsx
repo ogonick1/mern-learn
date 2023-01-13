@@ -9,7 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { CarBrandService } from '../../../services/carBrand.service';
 import { useConfirmation } from '../../../hooks/useConfirmation';
 
@@ -89,6 +91,7 @@ export const CarBrandsTable = () => {
     setDescending(!thisSort);
     setSortBy(id);
   };
+  const navigate = useNavigate();
   return (
     <div>
       <TableContainer>
@@ -127,6 +130,11 @@ export const CarBrandsTable = () => {
                       color="error"
                     >
                       <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => navigate(`/car-brands/edit/${item._id}`)}
+                    >
+                      <EditIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>

@@ -33,7 +33,8 @@
     "title": "Create Car Brand",
     "name": "Name",
     "country": "Country",
-    "create": "Create"
+    "create": "Create",
+    "edit": "Edit"
   },
   "form": {
     "userName": "Login",
