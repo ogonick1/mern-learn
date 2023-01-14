@@ -34,9 +34,29 @@ const removeExtraFeature = async (req, res) => {
   return res.status(204).send();
 };
 
+const searchExtraFeature = async (req, res) => {
+  const {
+    limit,
+    offset,
+    sortField,
+    descending,
+  } = req.body;
+  const [extraFeature, count] = await extraFeatureService.search({
+    limit,
+    offset,
+    sortField,
+    descending,
+  });
+  return res.json({
+    count,
+    extraFeature,
+  });
+};
+
 module.exports = {
   createExtraFeature,
   getExtraFeatureById,
   updateExtraFeature,
   removeExtraFeature,
+  searchExtraFeature,
 };

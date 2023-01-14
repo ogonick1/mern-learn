@@ -5,9 +5,11 @@ const {
   getExtraFeatureById,
   updateExtraFeature,
   removeExtraFeature,
+  searchExtraFeature,
 } = require('../controllers/extraFeature.controller');
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
 const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
+const { searchRequestValidation } = require('../validation/search-request.validation');
 
 const router = Router();
 
@@ -41,6 +43,13 @@ router.delete(
   '/:id',
   objectIdParamValidationMiddleware(),
   removeExtraFeature,
+);
+
+router.post(
+  '/search',
+  searchRequestValidation,
+  validatorErrorHandlerMiddleware,
+  searchExtraFeature,
 );
 
 module.exports = router;

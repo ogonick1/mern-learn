@@ -6,11 +6,10 @@ import {
   Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { CarBrandsTable } from './CarBrandsTable';
+import { ExtraFeatureTable } from './ExtraFeatureTable/ExtraFeatureTable';
 
-export const CarBrands = () => {
+export const ExtraFeature = () => {
   const { t } = useTranslation();
-
   return (
     <Box className="container">
       <Stack
@@ -25,11 +24,12 @@ export const CarBrands = () => {
           variant="h4"
           component="h4"
         >
-          {t('carBrands.title')}
+          {t('extraFeature.title')}
         </Typography>
-        <Button component={Link} to="/car-brands/create">{t('createCarBrand.titleCreate')}</Button>
+        <Button component={Link} to="/extra-feature/create">{t('extraFeature.create')}</Button>
       </Stack>
-      <CarBrandsTable />
+      <ExtraFeatureTable />
     </Box>
+
   );
 };
