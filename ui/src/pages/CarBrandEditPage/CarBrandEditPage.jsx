@@ -60,7 +60,7 @@ export const CarBrandEditPage = () => {
         component="div"
         sx={{ margin: '15px' }}
       >
-        <Typography variant="h4" component="h4">{t('createCarBrand.title')}</Typography>
+        <Typography variant="h4" component="h4">{id ? t('createCarBrand.titleEdit') : t('createCarBrand.titleCreate')}</Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             {...register(
@@ -114,7 +114,7 @@ export const CarBrandEditPage = () => {
             alignItems="center"
           >
             <Button disabled={!isValid} type="submit" variant="contained">
-              {id ? t('createCarBrand.edit') : t('createCarBrand.create')}
+              {t('createCarBrand.save')}
             </Button>
           </Stack>
         </form>

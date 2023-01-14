@@ -1,10 +1,13 @@
 {
   "extraFeature": {
+    "titleCreate": "Create Extra Feature",
+    "titleEdit": "Edit Extra Feature",
     "title": "Extra Feature",
     "description": "Description",
     "actions": "Actions",
     "create": "Create Extra Feature",
-    "edit": "Edit"
+    "edit": "Edit",
+    "save": "Save"
 },
   "homePage": {
     "title": "Home page",
@@ -20,8 +23,10 @@
   "customDialog": {
     "buttonClose": "Close",
     "buttonConfirm": "Confirm",
-    "title": "Confirmation",
-    "text": "Do you want delete this Car Model ?"
+    "titleCarBrand": "Confirmation",
+    "textCarBrand": "Do you want delete this Car Model ?",
+    "titleExtraFeature": "Confirmation",
+    "textExtraFeature": "Do you want delete this Extra Feature ?"
   },
   "loginPage": {
     "title": "Login",
@@ -37,11 +42,13 @@
     "repeatPassword": "password do not match"
   },
   "createCarBrand": {
-    "title": "Create Car Brand",
+    "titleCreate": "Create Car Brand",
+    "titleEdit": "Edit Car Brand",
     "name": "Name",
     "country": "Country",
     "create": "Create",
-    "edit": "Edit"
+    "edit": "Edit",
+    "save": "Save"
   },
   "form": {
     "userName": "Login",

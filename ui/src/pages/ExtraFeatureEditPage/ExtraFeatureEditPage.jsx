@@ -17,15 +17,25 @@ export const ExtraFeatureEditPage = () => {
   const schema = yup
     .object()
     .shape({
-      title: yup.string().required(t('validationErrors.required')).min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 })).max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
-      description: yup.string().required(t('validationErrors.required')).min(3, t('validationErrors.minMaxLength', { min: 3, max: 200 })).max(200, t('validationErrors.minMaxLength', { min: 3, max: 200 })),
-    })
-    .required(t('validationErrors.required'));
+      title: yup.string()
+        .required(t('validationErrors.required'))
+        .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
+        .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
+      description: yup.string()
+        .required(t('validationErrors.required'))
+        .min(3, t('validationErrors.minMaxLength', { min: 3, max: 200 }))
+        .max(200, t('validationErrors.minMaxLength', { min: 3, max: 200 })),
+    });
 
   const {
     handleSubmit,
     control,
     reset,
+    formState: {
+      isDirty,
+      isValid,
+      isSubmitted,
+    },
   } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
@@ -69,7 +79,7 @@ export const ExtraFeatureEditPage = () => {
         component="div"
         sx={{ margin: '15px' }}
       >
-        <Typography variant="h4" component="h4">{t('extraFeature.create')}</Typography>
+        <Typography variant="h4" component="h4">{id ? t('extraFeature.titleEdit') : t('extraFeature.titleCreate')}</Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
 
           <Controller
@@ -81,10 +91,11 @@ export const ExtraFeatureEditPage = () => {
               },
               fieldState: { error },
             }) => {
-              const isValid = error ? false : undefined;
-              const errorText = isValid === false ? error?.message : '';
+              const isFieldValid = error ? false : undefined;
+              const errorText = isFieldValid === false ? error?.message : '';
               return (
                 <TextField
+                  InputLabelProps={{ shrink: value }}
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value || ''}
@@ -92,7 +103,6 @@ export const ExtraFeatureEditPage = () => {
                   label={t('extraFeature.title')}
                   variant="outlined"
                   margin="normal"
-                  focused
                   helperText={errorText}
                   error={!!errorText}
                 />
@@ -108,10 +118,11 @@ export const ExtraFeatureEditPage = () => {
               },
               fieldState: { error },
             }) => {
-              const isValid = error ? false : undefined;
-              const errorText = isValid === false ? error?.message : '';
+              const isFieldValid = error ? false : undefined;
+              const errorText = isFieldValid === false ? error?.message : '';
               return (
                 <TextField
+                  InputLabelProps={{ shrink: value }}
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value || ''}
@@ -120,7 +131,6 @@ export const ExtraFeatureEditPage = () => {
                   variant="outlined"
                   margin="normal"
                   helperText={errorText}
-                  focused
                   error={!!errorText}
                 />
               );
@@ -132,8 +142,8 @@ export const ExtraFeatureEditPage = () => {
             direction="row"
             alignItems="center"
           >
-            <Button type="submit" variant="contained">
-              {id ? t('extraFeature.edit') : t('extraFeature.create')}
+            <Button disabled={(isSubmitted || isDirty) && !isValid} type="submit" variant="contained">
+              {t('extraFeature.save')}
             </Button>
           </Stack>
         </form>

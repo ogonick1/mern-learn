@@ -27,7 +27,7 @@ export const CarBrands = () => {
         >
           {t('carBrands.title')}
         </Typography>
-        <Button component={Link} to="/car-brands/create">{t('createCarBrand.title')}</Button>
+        <Button component={Link} to="/car-brands/create">{t('createCarBrand.titleCreate')}</Button>
       </Stack>
       <CarBrandsTable />
     </Box>

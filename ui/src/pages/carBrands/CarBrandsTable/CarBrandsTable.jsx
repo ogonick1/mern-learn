@@ -70,8 +70,8 @@ export const CarBrandsTable = () => {
   };
   const deleteCarBrandConfirmation = (id) => {
     openConfirmation({
-      title: t('customDialog.title'),
-      text: t('customDialog.text'),
+      title: t('customDialog.titleCarBrand'),
+      text: t('customDialog.textCarBrand'),
       confirmButtonAction: () => {
         deleteCarBrand(id);
       },
