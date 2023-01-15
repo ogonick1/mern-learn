@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
 const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
 const { getCarModel, createCarModel } = require('../controllers/carModel.controller');
+const { arrayUnique } = require('../validation/array-unique.validations');
 const { FuelType } = require('../enums/FuelType.enum');
 const { GearBox } = require('../enums/GearBox.enum');
 const { DriveType } = require('../enums/DriveType.enum');
@@ -23,7 +24,13 @@ router.post(
     check('yearStart', 'incorrect yearStart').isInt({ min: 1950 }),
     check('yearEnd', 'incorrect yearEnd').optional().custom((value, { req }) => (value > req.body.yearStart)),
 
-    check('powerUnits', 'invalid powerUnits').isArray({ min: 1 }),
+    check('powerUnits', 'invalid powerUnits')
+      .isArray({ min: 1 })
+      .custom((value) => arrayUnique(
+        value,
+        (powerUnit) => `${powerUnit.driveType}-${powerUnit.gearBox}-${powerUnit.fuelType}-${powerUnit.engineVolume}`,
+      ))
+      .withMessage('powerUnits values must beunique'),
     check('powerUnits.*.engineVolume', 'invalid engineVolume').isInt(),
     check('powerUnits.*.fuelType', 'invalid fuelType').isIn(Object.values(FuelType)),
     check('powerUnits.*.gearBox', 'invalid gearBox').isIn(Object.values(GearBox)),
@@ -31,18 +38,29 @@ router.post(
     check(
       'extraFeaturesIds',
       'incorect extraFeaturesIds',
-    ).optional().isArray().isMongoId(),
+    )
+      .optional()
+      .isArray()
+      .custom((value) => arrayUnique(value))
+      .withMessage('extraFeaturesIds values must be unique')
+      .isMongoId(),
     check(
-      'bodyTypes',
+      'bodyTypes.*',
       'incorrect bodyTypes',
     )
-      .isArray({ min: 1 })
       .isIn([
         'SEDAN',
         'STATION_WAGON',
         'HATCHBACK',
         'COUPE',
       ]),
+    check(
+      'bodyTypes',
+      'incorrect bodyTypes',
+    )
+      .isArray({ min: 1 })
+      .custom((value) => arrayUnique(value))
+      .withMessage('bodyTypes values must be unique'),
   ],
   validatorErrorHandlerMiddleware,
   createCarModel,
