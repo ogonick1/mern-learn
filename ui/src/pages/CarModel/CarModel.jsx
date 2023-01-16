@@ -25,9 +25,9 @@ export const CarModel = () => {
             variant="h4"
             component="h4"
           >
-            {t('CarModel.title')}
+            {t('carModel.title')}
           </Typography>
-          <Button component={Link} to="/car-model/create">{t('CarModel.create')}</Button>
+          <Button component={Link} to="/car-model/create">{t('carModel.create')}</Button>
         </Stack>
         <CarModelTable />
       </Box>
