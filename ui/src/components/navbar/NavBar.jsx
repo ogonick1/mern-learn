@@ -24,6 +24,7 @@ export const Navbar = () => {
     >
       <NavLink className="navbar__link" to="/">LOGO</NavLink>
       {isAuth && <NavLink className="navbar__link" to="/">{t('homePage.title')}</NavLink>}
+      {isAuth && <NavLink className="navbar__link" to="car-model">{t('carModel.title')}</NavLink>}
       {isAuth && <NavLink className="navbar__link" to="car-brands">{t('carBrands.title')}</NavLink>}
       {isAuth && <NavLink className="navbar__link" to="extra-feature">{t('extraFeature.title')}</NavLink>}
       {isAuth && <Button variant="contained" onClick={() => dispatch(logOut())}>{t('loginPage.logout')}</Button>}

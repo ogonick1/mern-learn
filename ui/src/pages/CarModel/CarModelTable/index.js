@@ -1,0 +1,1 @@
+export { CarModelTable } from './CarModelTable';
