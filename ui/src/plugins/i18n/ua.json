@@ -1,4 +1,45 @@
 {
+  "enum": {
+    "FuelType":{
+      "PETROL": "Бензин",
+      "DIESEL": "Дизель",
+      "GAS": "Газ",
+      "HYBRID": "Гібридний",
+      "ELECTRO": "Електричний",
+      "GAS_PETROL": "Газ-Бензин"
+    },
+    "GearBox": {
+      "MECHANICAL": "Механічна",
+      "AUTOMATIC": "Автоматична"
+    },
+    "DriveType": {
+      "FRONT":"Передній",
+      "BACK": "Задній",
+      "FULL": "Повний"
+    },
+    "BodyType": {
+      "SEDAN": "Седан",
+      "STATION_WAGON": "Універсал",
+      "HATCHBACK": "Хетчбек",
+      "COUPE": "Купе"
+    }
+  },
+  "carModel": {
+    "title": "Модель авто",
+    "create": "Створити Модель авто",
+    "name": "Назва",
+    "brandName": "Марка",
+    "years": "Роки випуску",
+    "powerUnits": "Параметри",
+    "extraFeatures": "Додаткові Функції",
+    "bodyTypes": "Тип Кузова: ",
+    "engineVolume": "Об'єм: ",
+    "fuelType": "Тип Палива: ",
+    "gearBox": "Коробка передач: ",
+    "driveType": "Привід: ",
+    "actions": "Дії",
+    "noData": " - Не вказано"
+  },
   "extraFeature": {
     "titleCreate": "Створити Додаткову Функцію",
     "titleEdit": "Редагувати Додаткову Функцію",
@@ -24,9 +65,9 @@
     "buttonClose": "Відмінити",
     "buttonConfirm": "Підтвердити",
     "title": "Підтвердження",
-    "text": "Ви бажаєте видалити цю модель автомобіля ?",
+    "text": "Ви бажаєте видалити ?",
     "titleCarBrand": "Підтвердження",
-    "textCarBrand": "Ви бажаєте видалити цю модель автомобіля ?",
+    "textCarBrand": "Ви бажаєте видалити цю марку автомобіля ?",
     "titleExtraFeature": "Підтвердження",
     "textExtraFeature": "Ви бажаєте видалити цю додаткову функцію ??"
   },

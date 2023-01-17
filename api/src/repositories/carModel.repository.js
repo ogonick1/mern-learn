@@ -30,7 +30,12 @@ const search = (searchModel) => {
   const { queryOptions } = mapSearchRequestToMongoDbFindQuery(searchModel);
 
   return Promise.all([
-    CarModelModel.find({}, null, queryOptions).lean().exec(),
+    CarModelModel
+      .find({}, null, queryOptions)
+      .populate('brandId')
+      .populate('extraFeaturesIds')
+      .lean()
+      .exec(),
     CarModelModel.countDocuments().exec(),
   ]);
 };

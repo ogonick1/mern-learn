@@ -22,7 +22,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-      <Container>
+      <Container maxWidth="false">
         <Routes>
           {isAuth && <Route path="car-brands" element={<CarBrands />} />}
           {isAuth && <Route path="car-brands/create" element={<CarBrandEditPage />} />}

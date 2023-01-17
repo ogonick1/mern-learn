@@ -1,4 +1,46 @@
 {
+  "enum": {
+    "FuelType":{
+      "PETROL": "Petrol",
+      "DIESEL": "Diesel",
+      "GAS": "Gas",
+      "HYBRID": "Hybrid",
+      "ELECTRO": "Electro",
+      "GAS_PETROL": "Gas-Petrol"
+    },
+    "GearBox": {
+      "MECHANICAL": "Mechanical",
+      "AUTOMATIC": "Automatic"
+    },
+    "DriveType": {
+      "FRONT":"Front",
+      "BACK": "Back",
+      "FULL": "Full"
+    },
+    "BodyType": {
+      "SEDAN": "Sedan",
+      "STATION_WAGON": "Station Wagon",
+      "HATCHBACK": "Hatchback",
+      "COUPE": "Coupe"
+    }
+
+  },
+  "carModel": {
+    "title": "Car Model",
+    "create": "Create Car Model",
+    "name": "Name",
+    "brandName": "Brand Name",
+    "years": "Years",
+    "powerUnits": "Power Units",
+    "extraFeatures": "Extra Feature",
+    "bodyTypes": "Body Types: ",
+    "engineVolume": "Engine Volume: ",
+    "fuelType": "Fuel Type: ",
+    "gearBox": "Gear Box: ",
+    "driveType": "Drive Type: ",
+    "actions": "Actions",
+    "noData": " - No data"
+  },
   "extraFeature": {
     "titleCreate": "Create Extra Feature",
     "titleEdit": "Edit Extra Feature",
@@ -24,7 +66,7 @@
     "buttonClose": "Close",
     "buttonConfirm": "Confirm",
     "titleCarBrand": "Confirmation",
-    "textCarBrand": "Do you want delete this Car Model ?",
+    "textCarBrand": "Do you want delete this Car Brand ?",
     "titleExtraFeature": "Confirmation",
     "textExtraFeature": "Do you want delete this Extra Feature ?"
   },
