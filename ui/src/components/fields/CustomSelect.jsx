@@ -9,8 +9,10 @@ export const CustomSelect = (props) => {
     getOptionLabel,
     id,
     value,
+    multiple,
     onChange,
     label,
+    isOptionEqualToValue,
   } = props;
   const [internalOptions, setInternalOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -36,9 +38,11 @@ export const CustomSelect = (props) => {
   return (
     <Autocomplete
       id={id}
+      multiple={multiple}
       options={searchCallback ? internalOptions : options}
       loading={loading}
       {...(getOptionLabel ? { getOptionLabel } : {})}
+      {...(isOptionEqualToValue ? { isOptionEqualToValue } : {})}
       renderInput={(params) => <TextField {...params} label={label} />}
       value={value}
       onChange={(action, option) => {

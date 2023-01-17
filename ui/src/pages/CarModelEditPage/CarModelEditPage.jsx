@@ -10,11 +10,19 @@ import * as yup from 'yup';
 import { CarModelService } from '../../services/carModel.service';
 import { CustomSelect } from '../../components/fields/CustomSelect';
 import { CarBrandService } from '../../services/carBrand.service';
+import { ExtraFeatureService } from '../../services/extraFeature.service';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
     .then((result) => {
       return result.carBrands;
+    });
+};
+
+const getExtraFeaturesOptions = () => {
+  return ExtraFeatureService.search()
+    .then((result) => {
+      return result.extraFeature;
     });
 };
 
@@ -31,6 +39,7 @@ export const CarModelEditPage = () => {
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
       brandOption: yup.object()
         .required(t('validationErrors.required')),
+      extraFeaturesOptions: yup.array(),
     });
 
   const {
@@ -51,6 +60,7 @@ export const CarModelEditPage = () => {
     const model = {
       name: form.name,
       brandId: form.brandOption._id,
+      extraFeaturesIds: form.extraFeaturesOptions.map(({ _id }) => _id),
       yearStart: 1960,
       yearEnd: 2020,
       powerUnits: [{
@@ -62,9 +72,11 @@ export const CarModelEditPage = () => {
       bodyTypes: ['SEDAN'],
     };
 
+    console.log(model);
+
     try {
-      await CarModelService.create(model);
-      navigate('/car-model');
+      // await CarModelService.create(model);
+      // navigate('/car-model');
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -112,6 +124,9 @@ export const CarModelEditPage = () => {
                 );
               }}
             />
+            <br />
+            <br />
+            <br />
             <Controller
               control={control}
               name="brandOption"
@@ -128,14 +143,41 @@ export const CarModelEditPage = () => {
                     searchCallback={getCarModelOptions}
                     id="brandOption"
                     label="CAR BRAND"
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.name || ''}
                     onChange={onChange}
                     value={value || null}
                   />
                 );
               }}
             />
-
+            <br />
+            <br />
+            <br />
+            <Controller
+              control={control}
+              name="extraFeaturesOptions"
+              render={({
+                field: {
+                  onChange, onBlur, value,
+                },
+                fieldState: { error },
+              }) => {
+                const isFieldValid = error ? false : undefined;
+                const errorText = isFieldValid === false ? error?.message : '';
+                return (
+                  <CustomSelect
+                    multiple
+                    searchCallback={getExtraFeaturesOptions}
+                    id="extraFeaturesOptions"
+                    label="EXTRA FEATURES"
+                    getOptionLabel={(option) => option.title || ''}
+                    isOptionEqualToValue={(option, val) => val._id === option._id}
+                    onChange={onChange}
+                    value={value || []}
+                  />
+                );
+              }}
+            />
             <Stack
               marginTop={2}
               spacing={5}
