@@ -10,6 +10,7 @@ export const CustomSelect = (props) => {
     id,
     value,
     onChange,
+    label,
   } = props;
   const [internalOptions, setInternalOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -38,11 +39,10 @@ export const CustomSelect = (props) => {
       options={searchCallback ? internalOptions : options}
       loading={loading}
       {...(getOptionLabel ? { getOptionLabel } : {})}
-      renderInput={(params) => <TextField {...params} label="Movie" />}
+      renderInput={(params) => <TextField {...params} label={label} />}
       value={value}
-      onChange={(val) => {
-        console.log(val);
-        onChange(val);
+      onChange={(action, option) => {
+        onChange(option);
       }}
     />
   );

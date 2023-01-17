@@ -29,7 +29,7 @@ export const CarModelEditPage = () => {
         .required(t('validationErrors.required'))
         .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
-      brandId: yup.object()
+      brandOption: yup.object()
         .required(t('validationErrors.required')),
     });
 
@@ -48,9 +48,22 @@ export const CarModelEditPage = () => {
     resolver: yupResolver(schema),
   });
   const createCarModel = async (form) => {
-    console.log(form);
+    const model = {
+      name: form.name,
+      brandId: form.brandOption._id,
+      yearStart: 1960,
+      yearEnd: 2020,
+      powerUnits: [{
+        engineVolume: 1600,
+        fuelType: 'GAS_PETROL',
+        gearBox: 'AUTOMATIC',
+        driveType: 'BACK',
+      }],
+      bodyTypes: ['SEDAN'],
+    };
+
     try {
-      await CarModelService.create(form);
+      await CarModelService.create(model);
       navigate('/car-model');
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -60,7 +73,7 @@ export const CarModelEditPage = () => {
   const onSubmit = async (value) => {
     createCarModel(value);
   };
-  console.log(isSubmitted, isDirty, isValid, errors);
+
   return (
     <div>
       <Container maxWidth="sm">
@@ -84,7 +97,8 @@ export const CarModelEditPage = () => {
                 const errorText = isFieldValid === false ? error?.message : '';
                 return (
                   <TextField
-                    InputLabelProps={{ shrink: value }}
+                    // TODO
+                    // InputLabelProps={{ shrink: value }}
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value || ''}
@@ -92,7 +106,7 @@ export const CarModelEditPage = () => {
                     label={t('carModel.name')}
                     variant="outlined"
                     margin="normal"
-                    helperText={errorText}
+                    helperText={errorText || ''}
                     error={!!errorText}
                   />
                 );
@@ -100,7 +114,7 @@ export const CarModelEditPage = () => {
             />
             <Controller
               control={control}
-              name="brandId"
+              name="brandOption"
               render={({
                 field: {
                   onChange, onBlur, value,
@@ -112,7 +126,8 @@ export const CarModelEditPage = () => {
                 return (
                   <CustomSelect
                     searchCallback={getCarModelOptions}
-                    id="brandId"
+                    id="brandOption"
+                    label="CAR BRAND"
                     getOptionLabel={(option) => option.name}
                     onChange={onChange}
                     value={value || null}

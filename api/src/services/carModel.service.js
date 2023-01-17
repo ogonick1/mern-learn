@@ -31,7 +31,7 @@ const create = async (model) => {
 
   const extraFeatures = await extraFeatureRepository.findManyByIds(model.extraFeaturesIds);
 
-  if (extraFeatures.length < model.extraFeaturesIds.length) {
+  if (extraFeatures.length < model.extraFeaturesIds?.length) {
     throwExtraFeaturesNotFound(model.extraFeaturesIds);
   }
 
@@ -62,7 +62,7 @@ const update = async (id, model) => {
 
   const extraFeatures = await extraFeatureRepository.findManyByIds(model.extraFeaturesIds);
 
-  if (extraFeatures.length < model.extraFeaturesIds.length) {
+  if (extraFeatures.length < model.extraFeaturesIds?.length) {
     throwExtraFeaturesNotFound(model.extraFeaturesIds);
   }
 

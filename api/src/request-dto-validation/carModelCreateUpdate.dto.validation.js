@@ -28,8 +28,10 @@ const carModelCreateUpdateDtoValidation = [
     .optional()
     .isArray()
     .custom((value) => arrayUnique(value))
-    .withMessage('extraFeaturesIds values must be unique')
-    .isMongoId(),
+    .withMessage('extraFeaturesIds values must be unique'),
+  check('extraFeaturesIds.*')
+    .isMongoId()
+    .withMessage('Must be valid mongo id'),
   check(
     'bodyTypes.*',
     'incorrect bodyTypes',
