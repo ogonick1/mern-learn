@@ -11,13 +11,7 @@ import { CarModelService } from '../../services/carModel.service';
 import { CustomSelect } from '../../components/fields/CustomSelect';
 import { CarBrandService } from '../../services/carBrand.service';
 import { ExtraFeatureService } from '../../services/extraFeature.service';
-
-const bodyTypeEnum = [
-  'SEDAN',
-  'STATION_WAGON',
-  'HATCHBACK',
-  'COUPE',
-];
+import { useBodyTypeOptions } from '../../hooks/staticOptions/useBodyTypeOptions';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -37,11 +31,7 @@ export const CarModelEditPage = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const bodyTypeOptions = bodyTypeEnum.map((value) => ({
-    title: t(`enum.bodyType.${value}`),
-    value,
-  }));
+  const bodyTypeOptions = useBodyTypeOptions();
 
   const schema = yup
     .object()
