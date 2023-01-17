@@ -1,5 +1,5 @@
 import {
-  TextField, Typography, Box, Stack, Button, Container,
+  TextField, Typography, Box, Stack, Button, Container, Autocomplete,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CarModelService } from '../../services/carModel.service';
+import { CustomSelect } from '../../components/fields/CustomSelect';
+import { CarBrandService } from '../../services/carBrand.service';
+
+const getCarModelOptions = () => {
+  return CarBrandService.search()
+    .then((result) => {
+      return result.carBrands;
+    });
+};
 
 export const CarModelEditPage = () => {
   const { id } = useParams();
@@ -20,10 +29,8 @@ export const CarModelEditPage = () => {
         .required(t('validationErrors.required'))
         .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
-      brandId: yup.string()
-        .required(t('validationErrors.required'))
-        .min(3, t('validationErrors.minMaxLength', { min: 3, max: 200 }))
-        .max(200, t('validationErrors.minMaxLength', { min: 3, max: 200 })),
+      brandId: yup.object()
+        .required(t('validationErrors.required')),
     });
 
   const {
@@ -31,6 +38,7 @@ export const CarModelEditPage = () => {
     control,
     reset,
     formState: {
+      errors,
       isDirty,
       isValid,
       isSubmitted,
@@ -40,6 +48,7 @@ export const CarModelEditPage = () => {
     resolver: yupResolver(schema),
   });
   const createCarModel = async (form) => {
+    console.log(form);
     try {
       await CarModelService.create(form);
       navigate('/car-model');
@@ -51,6 +60,7 @@ export const CarModelEditPage = () => {
   const onSubmit = async (value) => {
     createCarModel(value);
   };
+  console.log(isSubmitted, isDirty, isValid, errors);
   return (
     <div>
       <Container maxWidth="sm">
@@ -58,7 +68,7 @@ export const CarModelEditPage = () => {
           component="div"
           sx={{ margin: '15px' }}
         >
-          <Typography variant="h4" component="h4">create edit car model</Typography>
+          <Typography variant="h4" component="h4">{t('carModel.title')}</Typography>
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
 
             <Controller
@@ -100,75 +110,17 @@ export const CarModelEditPage = () => {
                 const isFieldValid = error ? false : undefined;
                 const errorText = isFieldValid === false ? error?.message : '';
                 return (
-                  <TextField
-                    InputLabelProps={{ shrink: value }}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value || ''}
+                  <CustomSelect
+                    searchCallback={getCarModelOptions}
                     id="brandId"
-                    label={t('carModel.brandId')}
-                    variant="outlined"
-                    margin="normal"
-                    helperText={errorText}
-                    error={!!errorText}
-                  />
-                );
-              }}
-            />
-            <Controller
-              control={control}
-              name="yearStart"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <TextField
-                    InputLabelProps={{ shrink: value }}
+                    getOptionLabel={(option) => option.name}
                     onChange={onChange}
-                    onBlur={onBlur}
-                    value={value || ''}
-                    id="yearStart"
-                    label={t('carModal.yearStart')}
-                    variant="outlined"
-                    margin="normal"
-                    helperText={errorText}
-                    error={!!errorText}
+                    value={value || null}
                   />
                 );
               }}
             />
-            <Controller
-              control={control}
-              name="yearEnd"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <TextField
-                    InputLabelProps={{ shrink: value }}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value || ''}
-                    id="yearEnd"
-                    label={t('carModal.yearEnd')}
-                    variant="outlined"
-                    margin="normal"
-                    helperText={errorText}
-                    error={!!errorText}
-                  />
-                );
-              }}
-            />
+
             <Stack
               marginTop={2}
               spacing={5}
