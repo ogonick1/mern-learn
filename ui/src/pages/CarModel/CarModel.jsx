@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import {
-  Box,
   Stack,
   Typography,
   Button,
+  Container,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { CarModelTable } from './CarModelTable';
@@ -12,7 +12,7 @@ export const CarModel = () => {
   const { t } = useTranslation();
   return (
     <div>
-      <Box className="container">
+      <Container maxWidth="false">
         <Stack
           marginTop={2}
           spacing={5}
@@ -30,7 +30,7 @@ export const CarModel = () => {
           <Button component={Link} to="/car-model/create">{t('carModel.create')}</Button>
         </Stack>
         <CarModelTable />
-      </Box>
+      </Container>
 
     </div>
   );

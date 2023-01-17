@@ -1,5 +1,5 @@
 import {
-  TablePagination, TableSortLabel, IconButton,
+  TablePagination, TableSortLabel, IconButton, Stack,
 } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useConfirmation } from '../../../hooks/useConfirmation';
 import { CarModelService } from '../../../services/carModel.service';
+import './index.scss';
 
 export const CarModelTable = () => {
   const openConfirmation = useConfirmation();
@@ -50,26 +51,40 @@ export const CarModelTable = () => {
     {
       id: 'name',
       label: t('carModel.name'),
+      isSortable: true,
+      sortKey: 'name',
     },
     {
       id: 'brandName',
       label: t('carModel.brandName'),
+      isSortable: false,
     },
     {
       id: 'years',
       label: t('carModel.years'),
+      isSortable: true,
+      sortKey: 'yearStart',
+
     },
     {
       id: 'powerUnits',
       label: t('carModel.powerUnits'),
+      isSortable: false,
     },
     {
       id: 'extraFeatures',
       label: t('carModel.extraFeatures'),
+      isSortable: false,
     },
     {
       id: 'bodyTypes',
       label: t('carModel.bodyTypes'),
+      isSortable: false,
+    },
+    {
+      id: 'actions',
+      label: t('carModel.actions'),
+      isSortable: false,
     },
   ];
 
@@ -110,19 +125,25 @@ export const CarModelTable = () => {
         <Table>
           <TableHead>
             <TableRow>
-              {columns.map(({ id, label }) => {
+              {columns.map(({
+                id, label, isSortable, sortKey,
+              }) => {
                 return (
                   <TableCell
                     key={id}
                   >
-                    <TableSortLabel
-                      active={sortBy === id}
-                      direction={descending ? 'desc' : 'asc'}
-                      onClick={() => handleRequestSort(id)}
-                    >
-                      {label}
-                    </TableSortLabel>
-
+                    {
+                      isSortable
+                        ? (
+                          <TableSortLabel
+                            active={sortBy === sortKey}
+                            direction={descending ? 'desc' : 'asc'}
+                            onClick={() => handleRequestSort(sortKey)}
+                          >
+                            {label}
+                          </TableSortLabel>
+                        ) : label
+                    }
                   </TableCell>
                 );
               })}
@@ -136,36 +157,35 @@ export const CarModelTable = () => {
                   <TableCell>{item.brandId.name}</TableCell>
                   <TableCell>
                     {item.yearStart}
-
-                    {item.yearEnd ? ' - ' : null}
+                    {item.yearEnd ? ' - ' : t('carModel.noData')}
                     {item.yearEnd}
                   </TableCell>
                   <TableCell>
-                    {(item.powerUnits || []).map((powerUnit, index) => {
-                      return (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <div key={index}>
-                          {t('carModel.engineVolume')}
-                          {powerUnit.engineVolume}
-                          <br />
-                          {t('carModel.fuelType')}
-                          {t(`enum.FuelType.${powerUnit.fuelType}`)}
-                          <br />
-                          {t('carModel.gearBox')}
-                          {t(`enum.GearBox.${powerUnit.gearBox}`)}
-                          <br />
-                          {t('carModel.driveType')}
-                          {t(`enum.DriveType.${powerUnit.driveType}`)}
-                        </div>
-                      );
-                    })}
-
+                    <ul className="carModel__powerUnits">
+                      {(item.powerUnits || []).map((powerUnit, index) => {
+                        return (
+                          // eslint-disable-next-line react/no-array-index-key
+                          <li className="carModel__powerUnits-li" key={index}>
+                            <b>{t('carModel.engineVolume')}</b>
+                            {powerUnit.engineVolume}
+                            <br />
+                            <b>{t('carModel.fuelType')}</b>
+                            {t(`enum.FuelType.${powerUnit.fuelType}`)}
+                            <br />
+                            <b>{t('carModel.gearBox')}</b>
+                            {t(`enum.GearBox.${powerUnit.gearBox}`)}
+                            <br />
+                            <b>{t('carModel.driveType')}</b>
+                            {t(`enum.DriveType.${powerUnit.driveType}`)}
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </TableCell>
                   <TableCell>
-                    {(item.extraFeaturesIds || []).map((extrafeature, index) => {
+                    {(item.extraFeaturesIds || []).map((extrafeature) => {
                       return (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <div key={index}>
+                        <div key={extrafeature._id}>
                           {extrafeature.title}
                         </div>
                       );
@@ -182,17 +202,23 @@ export const CarModelTable = () => {
                     })}
                   </TableCell>
                   <TableCell>
-                    <IconButton
-                      onClick={() => deleteCarModelConfirmation(item._id)}
-                      color="error"
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      display="flex"
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => navigate(`/car-model/edit/${item._id}`)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                      <IconButton
+                        onClick={() => deleteCarModelConfirmation(item._id)}
+                        color="error"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => navigate(`/car-model/edit/${item._id}`)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Stack>
                   </TableCell>
                 </TableRow>
               );

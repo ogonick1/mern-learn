@@ -36,7 +36,9 @@
     "engineVolume": "Об'єм: ",
     "fuelType": "Тип Палива: ",
     "gearBox": "Коробка передач: ",
-    "driveType": "Привід: "
+    "driveType": "Привід: ",
+    "actions": "Дії",
+    "noData": " - Не вказано"
   },
   "extraFeature": {
     "titleCreate": "Створити Додаткову Функцію",
