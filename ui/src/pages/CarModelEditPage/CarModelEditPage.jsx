@@ -371,7 +371,7 @@ export const CarModelEditPage = () => {
                               label={t('carModel.fuelType')}
                               options={fuelTypeOptions}
                               getOptionLabel={(option) => option.title || ''}
-                              isOptionEqualToValue={(option, val) => option.id === val.id}
+                              isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
                             />
@@ -397,7 +397,7 @@ export const CarModelEditPage = () => {
                               label={t('carModel.gearBox')}
                               options={gearBoxOptions}
                               getOptionLabel={(option) => option.title || ''}
-                              isOptionEqualToValue={(option, val) => option.id === val.id}
+                              isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
                             />
@@ -423,7 +423,7 @@ export const CarModelEditPage = () => {
                               label={t('carModel.driveType')}
                               options={driveTypeOptions}
                               getOptionLabel={(option) => option.title || ''}
-                              isOptionEqualToValue={(option, val) => option.id === val.id}
+                              isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
                             />
