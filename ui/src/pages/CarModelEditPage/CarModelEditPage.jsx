@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { nanoid } from 'nanoid';
+import DatePicker from 'react-datepicker';
 import { CarModelService } from '../../services/carModel.service';
 import { CustomSelect } from '../../components/fields/CustomSelect';
 import { CarBrandService } from '../../services/carBrand.service';
@@ -17,6 +17,7 @@ import { useBodyTypeOptions } from '../../hooks/staticOptions/useBodyTypeOptions
 import { useDriveTypeOptions } from '../../hooks/staticOptions/useDriveTypeOptions';
 import { useFuelTypeOptions } from '../../hooks/staticOptions/useFuelTypeOptions';
 import { useGearBoxOptions } from '../../hooks/staticOptions/useGearBoxOptions';
+import './index.scss';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -48,16 +49,30 @@ export const CarModelEditPage = () => {
         .required(t('validationErrors.required'))
         .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
-      yearStart: yup.number()
+      yearStart: yup.date('error')
         .min(1970)
-        .required(),
-      yearEnd: yup.number()
+        .required(t('validationErrors.required')),
+      yearEnd: yup.date()
         .optional()
-        .when('yearStart', (yearStart, field) => (yearStart ? field.min(yup.ref('yearStart')) : field)),
+        .when('yearStart', (yearStart, field) => (yearStart ? field.min(yup.ref('yearStart'), t('validationErrors.yearsEnd')) : field)),
       brandOption: yup.object()
         .required(t('validationErrors.required')),
       extraFeaturesOptions: yup.array(),
-      powerUnits: yup.array(),
+      powerUnits: yup.array()
+        .of(
+          yup.object().shape({
+            engineVolume: yup.number(t('validationErrors.volume'))
+              .min(0, t('validationErrors.volume'))
+              .integer(t('validationErrors.volume'))
+              .max(10000, t('validationErrors.volume')),
+            fuelType: yup.string()
+              .required(t('validationErrors.required')),
+            gearBox: yup.string()
+              .required(t('validationErrors.required')),
+            driveType: yup.string()
+              .required(t('validationErrors.required')),
+          }),
+        ),
       bodyTypes: yup.array(),
     });
 
@@ -73,10 +88,10 @@ export const CarModelEditPage = () => {
     defaultValues: {
       powerUnits: [
         {
-          engineVolume: 1600,
-          fuelType: 'GAS_PETROL',
-          gearBox: 'AUTOMATIC',
-          driveType: 'BACK',
+          engineVolume: 0,
+          fuelType: fuelTypeOptions[0],
+          gearBox: gearBoxOptions[0],
+          driveType: driveTypeOptions[0],
         },
       ],
     },
@@ -95,10 +110,10 @@ export const CarModelEditPage = () => {
 
   const addPowerUnit = () => {
     appendPowerUnit({
-      engineVolume: 1600,
-      fuelType: 'GAS_PETROL',
-      gearBox: 'AUTOMATIC',
-      driveType: 'BACK',
+      engineVolume: 0,
+      fuelType: fuelTypeOptions[0],
+      gearBox: gearBoxOptions[0],
+      driveType: driveTypeOptions[0],
     });
   };
 
@@ -107,8 +122,8 @@ export const CarModelEditPage = () => {
       name: form.name,
       brandId: form.brandOption._id,
       extraFeaturesIds: form.extraFeaturesOptions.map(({ _id }) => _id),
-      yearStart: form.yearStart || null,
-      yearEnd: form.yearEnd,
+      yearStart: form.yearStart?.getFullYear(),
+      yearEnd: form.yearEnd?.getFullYear(),
       powerUnits: form.powerUnits.map((powerUnit) => ({
         engineVolume: powerUnit.engineVolume,
         fuelType: powerUnit.fuelType.value,
@@ -153,7 +168,6 @@ export const CarModelEditPage = () => {
                     const errorText = isFieldValid === false ? error?.message : '';
                     return (
                       <TextField
-                        // TODO
                         // InputLabelProps={{ shrink: value }}
                         sx={{ marginBottom: 2, marginTop: 2 }}
                         onChange={onChange}
@@ -175,7 +189,7 @@ export const CarModelEditPage = () => {
                   name="brandOption"
                   render={({
                     field: {
-                      onChange, value,
+                      onChange, onBlur, value,
                     },
                     fieldState: { error },
                   }) => {
@@ -188,7 +202,9 @@ export const CarModelEditPage = () => {
                         label={t('carBrands.title')}
                         getOptionLabel={(option) => option.name || ''}
                         onChange={onChange}
+                        onBlur={onBlur}
                         value={value || null}
+                        errorText={errorText}
                       />
                     );
                   }}
@@ -202,25 +218,27 @@ export const CarModelEditPage = () => {
                   name="yearStart"
                   render={({
                     field: {
-                      onChange, onBlur, value,
+                      onChange, value,
                     },
                     fieldState: { error },
                   }) => {
                     const isFieldValid = error ? false : undefined;
                     const errorText = isFieldValid === false ? error?.message : '';
                     return (
-                      <TextField
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                        type="number"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        fullWidth
-                        value={value || ''}
-                        id="yearStart"
-                        label={t('carModel.yearStart')}
-                        helperText={errorText || ''}
-                        error={!!errorText}
-                      />
+                      <div>
+                        <DatePicker
+                          className="carModelEditPage__datePicter "
+                          maxDate={new Date()}
+                          selected={value}
+                          onChange={onChange}
+                          value={value || new Date()}
+                          showYearPicker
+                          dateFormat="yyyy"
+                          id="yearStart"
+                          placeholderText={t('carModel.yearStart')}
+                        />
+                        <div className="carModelEditPage__datePicter-text">{errorText || null}</div>
+                      </div>
                     );
                   }}
                 />
@@ -231,25 +249,27 @@ export const CarModelEditPage = () => {
                   name="yearEnd"
                   render={({
                     field: {
-                      onChange, onBlur, value,
+                      onChange, value,
                     },
                     fieldState: { error },
                   }) => {
                     const isFieldValid = error ? false : undefined;
                     const errorText = isFieldValid === false ? error?.message : '';
                     return (
-                      <TextField
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                        type="number"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value || ''}
-                        id="yearEnd"
-                        fullWidth
-                        label={t('carModel.yearEnd')}
-                        helperText={errorText || ''}
-                        error={!!errorText}
-                      />
+                      <div>
+                        <DatePicker
+                          className="carModelEditPage__datePicter"
+                          maxDate={new Date()}
+                          selected={value}
+                          onChange={onChange}
+                          value={value || null}
+                          showYearPicker
+                          dateFormat="yyyy"
+                          id="yearEnd"
+                          placeholderText={t('carModel.yearEnd')}
+                        />
+                        <div className="carModelEditPage__datePicter-text">{errorText || null}</div>
+                      </div>
                     );
                   }}
                 />
@@ -278,6 +298,8 @@ export const CarModelEditPage = () => {
                         isOptionEqualToValue={(option, val) => val._id === option._id}
                         onChange={onChange}
                         value={value || []}
+                        onBlur={onBlur}
+                        errorText={errorText}
                       />
                     );
                   }}
@@ -305,13 +327,15 @@ export const CarModelEditPage = () => {
                         isOptionEqualToValue={(option, val) => val.value === option.value}
                         onChange={onChange}
                         value={value || []}
+                        onBlur={onBlur}
+                        errorText={errorText}
                       />
                     );
                   }}
                 />
               </Grid>
             </Grid>
-            <Typography variant="h4" component="h4">Power Units</Typography>
+            <Typography variant="h4" component="h4">{t('carModel.powerUnits')}</Typography>
             <div>
               {powerUnitsFields.map((powerUnitsField, index) => {
                 return (
@@ -337,11 +361,10 @@ export const CarModelEditPage = () => {
                             <TextField
                               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                               type="number"
-                              // TODO
                               // InputLabelProps={{ shrink: value }}
                               sx={{ marginTop: 2 }}
                               onChange={onChange}
-                              value={value || ''}
+                              value={value || 0}
                               id={`powerUnits.${index}.engineVolume`}
                               label={t('carModel.engineVolume')}
                               variant="outlined"
@@ -374,6 +397,8 @@ export const CarModelEditPage = () => {
                               isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
+                              onBlur={onBlur}
+                              errorText={errorText}
                             />
                           );
                         }}
@@ -400,6 +425,8 @@ export const CarModelEditPage = () => {
                               isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
+                              onBlur={onBlur}
+                              errorText={errorText}
                             />
                           );
                         }}
@@ -426,6 +453,8 @@ export const CarModelEditPage = () => {
                               isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
+                              onBlur={onBlur}
+                              errorText={errorText}
                             />
                           );
                         }}

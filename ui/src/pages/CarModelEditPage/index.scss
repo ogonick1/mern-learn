@@ -1,0 +1,30 @@
+.carModelEditPage {
+
+  &__datePicter {
+    font: inherit;
+    line-height: 1.4375em;
+    align-items: center;
+    width: 94%;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    padding: 4px 0 5px;
+    box-sizing: content-box;
+    height: 1.4375em;
+    display: block;
+    -webkit-animation-duration: 10ms;
+    animation-duration: 10ms;
+    padding: 16.5px 14px;
+    &-text {
+      color: red;
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 1.66;
+      letter-spacing: 0.03333em;
+      text-align: left;
+      margin-top: 3px;
+      margin-bottom: 0;
+      margin-left: 14px;
+    }
+  }
+}

@@ -13,6 +13,8 @@ export const CustomSelect = (props) => {
     onChange,
     label,
     isOptionEqualToValue,
+    errorText,
+    onBlur,
   } = props;
   const [internalOptions, setInternalOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +46,15 @@ export const CustomSelect = (props) => {
       loading={loading}
       {...(getOptionLabel ? { getOptionLabel } : {})}
       {...(isOptionEqualToValue ? { isOptionEqualToValue } : {})}
-      renderInput={(params) => <TextField {...params} label={label} />}
+      renderInput={(params) => (
+        <TextField
+          error={!!errorText}
+          helperText={errorText || ''}
+          {...params}
+          label={label}
+          onBlur={onBlur}
+        />
+      )}
       value={value}
       onChange={(action, option) => {
         onChange(option);
