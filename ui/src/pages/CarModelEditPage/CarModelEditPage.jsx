@@ -5,13 +5,18 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { nanoid } from 'nanoid';
+import DatePicker from 'react-datepicker';
 import { CarModelService } from '../../services/carModel.service';
 import { CustomSelect } from '../../components/fields/CustomSelect';
 import { CarBrandService } from '../../services/carBrand.service';
 import { ExtraFeatureService } from '../../services/extraFeature.service';
 import { useBodyTypeOptions } from '../../hooks/staticOptions/useBodyTypeOptions';
+import { useDriveTypeOptions } from '../../hooks/staticOptions/useDriveTypeOptions';
+import { useFuelTypeOptions } from '../../hooks/staticOptions/useFuelTypeOptions';
+import { useGearBoxOptions } from '../../hooks/staticOptions/useGearBoxOptions';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -32,6 +37,9 @@ export const CarModelEditPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const bodyTypeOptions = useBodyTypeOptions();
+  const driveTypeOptions = useDriveTypeOptions();
+  const fuelTypeOptions = useFuelTypeOptions();
+  const gearBoxOptions = useGearBoxOptions();
 
   const schema = yup
     .object()
@@ -40,6 +48,12 @@ export const CarModelEditPage = () => {
         .required(t('validationErrors.required'))
         .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
+      yearStart: yup.date()
+        .min(1970)
+        .required(),
+      yearEnd: yup.date()
+        .optional()
+        .when('yearStart', (yearStart, field) => (yearStart ? field.min(yup.ref('yearStart')) : field)),
       brandOption: yup.object()
         .required(t('validationErrors.required')),
       extraFeaturesOptions: yup.array(),
@@ -93,18 +107,16 @@ export const CarModelEditPage = () => {
       name: form.name,
       brandId: form.brandOption._id,
       extraFeaturesIds: form.extraFeaturesOptions.map(({ _id }) => _id),
-      yearStart: 1960,
-      yearEnd: 2020,
-      powerUnits: form.powerUnits,
-      // powerUnits: form.powerUnits.map((powerUnit) => ({
-      //   engineVolume: powerUnit.engineVolume,
-      //   fuelType: powerUnit.fuelType.value,
-      //   gearBox: powerUnit.gearBox.value,
-      //   driveType: powerUnit.driveType.value,
-      // })),
+      yearStart: form.yearStart?.getFullYear(),
+      yearEnd: form.yearEnd?.getFullYear(),
+      powerUnits: form.powerUnits.map((powerUnit) => ({
+        engineVolume: powerUnit.engineVolume,
+        fuelType: powerUnit.fuelType.value,
+        gearBox: powerUnit.gearBox.value,
+        driveType: powerUnit.driveType.value,
+      })),
       bodyTypes: form.bodyTypes.map(({ value }) => value),
     };
-
     try {
       await CarModelService.create(model);
       navigate('/car-model');
@@ -172,11 +184,71 @@ export const CarModelEditPage = () => {
                   <CustomSelect
                     searchCallback={getCarModelOptions}
                     id="brandOption"
-                    label="CAR BRAND"
+                    label={t('carBrands.title')}
                     getOptionLabel={(option) => option.name || ''}
                     onChange={onChange}
                     value={value || null}
                   />
+                );
+              }}
+            />
+            <br />
+            <Controller
+              control={control}
+              name="yearStart"
+              render={({
+                field: {
+                  onChange, onBlur, value,
+                },
+                fieldState: { error },
+              }) => {
+                const isFieldValid = error ? false : undefined;
+                const errorText = isFieldValid === false ? error?.message : '';
+                return (
+                  <DatePicker
+                    maxDate={new Date()}
+                    selected={value}
+                    onChange={onChange}
+                    value={value || new Date()}
+                    showYearPicker
+                    dateFormat="yyyy"
+                    id="yearStart"
+                    placeholderText={t('carModel.yearStart')}
+                    margin="normal"
+                    helperText={errorText || ''}
+                    error={!!errorText}
+                  />
+
+                );
+              }}
+            />
+            <br />
+            <Controller
+              control={control}
+              name="yearEnd"
+              render={({
+                field: {
+                  onChange, onBlur, value,
+                },
+                fieldState: { error },
+              }) => {
+                const isFieldValid = error ? false : undefined;
+                const errorText = isFieldValid === false ? error?.message : '';
+                return (
+                  <DatePicker
+                    maxDate={new Date()}
+                    selected={value}
+                    onChange={onChange}
+                    showYearPicker
+                    value={value || null}
+                    dateFormat="yyyy"
+                    id="yearEnd"
+                    placeholderText={t('carModel.yearEnd')}
+                    margin="normal"
+                    helperText={errorText || ''}
+                    error={!!errorText}
+                  />
+
                 );
               }}
             />
@@ -199,7 +271,7 @@ export const CarModelEditPage = () => {
                     multiple
                     searchCallback={getExtraFeaturesOptions}
                     id="extraFeaturesOptions"
-                    label="EXTRA FEATURES"
+                    label={t('extraFeature.title')}
                     getOptionLabel={(option) => option.title || ''}
                     isOptionEqualToValue={(option, val) => val._id === option._id}
                     onChange={onChange}
@@ -227,7 +299,7 @@ export const CarModelEditPage = () => {
                     multiple
                     options={bodyTypeOptions}
                     id="bodyTypes"
-                    label="bodyTypes"
+                    label={t('carModel.bodyTypes')}
                     getOptionLabel={(option) => option.title || ''}
                     isOptionEqualToValue={(option, val) => val.value === option.value}
                     onChange={onChange}
@@ -241,7 +313,7 @@ export const CarModelEditPage = () => {
             <br />
             {powerUnitsFields.map((powerUnitsField, index) => {
               return (
-                <div key={powerUnitsField.id}>
+                <div key={nanoid()}>
                   <hr />
                   <Controller
                     control={control}
@@ -262,7 +334,7 @@ export const CarModelEditPage = () => {
                           onBlur={onBlur}
                           value={value || ''}
                           id={`powerUnits.${index}.engineVolume`}
-                          label="engineVolume"
+                          label={t('carModel.engineVolume')}
                           variant="outlined"
                           margin="normal"
                           helperText={errorText || ''}
@@ -287,16 +359,10 @@ export const CarModelEditPage = () => {
                       return (
                         <CustomSelect
                           id={`powerUnits.${index}.fuelType`}
-                          label="fuelType"
-                          options={[
-                            'PETROL',
-                            'DIESEL',
-                            'GAS',
-                            'HYBRID',
-                            'ELECTRO',
-                            'GAS_PETROL',
-                          ]}
-                          // getOptionLabel={(option) => option.title || ''}
+                          label={t('carModel.fuelType')}
+                          options={fuelTypeOptions}
+                          getOptionLabel={(option) => option.title || ''}
+                          isOptionEqualToValue={(option, val) => val.value === option.value}
                           onChange={onChange}
                           value={value || null}
                         />
@@ -319,11 +385,10 @@ export const CarModelEditPage = () => {
                       return (
                         <CustomSelect
                           id={`powerUnits.${index}.gearBox`}
-                          label="gearBox"
-                          options={[
-                            'MECHANICAL',
-                            'AUTOMATIC',
-                          ]}
+                          label={t('carModel.gearBox')}
+                          options={gearBoxOptions}
+                          getOptionLabel={(option) => option.title || ''}
+                          isOptionEqualToValue={(option, val) => val.value === option.value}
                           onChange={onChange}
                           value={value || null}
                         />
@@ -346,12 +411,10 @@ export const CarModelEditPage = () => {
                       return (
                         <CustomSelect
                           id={`powerUnits.${index}.driveType`}
-                          label="driveType"
-                          options={[
-                            'FRONT',
-                            'BACK',
-                            'FULL',
-                          ]}
+                          label={t('carModel.driveType')}
+                          options={driveTypeOptions}
+                          getOptionLabel={(option) => option.title || ''}
+                          isOptionEqualToValue={(option, val) => val.value === option.value}
                           onChange={onChange}
                           value={value || null}
                         />
@@ -366,7 +429,7 @@ export const CarModelEditPage = () => {
                 </div>
               );
             })}
-            <Button onClick={addPowerUnit}>Add Power Unit</Button>
+            <Button onClick={addPowerUnit}>{yup('carModel.addPowerUnits')}</Button>
             <Stack
               marginTop={2}
               spacing={5}

@@ -1,20 +1,19 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BodyType } from '../../enums/BodyType.enum';
+import { DriveType } from '../../enums/DriveType.enum';
 
 const optionsValues = [
-  BodyType.COUPE,
-  BodyType.HATCHBACK,
-  BodyType.SEDAN,
-  BodyType.STATION_WAGON,
+  DriveType.FRONT,
+  DriveType.BACK,
+  DriveType.FULL,
 ];
 
-export const useBodyTypeOptions = () => {
+export const useDriveTypeOptions = () => {
   const { t } = useTranslation();
 
   return useMemo(() => {
     return optionsValues.map((value) => ({
-      title: t(`enum.BodyType.${value}`),
+      title: t(`enum.DriveType.${value}`),
       value,
     }));
   }, [t]);
