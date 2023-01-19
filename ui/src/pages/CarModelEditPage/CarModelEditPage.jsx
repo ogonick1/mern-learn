@@ -18,7 +18,6 @@ import { useDriveTypeOptions } from '../../hooks/staticOptions/useDriveTypeOptio
 import { useFuelTypeOptions } from '../../hooks/staticOptions/useFuelTypeOptions';
 import { useGearBoxOptions } from '../../hooks/staticOptions/useGearBoxOptions';
 import { TextInput } from '../../components/fields/TextInput';
-import './index.scss';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -51,10 +50,12 @@ export const CarModelEditPage = () => {
         .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
       yearStart: yup.date('error')
+        .typeError()
         .min(1970)
         .required(t('validationErrors.required')),
       yearEnd: yup.date()
         .optional()
+        .typeError()
         .when('yearStart', (yearStart, field) => (yearStart ? field.min(yup.ref('yearStart'), t('validationErrors.yearsEnd')) : field)),
       brandOption: yup.object()
         .required(t('validationErrors.required')),
@@ -62,23 +63,27 @@ export const CarModelEditPage = () => {
       powerUnits: yup.array()
         .of(
           yup.object().shape({
-            engineVolume: yup
-              .number(t('validationErrors.volume'))
-              .typeError('Amount must be a number')
-              .integer(t('validationErrors.volume'))
+            engineVolume: yup.number(t('validationErrors.volume'))
+              .typeError(t('validationErrors.volume'))
               .min(0, t('validationErrors.volume'))
+              .integer(t('validationErrors.volume'))
               .max(10000, t('validationErrors.volume')),
-            fuelType: yup.string()
+            fuelType: yup.object().nullable().shape({
+              value: yup.string(),
+            })
               .required(t('validationErrors.required')),
-            gearBox: yup.string()
+            gearBox: yup.object().nullable().shape({
+              value: yup.string(),
+            })
               .required(t('validationErrors.required')),
-            driveType: yup.string()
+            driveType: yup.object().nullable().shape({
+              value: yup.string(),
+            })
               .required(t('validationErrors.required')),
           }),
         ),
-      bodyTypes: yup.array(),
+      bodyTypes: yup.array().min(1, t('validationErrors.required')).required(t('validationErrors.required')),
     });
-
   const {
     handleSubmit,
     control,
@@ -221,35 +226,32 @@ export const CarModelEditPage = () => {
                   name="yearStart"
                   render={({
                     field: {
-                      onChange, value,
+                      onChange, onBlur, value,
                     },
                     fieldState: { error },
                   }) => {
                     const isFieldValid = error ? false : undefined;
                     const errorText = isFieldValid === false ? error?.message : '';
                     return (
-                      <div>
-                        <DatePicker
-                          maxDate={new Date()}
-                          customInput={(
-                            <TextField
-                              label="qdwqwd"
-                              fullWidth
-                              placeholder={t('carModel.yearStart')}
-                              error={!!errorText}
-                              helperText={errorText}
-                            />
-                          )}
-                          selected={value}
-                          onChange={onChange}
-                          value={value || new Date()}
-                          showYearPicker
-                          label="qdwqwd"
-                          dateFormat="yyyy"
-                          id="yearStart"
-                          // placeholderText={t('carModel.yearStart')}
-                        />
-                      </div>
+                      <DatePicker
+                        maxDate={new Date()}
+                        customInput={(
+                          <TextField
+                            onBlur={onBlur}
+                            label={t('carModel.yearStart')}
+                            fullWidth
+                            error={!!errorText}
+                            helperText={errorText}
+                          />
+                        )}
+                        selected={value}
+                        onChange={onChange}
+                        value={value || new Date()}
+                        showYearPicker
+                        label="qdwqwd"
+                        dateFormat="yyyy"
+                        id="yearStart"
+                      />
                     );
                   }}
                 />
@@ -260,27 +262,31 @@ export const CarModelEditPage = () => {
                   name="yearEnd"
                   render={({
                     field: {
-                      onChange, value,
+                      onChange, onBlur, value,
                     },
                     fieldState: { error },
                   }) => {
                     const isFieldValid = error ? false : undefined;
                     const errorText = isFieldValid === false ? error?.message : '';
                     return (
-                      <div>
-                        <DatePicker
-                          className="carModelEditPage__datePicter"
-                          maxDate={new Date()}
-                          selected={value}
-                          onChange={onChange}
-                          value={value || null}
-                          showYearPicker
-                          dateFormat="yyyy"
-                          id="yearEnd"
-                          placeholderText={t('carModel.yearEnd')}
-                        />
-                        <div className="carModelEditPage__datePicter-text">{errorText || null}</div>
-                      </div>
+                      <DatePicker
+                        maxDate={new Date()}
+                        customInput={(
+                          <TextField
+                            onBlur={onBlur}
+                            label={t('carModel.yearEnd')}
+                            fullWidth
+                            error={!!errorText}
+                            helperText={errorText}
+                          />
+                        )}
+                        selected={value}
+                        onChange={onChange}
+                        value={value || new Date()}
+                        showYearPicker
+                        dateFormat="yyyy"
+                        id="yearEnd"
+                      />
                     );
                   }}
                 />
@@ -479,7 +485,7 @@ export const CarModelEditPage = () => {
                       )}
                     </Grid>
                     {powerUnitsFields.length - 1 !== index && (
-                      <Grid xs={12}>
+                      <Grid item xs={12}>
                         <hr />
                       </Grid>
                     )}

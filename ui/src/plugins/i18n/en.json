@@ -69,6 +69,8 @@
   "customDialog": {
     "buttonClose": "Close",
     "buttonConfirm": "Confirm",
+    "title": "Confirmation",
+    "text": "Do you want delete ?",
     "titleCarBrand": "Confirmation",
     "textCarBrand": "Do you want delete this Car Brand ?",
     "titleExtraFeature": "Confirmation",
