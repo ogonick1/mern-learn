@@ -2,5 +2,5 @@
   "port": 5000,
   "jwtSecretKey": "ogonick",
   "expiresIn": "11h",
-  "mongoUri": "mongodb+srv://ogonick:28zt1sPrmEx4U8M3@cluster0.whioyyw.mongodb.net/?retryWrites=true&w=majority"
+  "mongoUri": "mongodb://127.0.0.1:27017/ogonick"
 }
