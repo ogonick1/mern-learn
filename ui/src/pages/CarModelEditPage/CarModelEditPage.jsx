@@ -8,7 +8,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { nanoid } from 'nanoid';
-import DatePicker from 'react-datepicker';
 import { CarModelService } from '../../services/carModel.service';
 import { CustomSelect } from '../../components/fields/CustomSelect';
 import { CarBrandService } from '../../services/carBrand.service';
@@ -48,10 +47,10 @@ export const CarModelEditPage = () => {
         .required(t('validationErrors.required'))
         .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
         .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
-      yearStart: yup.date()
+      yearStart: yup.number()
         .min(1970)
         .required(),
-      yearEnd: yup.date()
+      yearEnd: yup.number()
         .optional()
         .when('yearStart', (yearStart, field) => (yearStart ? field.min(yup.ref('yearStart')) : field)),
       brandOption: yup.object()
@@ -107,8 +106,8 @@ export const CarModelEditPage = () => {
       name: form.name,
       brandId: form.brandOption._id,
       extraFeaturesIds: form.extraFeaturesOptions.map(({ _id }) => _id),
-      yearStart: form.yearStart?.getFullYear(),
-      yearEnd: form.yearEnd?.getFullYear(),
+      yearStart: form.yearStart || null,
+      yearEnd: form.yearEnd,
       powerUnits: form.powerUnits.map((powerUnit) => ({
         engineVolume: powerUnit.engineVolume,
         fuelType: powerUnit.fuelType.value,
@@ -131,193 +130,81 @@ export const CarModelEditPage = () => {
 
   return (
     <div>
-      <Container maxWidth="sm">
+      <Container>
         <Box
           component="div"
           sx={{ margin: '15px' }}
         >
           <Typography variant="h4" component="h4">{t('carModel.title')}</Typography>
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              control={control}
-              name="name"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <TextField
-                    // TODO
-                    // InputLabelProps={{ shrink: value }}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value || ''}
-                    id="name"
-                    label={t('carModel.name')}
-                    variant="outlined"
-                    margin="normal"
-                    helperText={errorText || ''}
-                    error={!!errorText}
-                  />
-                );
-              }}
-            />
-            <br />
-            <br />
-            <br />
-            <Controller
-              control={control}
-              name="brandOption"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <CustomSelect
-                    searchCallback={getCarModelOptions}
-                    id="brandOption"
-                    label={t('carBrands.title')}
-                    getOptionLabel={(option) => option.name || ''}
-                    onChange={onChange}
-                    value={value || null}
-                  />
-                );
-              }}
-            />
-            <br />
-            <Controller
-              control={control}
-              name="yearStart"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <DatePicker
-                    maxDate={new Date()}
-                    selected={value}
-                    onChange={onChange}
-                    value={value || new Date()}
-                    showYearPicker
-                    dateFormat="yyyy"
-                    id="yearStart"
-                    placeholderText={t('carModel.yearStart')}
-                    margin="normal"
-                    helperText={errorText || ''}
-                    error={!!errorText}
-                  />
-
-                );
-              }}
-            />
-            <br />
-            <Controller
-              control={control}
-              name="yearEnd"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <DatePicker
-                    maxDate={new Date()}
-                    selected={value}
-                    onChange={onChange}
-                    showYearPicker
-                    value={value || null}
-                    dateFormat="yyyy"
-                    id="yearEnd"
-                    placeholderText={t('carModel.yearEnd')}
-                    margin="normal"
-                    helperText={errorText || ''}
-                    error={!!errorText}
-                  />
-
-                );
-              }}
-            />
-            <br />
-            <br />
-            <br />
-            <Controller
-              control={control}
-              name="extraFeaturesOptions"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <CustomSelect
-                    multiple
-                    searchCallback={getExtraFeaturesOptions}
-                    id="extraFeaturesOptions"
-                    label={t('extraFeature.title')}
-                    getOptionLabel={(option) => option.title || ''}
-                    isOptionEqualToValue={(option, val) => val._id === option._id}
-                    onChange={onChange}
-                    value={value || []}
-                  />
-                );
-              }}
-            />
-            <br />
-            <br />
-            <br />
-            <Controller
-              control={control}
-              name="bodyTypes"
-              render={({
-                field: {
-                  onChange, onBlur, value,
-                },
-                fieldState: { error },
-              }) => {
-                const isFieldValid = error ? false : undefined;
-                const errorText = isFieldValid === false ? error?.message : '';
-                return (
-                  <CustomSelect
-                    multiple
-                    options={bodyTypeOptions}
-                    id="bodyTypes"
-                    label={t('carModel.bodyTypes')}
-                    getOptionLabel={(option) => option.title || ''}
-                    isOptionEqualToValue={(option, val) => val.value === option.value}
-                    onChange={onChange}
-                    value={value || []}
-                  />
-                );
-              }}
-            />
-            <br />
-            <br />
-            <br />
-            {powerUnitsFields.map((powerUnitsField, index) => {
-              return (
-                <div key={nanoid()}>
-                  <hr />
+            <Stack
+              marginTop={1}
+              spacing={3}
+              direction="row"
+            >
+              <Box
+                component="div"
+                sx={{ margin: '15px', width: '33vw' }}
+              >
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({
+                    field: {
+                      onChange, onBlur, value,
+                    },
+                    fieldState: { error },
+                  }) => {
+                    const isFieldValid = error ? false : undefined;
+                    const errorText = isFieldValid === false ? error?.message : '';
+                    return (
+                      <TextField
+                        // TODO
+                        // InputLabelProps={{ shrink: value }}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value || ''}
+                        id="name"
+                        fullWidth
+                        label={t('carModel.name')}
+                        helperText={errorText || ''}
+                        error={!!errorText}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  control={control}
+                  name="brandOption"
+                  render={({
+                    field: {
+                      onChange, value,
+                    },
+                    fieldState: { error },
+                  }) => {
+                    const isFieldValid = error ? false : undefined;
+                    const errorText = isFieldValid === false ? error?.message : '';
+                    return (
+                      <CustomSelect
+                        searchCallback={getCarModelOptions}
+                        id="brandOption"
+                        label={t('carBrands.title')}
+                        getOptionLabel={(option) => option.name || ''}
+                        onChange={onChange}
+                        value={value || null}
+                      />
+                    );
+                  }}
+                />
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="baseline"
+                  spacing={2}
+                >
                   <Controller
                     control={control}
-                    name={`powerUnits.${index}.engineVolume`}
+                    name="yearStart"
                     render={({
                       field: {
                         onChange, onBlur, value,
@@ -328,14 +215,39 @@ export const CarModelEditPage = () => {
                       const errorText = isFieldValid === false ? error?.message : '';
                       return (
                         <TextField
-                          // TODO
-                          // InputLabelProps={{ shrink: value }}
+                          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                          type="number"
                           onChange={onChange}
                           onBlur={onBlur}
                           value={value || ''}
-                          id={`powerUnits.${index}.engineVolume`}
-                          label={t('carModel.engineVolume')}
-                          variant="outlined"
+                          id="yearStart"
+                          label={t('carModel.yearStart')}
+                          helperText={errorText || ''}
+                          error={!!errorText}
+                        />
+                      );
+                    }}
+                  />
+                  <Controller
+                    control={control}
+                    name="yearEnd"
+                    render={({
+                      field: {
+                        onChange, onBlur, value,
+                      },
+                      fieldState: { error },
+                    }) => {
+                      const isFieldValid = error ? false : undefined;
+                      const errorText = isFieldValid === false ? error?.message : '';
+                      return (
+                        <TextField
+                          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                          type="number"
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          value={value || ''}
+                          id="yearEnd"
+                          label={t('carModel.yearEnd')}
                           margin="normal"
                           helperText={errorText || ''}
                           error={!!errorText}
@@ -343,93 +255,183 @@ export const CarModelEditPage = () => {
                       );
                     }}
                   />
-                  <br />
-                  <br />
-                  <Controller
-                    control={control}
-                    name={`powerUnits.${index}.fuelType`}
-                    render={({
-                      field: {
-                        onChange, onBlur, value,
-                      },
-                      fieldState: { error },
-                    }) => {
-                      const isFieldValid = error ? false : undefined;
-                      const errorText = isFieldValid === false ? error?.message : '';
-                      return (
-                        <CustomSelect
-                          id={`powerUnits.${index}.fuelType`}
-                          label={t('carModel.fuelType')}
-                          options={fuelTypeOptions}
-                          getOptionLabel={(option) => option.title || ''}
-                          isOptionEqualToValue={(option, val) => val.value === option.value}
-                          onChange={onChange}
-                          value={value || null}
-                        />
-                      );
-                    }}
-                  />
-                  <br />
-                  <br />
-                  <Controller
-                    control={control}
-                    name={`powerUnits.${index}.gearBox`}
-                    render={({
-                      field: {
-                        onChange, onBlur, value,
-                      },
-                      fieldState: { error },
-                    }) => {
-                      const isFieldValid = error ? false : undefined;
-                      const errorText = isFieldValid === false ? error?.message : '';
-                      return (
-                        <CustomSelect
-                          id={`powerUnits.${index}.gearBox`}
-                          label={t('carModel.gearBox')}
-                          options={gearBoxOptions}
-                          getOptionLabel={(option) => option.title || ''}
-                          isOptionEqualToValue={(option, val) => val.value === option.value}
-                          onChange={onChange}
-                          value={value || null}
-                        />
-                      );
-                    }}
-                  />
-                  <br />
-                  <br />
-                  <Controller
-                    control={control}
-                    name={`powerUnits.${index}.driveType`}
-                    render={({
-                      field: {
-                        onChange, onBlur, value,
-                      },
-                      fieldState: { error },
-                    }) => {
-                      const isFieldValid = error ? false : undefined;
-                      const errorText = isFieldValid === false ? error?.message : '';
-                      return (
-                        <CustomSelect
-                          id={`powerUnits.${index}.driveType`}
-                          label={t('carModel.driveType')}
-                          options={driveTypeOptions}
-                          getOptionLabel={(option) => option.title || ''}
-                          isOptionEqualToValue={(option, val) => val.value === option.value}
-                          onChange={onChange}
-                          value={value || null}
-                        />
-                      );
-                    }}
-                  />
-                  {powerUnitsFields.length !== 1 && (
-                    <Button onClick={() => removePowerUnit(index)}>
-                      Remove
-                    </Button>
-                  )}
-                </div>
-              );
-            })}
-            <Button onClick={addPowerUnit}>{yup('carModel.addPowerUnits')}</Button>
+                </Stack>
+                <Controller
+                  control={control}
+                  name="extraFeaturesOptions"
+                  render={({
+                    field: {
+                      onChange, onBlur, value,
+                    },
+                    fieldState: { error },
+                  }) => {
+                    const isFieldValid = error ? false : undefined;
+                    const errorText = isFieldValid === false ? error?.message : '';
+                    return (
+                      <CustomSelect
+                        multiple
+                        searchCallback={getExtraFeaturesOptions}
+                        id="extraFeaturesOptions"
+                        label={t('extraFeature.title')}
+                        getOptionLabel={(option) => option.title || ''}
+                        isOptionEqualToValue={(option, val) => val._id === option._id}
+                        onChange={onChange}
+                        value={value || []}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  control={control}
+                  name="bodyTypes"
+                  render={({
+                    field: {
+                      onChange, onBlur, value,
+                    },
+                    fieldState: { error },
+                  }) => {
+                    const isFieldValid = error ? false : undefined;
+                    const errorText = isFieldValid === false ? error?.message : '';
+                    return (
+                      <CustomSelect
+                        multiple
+                        options={bodyTypeOptions}
+                        id="bodyTypes"
+                        label={t('carModel.bodyTypes')}
+                        getOptionLabel={(option) => option.title || ''}
+                        isOptionEqualToValue={(option, val) => val.value === option.value}
+                        onChange={onChange}
+                        value={value || []}
+                      />
+                    );
+                  }}
+                />
+              </Box>
+              {powerUnitsFields.map((powerUnitsField, index) => {
+                return (
+                  <Box
+                    key={nanoid()}
+                    component="div"
+                    sx={{ margin: '15px' }}
+                  >
+                    <Controller
+                      control={control}
+                      name={`powerUnits.${index}.engineVolume`}
+                      render={({
+                        field: {
+                          onChange, value,
+                        },
+                        fieldState: { error },
+                      }) => {
+                        const isFieldValid = error ? false : undefined;
+                        const errorText = isFieldValid === false ? error?.message : '';
+                        return (
+                          <TextField
+                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            type="number"
+                            // TODO
+                            // InputLabelProps={{ shrink: value }}
+                            sx={{ marginTop: 2 }}
+                            onChange={onChange}
+                            value={value || ''}
+                            id={`powerUnits.${index}.engineVolume`}
+                            label={t('carModel.engineVolume')}
+                            variant="outlined"
+                            helperText={errorText || ''}
+                            error={!!errorText}
+                            fullWidth
+                          />
+                        );
+                      }}
+                    />
+                    <Controller
+                      control={control}
+                      name={`powerUnits.${index}.fuelType`}
+                      render={({
+                        field: {
+                          onChange, onBlur, value,
+                        },
+                        fieldState: { error },
+                      }) => {
+                        const isFieldValid = error ? false : undefined;
+                        const errorText = isFieldValid === false ? error?.message : '';
+                        return (
+                          <CustomSelect
+                            id={`powerUnits.${index}.fuelType`}
+                            label={t('carModel.fuelType')}
+                            options={fuelTypeOptions}
+                            getOptionLabel={(option) => option.title || ''}
+                            isOptionEqualToValue={(option, val) => option.id === val.id}
+                            onChange={onChange}
+                            value={value || null}
+                          />
+                        );
+                      }}
+                    />
+                    <Controller
+                      control={control}
+                      name={`powerUnits.${index}.gearBox`}
+                      render={({
+                        field: {
+                          onChange, onBlur, value,
+                        },
+                        fieldState: { error },
+                      }) => {
+                        const isFieldValid = error ? false : undefined;
+                        const errorText = isFieldValid === false ? error?.message : '';
+                        return (
+                          <CustomSelect
+                            id={`powerUnits.${index}.gearBox`}
+                            label={t('carModel.gearBox')}
+                            options={gearBoxOptions}
+                            getOptionLabel={(option) => option.title || ''}
+                            isOptionEqualToValue={(option, val) => option.id === val.id}
+                            onChange={onChange}
+                            value={value || null}
+                          />
+                        );
+                      }}
+                    />
+                    <Controller
+                      control={control}
+                      name={`powerUnits.${index}.driveType`}
+                      render={({
+                        field: {
+                          onChange, onBlur, value,
+                        },
+                        fieldState: { error },
+                      }) => {
+                        const isFieldValid = error ? false : undefined;
+                        const errorText = isFieldValid === false ? error?.message : '';
+                        return (
+                          <CustomSelect
+                            id={`powerUnits.${index}.driveType`}
+                            label={t('carModel.driveType')}
+                            options={driveTypeOptions}
+                            getOptionLabel={(option) => option.title || ''}
+                            isOptionEqualToValue={(option, val) => option.id === val.id}
+                            onChange={onChange}
+                            value={value || null}
+                          />
+                        );
+                      }}
+                    />
+                    {powerUnitsFields.length !== 1 && (
+                      <Button onClick={() => removePowerUnit(index)}>
+                        {t('carModel.remove')}
+                      </Button>
+                    )}
+                    {index === 0 && (
+                      <Button onClick={addPowerUnit}>
+                        {t('carModel.addPowerUnits')}
+                      </Button>
+                    )}
+                  </Box>
+                );
+              })}
+
+            </Stack>
+
             <Stack
               marginTop={2}
               spacing={5}

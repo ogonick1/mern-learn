@@ -41,7 +41,8 @@
     "gearBox": "Коробка передач: ",
     "driveType": "Привід: ",
     "actions": "Дії",
-    "noData": " - Не вказано"
+    "noData": " - Не вказано",
+    "remove": "Видалити"
   },
   "extraFeature": {
     "titleCreate": "Створити Додаткову Функцію",

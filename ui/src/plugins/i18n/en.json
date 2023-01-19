@@ -42,7 +42,8 @@
     "gearBox": "Gear Box: ",
     "driveType": "Drive Type: ",
     "actions": "Actions",
-    "noData": " - No data"
+    "noData": " - No data",
+    "remove": "Remove"
   },
   "extraFeature": {
     "titleCreate": "Create Extra Feature",

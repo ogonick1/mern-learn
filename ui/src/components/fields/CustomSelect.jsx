@@ -23,8 +23,8 @@ export const CustomSelect = (props) => {
         const result = await searchCallback();
         setInternalOptions(result);
       }
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
     }
     setLoading(false);
   };
@@ -37,6 +37,7 @@ export const CustomSelect = (props) => {
 
   return (
     <Autocomplete
+      sx={{ marginBottom: 2, marginTop: 2 }}
       id={id}
       multiple={multiple}
       options={searchCallback ? internalOptions : options}
