@@ -247,7 +247,6 @@ export const CarModelEditPage = () => {
                         id="yearEnd"
                         fullWidth
                         label={t('carModel.yearEnd')}
-                        margin="normal"
                         helperText={errorText || ''}
                         error={!!errorText}
                       />
@@ -354,7 +353,7 @@ export const CarModelEditPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={5} md={2} lg={2}>
+                    <Grid item xs={5} md={3}>
                       <Controller
                         control={control}
                         name={`powerUnits.${index}.fuelType`}
@@ -380,7 +379,7 @@ export const CarModelEditPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={5} md={2} lg={2}>
+                    <Grid item xs={5} md={3}>
                       <Controller
                         control={control}
                         name={`powerUnits.${index}.gearBox`}
@@ -406,7 +405,7 @@ export const CarModelEditPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={5} md={2} lg={2}>
+                    <Grid item xs={5} md={3}>
                       <Controller
                         control={control}
                         name={`powerUnits.${index}.driveType`}
@@ -432,7 +431,7 @@ export const CarModelEditPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={2} md={1} lg={1}>
+                    <Grid item xs={2} md={1}>
                       {powerUnitsFields.length !== 1 && (
                         <IconButton
                           style={{ marginTop: 24 }}
