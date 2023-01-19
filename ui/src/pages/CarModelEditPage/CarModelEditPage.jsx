@@ -17,6 +17,7 @@ import { useBodyTypeOptions } from '../../hooks/staticOptions/useBodyTypeOptions
 import { useDriveTypeOptions } from '../../hooks/staticOptions/useDriveTypeOptions';
 import { useFuelTypeOptions } from '../../hooks/staticOptions/useFuelTypeOptions';
 import { useGearBoxOptions } from '../../hooks/staticOptions/useGearBoxOptions';
+import { TextInput } from '../../components/fields/TextInput';
 import './index.scss';
 
 const getCarModelOptions = () => {
@@ -61,9 +62,11 @@ export const CarModelEditPage = () => {
       powerUnits: yup.array()
         .of(
           yup.object().shape({
-            engineVolume: yup.number(t('validationErrors.volume'))
-              .min(0, t('validationErrors.volume'))
+            engineVolume: yup
+              .number(t('validationErrors.volume'))
+              .typeError('Amount must be a number')
               .integer(t('validationErrors.volume'))
+              .min(0, t('validationErrors.volume'))
               .max(10000, t('validationErrors.volume')),
             fuelType: yup.string()
               .required(t('validationErrors.required')),
@@ -227,17 +230,25 @@ export const CarModelEditPage = () => {
                     return (
                       <div>
                         <DatePicker
-                          className="carModelEditPage__datePicter "
                           maxDate={new Date()}
+                          customInput={(
+                            <TextField
+                              label="qdwqwd"
+                              fullWidth
+                              placeholder={t('carModel.yearStart')}
+                              error={!!errorText}
+                              helperText={errorText}
+                            />
+                          )}
                           selected={value}
                           onChange={onChange}
                           value={value || new Date()}
                           showYearPicker
+                          label="qdwqwd"
                           dateFormat="yyyy"
                           id="yearStart"
-                          placeholderText={t('carModel.yearStart')}
+                          // placeholderText={t('carModel.yearStart')}
                         />
-                        <div className="carModelEditPage__datePicter-text">{errorText || null}</div>
                       </div>
                     );
                   }}
@@ -358,19 +369,15 @@ export const CarModelEditPage = () => {
                           const isFieldValid = error ? false : undefined;
                           const errorText = isFieldValid === false ? error?.message : '';
                           return (
-                            <TextField
-                              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            <TextInput
                               type="number"
-                              // InputLabelProps={{ shrink: value }}
                               sx={{ marginTop: 2 }}
-                              onChange={onChange}
-                              value={value || 0}
+                              onChange={(newValue) => onChange(newValue || '')}
+                              value={value}
                               id={`powerUnits.${index}.engineVolume`}
                               label={t('carModel.engineVolume')}
-                              variant="outlined"
                               helperText={errorText || ''}
                               error={!!errorText}
-                              fullWidth
                             />
                           );
                         }}
