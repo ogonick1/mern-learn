@@ -67,8 +67,8 @@ export const CarModelEditPage = () => {
           yup.object().shape({
             engineVolume: yup.number(t('validationErrors.volume'))
               .typeError(t('validationErrors.volume'))
-              .min(0, t('validationErrors.volume'))
               .integer(t('validationErrors.volume'))
+              .positive(t('validationErrors.volume'))
               .max(10000, t('validationErrors.volume')),
             fuelType: yup.object().nullable().shape({
               value: yup.string(),
@@ -92,6 +92,7 @@ export const CarModelEditPage = () => {
     getValues,
     trigger,
     watch,
+    reset,
     formState: {
       isDirty,
       isValid,
@@ -180,6 +181,40 @@ export const CarModelEditPage = () => {
       createCarModel(value);
     }
   };
+
+  const getModelById = async (modelId) => {
+    try {
+      const result = await CarModelService.getModelById(modelId);
+      reset({
+        name: result.name,
+        brandOption: {
+          value: result.brandId,
+          title: result.brandId.name,
+        },
+        extraFeaturesOptions: result.extraFeaturesIds.map((i) => ({
+          value: i,
+          title: i.title,
+        })),
+        yearStart: result.yearStart,
+        yearEnd: result.yearEnd,
+        powerUnits: result.powerUnits.map((powerUnit) => ({
+          engineVolume: powerUnit.engineVolume,
+          fuelType: powerUnit.fuelType.value,
+          gearBox: powerUnit.gearBox.value,
+          driveType: powerUnit.driveType.value,
+        })),
+        bodyTypes: result.bodyTypes,
+
+      });
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      getModelById(id);
+    }
+  }, []);
 
   return (
     <div>
@@ -531,7 +566,7 @@ export const CarModelEditPage = () => {
                     {notUniquePowerUnitsIndexes.includes(index) && (
                       <Grid item>
                         <div style={{ color: 'red' }}>
-                          Params for this Power Unit is not unique
+                          {t('validationErrors.notUnique')}
                         </div>
                       </Grid>
                     )}
