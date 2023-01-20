@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { CarBrandService } from '../../services/carBrand.service';
+import { CarBrandService } from '../../../services/carBrand.service';
 
 export const CarBrandEditPage = () => {
   const { id } = useParams();

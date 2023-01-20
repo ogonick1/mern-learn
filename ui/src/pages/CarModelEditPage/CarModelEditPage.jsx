@@ -7,7 +7,6 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
 import { CarModelService } from '../../services/carModel.service';
@@ -19,6 +18,11 @@ import { useDriveTypeOptions } from '../../hooks/staticOptions/useDriveTypeOptio
 import { useFuelTypeOptions } from '../../hooks/staticOptions/useFuelTypeOptions';
 import { useGearBoxOptions } from '../../hooks/staticOptions/useGearBoxOptions';
 import { TextInput } from '../../components/fields/TextInput';
+import { getValidationSchema } from './validation.schema';
+import {
+  mapFormToInsertModel,
+  mapModelToFormValues,
+} from './carModelEditPage.logic';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -44,48 +48,8 @@ export const CarModelEditPage = () => {
   const gearBoxOptions = useGearBoxOptions();
   const [notUniquePowerUnitsIndexes, setNotUniquePowerUnitsIndexes] = useState([]);
 
-  const schema = yup
-    .object()
-    .shape({
-      name: yup.string()
-        .required(t('validationErrors.required'))
-        .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
-        .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
-      yearStart: yup.date('error')
-        .typeError()
-        .min(1970)
-        .required(t('validationErrors.required')),
-      yearEnd: yup.date()
-        .optional()
-        .typeError()
-        .when('yearStart', (yearStart, field) => (yearStart ? field.min(yup.ref('yearStart'), t('validationErrors.yearsEnd')) : field)),
-      brandOption: yup.object()
-        .required(t('validationErrors.required')),
-      extraFeaturesOptions: yup.array(),
-      powerUnits: yup.array()
-        .of(
-          yup.object().shape({
-            engineVolume: yup.number(t('validationErrors.volume'))
-              .typeError(t('validationErrors.volume'))
-              .integer(t('validationErrors.volume'))
-              .positive(t('validationErrors.volume'))
-              .max(10000, t('validationErrors.volume')),
-            fuelType: yup.object().nullable().shape({
-              value: yup.string(),
-            })
-              .required(t('validationErrors.required')),
-            gearBox: yup.object().nullable().shape({
-              value: yup.string(),
-            })
-              .required(t('validationErrors.required')),
-            driveType: yup.object().nullable().shape({
-              value: yup.string(),
-            })
-              .required(t('validationErrors.required')),
-          }),
-        ),
-      bodyTypes: yup.array().min(1, t('validationErrors.required')).required(t('validationErrors.required')),
-    });
+  const schema = getValidationSchema(t);
+
   const {
     handleSubmit,
     control,
@@ -154,20 +118,7 @@ export const CarModelEditPage = () => {
   };
 
   const createCarModel = async (form) => {
-    const model = {
-      name: form.name,
-      brandId: form.brandOption._id,
-      extraFeaturesIds: form.extraFeaturesOptions.map(({ _id }) => _id),
-      yearStart: form.yearStart?.getFullYear(),
-      yearEnd: form.yearEnd?.getFullYear(),
-      powerUnits: form.powerUnits.map((powerUnit) => ({
-        engineVolume: powerUnit.engineVolume,
-        fuelType: powerUnit.fuelType.value,
-        gearBox: powerUnit.gearBox.value,
-        driveType: powerUnit.driveType.value,
-      })),
-      bodyTypes: form.bodyTypes.map(({ value }) => value),
-    };
+    const model = mapFormToInsertModel(form);
     try {
       if (id) {
         await CarModelService.patchModelById(id, model);
@@ -189,26 +140,13 @@ export const CarModelEditPage = () => {
   const getModelById = async (modelId) => {
     try {
       const result = await CarModelService.getModelById(modelId);
-      reset({
-        name: result.name,
-        brandOption: result.brandId,
-        extraFeaturesOptions: result.extraFeaturesIds.map((extraFeature) => extraFeature),
-        yearStart: new Date(`02-02-${result.yearStart}`),
-        yearEnd: new Date(`02-02-${result.yearEnd}`),
-        powerUnits: result.powerUnits.map((powerUnit) => ({
-          engineVolume: powerUnit.engineVolume,
-          fuelType: fuelTypeOptions
-            .find((fuelTypeOption) => fuelTypeOption.value === powerUnit.fuelType),
-          gearBox: gearBoxOptions
-            .find((gearBoxOption) => gearBoxOption.value === powerUnit.gearBox),
-          driveType: driveTypeOptions
-            .find((driveTypeOption) => driveTypeOption.value === powerUnit.driveType),
-        })),
-        bodyTypes: result.bodyTypes.map(
-          (bodyType) => bodyTypeOptions.find((bodyTypeOption) => bodyTypeOption.value === bodyType),
-        ),
-
-      });
+      reset(mapModelToFormValues({
+        model: result,
+        fuelTypeOptions,
+        gearBoxOptions,
+        driveTypeOptions,
+        bodyTypeOptions,
+      }));
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -226,9 +164,17 @@ export const CarModelEditPage = () => {
           component="div"
           sx={{ margin: '15px' }}
         >
-          <Typography variant="h4" component="h4">{t('carModel.title')}</Typography>
+          <Typography
+            variant="h4"
+            component="h4"
+          >
+            {t('carModel.title')}
+          </Typography>
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={2}>
+            <Grid
+              container
+              spacing={2}
+            >
               <Grid item xs={12} md={6}>
                 <Controller
                   control={control}
@@ -419,7 +365,12 @@ export const CarModelEditPage = () => {
                 />
               </Grid>
             </Grid>
-            <Typography variant="h4" component="h4">{t('carModel.powerUnits')}</Typography>
+            <Typography
+              variant="h4"
+              component="h4"
+            >
+              {t('carModel.powerUnits')}
+            </Typography>
             <div>
               {powerUnitsFields.map((powerUnitsField, index) => {
                 return (

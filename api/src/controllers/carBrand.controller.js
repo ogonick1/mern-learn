@@ -55,7 +55,11 @@ const searchCarBrands = async (req, res) => {
   });
   return res.json({
     count,
-    carBrands,
+    carBrands: carBrands.map((carBrand) => ({
+      id: carBrand._id,
+      name: carBrand.name,
+      country: carBrand.country,
+    })),
   });
 };
 

@@ -6,7 +6,7 @@ import {
   Container,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { CarBrandsTable } from './CarBrandsTable';
+import { CarBrandsTable } from '../CarBrandsTable';
 
 export const CarBrands = () => {
   const { t } = useTranslation();

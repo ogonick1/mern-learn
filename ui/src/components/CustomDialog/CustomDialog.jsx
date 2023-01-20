@@ -46,22 +46,13 @@ export const CustomDialog = (props) => {
 
   const {
     title,
-    //  size,
-    //  loading = false,
     children,
     closeDialog,
     onSubmit,
-    //  closeButton = true,
     cancelButtonText = t('customDialog.buttonClose'),
     submitButtonText = t('customDialog.buttonConfirm'),
     cancelButtonVariant = 'error',
     submitButtonVariant = 'primary',
-  //  customFooter,
-  //  cancelButtonDisabled = false,
-  //  submitButtonDisabled = false,
-  //  cancelButtonTextVariant,
-  //  submitButtonTextVariant,
-  //  bodyClass,
   } = props;
 
   return (

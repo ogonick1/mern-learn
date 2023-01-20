@@ -13,6 +13,9 @@ const createToken = (user) => {
     lastName,
   } = user;
 
+  const jwtSecretKey = config.get('jwtSecretKey');
+  const expiresIn = config.get('expiresIn');
+
   return (
     jwt.sign(
       {
@@ -21,8 +24,8 @@ const createToken = (user) => {
         userFirstName: firstName,
         userLastName: lastName,
       },
-      config.get('jwtSecretKey'),
-      { expiresIn: config.get('expiresIn') },
+      jwtSecretKey,
+      { expiresIn },
     )
   );
 };

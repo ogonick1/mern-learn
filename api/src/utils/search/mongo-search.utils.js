@@ -5,7 +5,6 @@
  * @param descending {boolean}{optional}
  */
 const mapSearchRequestToMongoDbFindQuery = (searchModel) => {
-  // queryOptions
   const queryOptions = {
     limit: searchModel.limit || 50,
     skip: searchModel.offset || 0,
