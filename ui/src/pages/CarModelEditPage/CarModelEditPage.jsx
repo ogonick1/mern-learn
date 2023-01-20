@@ -169,7 +169,11 @@ export const CarModelEditPage = () => {
       bodyTypes: form.bodyTypes.map(({ value }) => value),
     };
     try {
-      await CarModelService.create(model);
+      if (id) {
+        await CarModelService.patchModelById(model);
+      } else {
+        await CarModelService.create(model);
+      }
       navigate('/car-model');
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -189,21 +193,26 @@ export const CarModelEditPage = () => {
         name: result.name,
         brandOption: {
           value: result.brandId,
-          title: result.brandId.name,
+          name: result.brandId.name,
         },
         extraFeaturesOptions: result.extraFeaturesIds.map((i) => ({
           value: i,
           title: i.title,
         })),
-        yearStart: result.yearStart,
-        yearEnd: result.yearEnd,
+        yearStart: new Date().setFullYear(result.yearStart),
+        yearEnd: new Date().setFullYear(result.yearEnd),
         powerUnits: result.powerUnits.map((powerUnit) => ({
           engineVolume: powerUnit.engineVolume,
-          fuelType: powerUnit.fuelType.value,
-          gearBox: powerUnit.gearBox.value,
-          driveType: powerUnit.driveType.value,
+          fuelType: fuelTypeOptions
+            .find((fuelTypeOption) => fuelTypeOption.value === powerUnit.fuelType),
+          gearBox: gearBoxOptions
+            .find((gearBoxOption) => gearBoxOption.value === powerUnit.gearBox),
+          driveType: driveTypeOptions
+            .find((driveTypeOption) => driveTypeOption.value === powerUnit.driveType),
         })),
-        bodyTypes: result.bodyTypes,
+        bodyTypes: result.bodyTypes.map(
+          (bodyType) => bodyTypeOptions.find((bodyTypeOption) => bodyTypeOption.value === bodyType),
+        ),
 
       });
     } catch (error) {
