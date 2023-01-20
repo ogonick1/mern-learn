@@ -170,7 +170,7 @@ export const CarModelEditPage = () => {
     };
     try {
       if (id) {
-        await CarModelService.patchModelById(model);
+        await CarModelService.patchModelById(id, model);
       } else {
         await CarModelService.create(model);
       }
@@ -191,16 +191,10 @@ export const CarModelEditPage = () => {
       const result = await CarModelService.getModelById(modelId);
       reset({
         name: result.name,
-        brandOption: {
-          value: result.brandId,
-          name: result.brandId.name,
-        },
-        extraFeaturesOptions: result.extraFeaturesIds.map((i) => ({
-          value: i,
-          title: i.title,
-        })),
-        yearStart: new Date().setFullYear(result.yearStart),
-        yearEnd: new Date().setFullYear(result.yearEnd),
+        brandOption: result.brandId,
+        extraFeaturesOptions: result.extraFeaturesIds.map((extraFeature) => extraFeature),
+        yearStart: new Date(`02-02-${result.yearStart}`),
+        yearEnd: new Date(`02-02-${result.yearEnd}`),
         powerUnits: result.powerUnits.map((powerUnit) => ({
           engineVolume: powerUnit.engineVolume,
           fuelType: fuelTypeOptions
