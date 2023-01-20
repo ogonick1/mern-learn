@@ -1,6 +1,7 @@
 import {
   TextField, Typography, Box, Stack, Button, Container, Grid, IconButton,
 } from '@mui/material';
+import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -41,6 +42,7 @@ export const CarModelEditPage = () => {
   const driveTypeOptions = useDriveTypeOptions();
   const fuelTypeOptions = useFuelTypeOptions();
   const gearBoxOptions = useGearBoxOptions();
+  const [notUniquePowerUnitsIndexes, setNotUniquePowerUnitsIndexes] = useState([]);
 
   const schema = yup
     .object()
@@ -87,6 +89,7 @@ export const CarModelEditPage = () => {
   const {
     handleSubmit,
     control,
+    getValues,
     formState: {
       isDirty,
       isValid,
@@ -106,6 +109,22 @@ export const CarModelEditPage = () => {
     mode: 'all',
     resolver: yupResolver(schema),
   });
+
+  const checkPowerUnitsUnique = () => {
+    const powerUnits = getValues('powerUnits');
+    const powerUnitsCompoundValues = powerUnits.map((powerUnit) => {
+      return `${powerUnit.engineVolume}-${powerUnit.fuelType?.value}-${powerUnit.gearBox?.value}-${powerUnit.driveType?.value}`;
+    });
+    const innerNotUniquePowerUnitsIndexes = [];
+    powerUnitsCompoundValues.forEach((value, index) => {
+      if (powerUnitsCompoundValues.indexOf(value) !== powerUnitsCompoundValues.lastIndexOf(value)) {
+        innerNotUniquePowerUnitsIndexes.push(index);
+      }
+    });
+    setNotUniquePowerUnitsIndexes(innerNotUniquePowerUnitsIndexes);
+
+    return !innerNotUniquePowerUnitsIndexes.length;
+  };
 
   const {
     fields: powerUnitsFields,
@@ -149,7 +168,9 @@ export const CarModelEditPage = () => {
   };
 
   const onSubmit = async (value) => {
-    createCarModel(value);
+    if (checkPowerUnitsUnique()) {
+      createCarModel(value);
+    }
   };
 
   return (
@@ -368,7 +389,9 @@ export const CarModelEditPage = () => {
                         name={`powerUnits.${index}.engineVolume`}
                         render={({
                           field: {
-                            onChange, value,
+                            onChange,
+                            value,
+                            onBlur,
                           },
                           fieldState: { error },
                         }) => {
@@ -377,6 +400,10 @@ export const CarModelEditPage = () => {
                           return (
                             <TextInput
                               type="number"
+                              onBlur={() => {
+                                checkPowerUnitsUnique();
+                                onBlur();
+                              }}
                               sx={{ marginTop: 2 }}
                               onChange={(newValue) => onChange(newValue || '')}
                               value={value}
@@ -410,7 +437,10 @@ export const CarModelEditPage = () => {
                               isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
-                              onBlur={onBlur}
+                              onBlur={() => {
+                                checkPowerUnitsUnique();
+                                onBlur();
+                              }}
                               errorText={errorText}
                             />
                           );
@@ -438,7 +468,10 @@ export const CarModelEditPage = () => {
                               isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
-                              onBlur={onBlur}
+                              onBlur={() => {
+                                checkPowerUnitsUnique();
+                                onBlur();
+                              }}
                               errorText={errorText}
                             />
                           );
@@ -466,7 +499,10 @@ export const CarModelEditPage = () => {
                               isOptionEqualToValue={(option, val) => option.value === val.value}
                               onChange={onChange}
                               value={value || null}
-                              onBlur={onBlur}
+                              onBlur={() => {
+                                checkPowerUnitsUnique();
+                                onBlur();
+                              }}
                               errorText={errorText}
                             />
                           );
@@ -484,6 +520,13 @@ export const CarModelEditPage = () => {
                         </IconButton>
                       )}
                     </Grid>
+                    {notUniquePowerUnitsIndexes.includes(index) && (
+                      <Grid item>
+                        <div style={{ color: 'red' }}>
+                          Params for this Power Unit is not unique
+                        </div>
+                      </Grid>
+                    )}
                     {powerUnitsFields.length - 1 !== index && (
                       <Grid item xs={12}>
                         <hr />
@@ -507,7 +550,12 @@ export const CarModelEditPage = () => {
               direction="row"
               alignItems="center"
             >
-              <Button disabled={(isSubmitted || isDirty) && !isValid} type="submit" variant="contained">
+              <Button
+                disabled={((isSubmitted || isDirty) && !isValid)
+                  || notUniquePowerUnitsIndexes.length}
+                type="submit"
+                variant="contained"
+              >
                 {t('extraFeature.save')}
               </Button>
             </Stack>
