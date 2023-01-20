@@ -1,7 +1,7 @@
 import {
   TextField, Typography, Box, Stack, Button, Container, Grid, IconButton,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -90,6 +90,8 @@ export const CarModelEditPage = () => {
     handleSubmit,
     control,
     getValues,
+    trigger,
+    watch,
     formState: {
       isDirty,
       isValid,
@@ -109,6 +111,12 @@ export const CarModelEditPage = () => {
     mode: 'all',
     resolver: yupResolver(schema),
   });
+
+  const yearStartWatcher = watch('yearStart');
+
+  useEffect(() => {
+    trigger('yearEnd');
+  }, [yearStartWatcher]);
 
   const checkPowerUnitsUnique = () => {
     const powerUnits = getValues('powerUnits');
@@ -552,7 +560,7 @@ export const CarModelEditPage = () => {
             >
               <Button
                 disabled={((isSubmitted || isDirty) && !isValid)
-                  || notUniquePowerUnitsIndexes.length}
+                  || !!notUniquePowerUnitsIndexes.length}
                 type="submit"
                 variant="contained"
               >
