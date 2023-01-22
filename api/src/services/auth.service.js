@@ -1,9 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { BadRequestError } = require('../errors');
-const { errorCodes } = require('../errors/error-codes');
 const userRepository = require('../repositories/user.repository');
+const {
+  throwAuthError,
+  throwEmailReady,
+} = require('../errors/errors-builders/auth.errors-builders');
 
 const createToken = (user) => {
   const {
@@ -35,21 +37,13 @@ const login = async (req) => {
   const user = await userRepository.findOne({ email });
 
   if (!user) {
-    throw new BadRequestError({
-      errorCode: errorCodes.LOGIN_ERROR,
-      message: 'Invalid email or password try again',
-      details: {},
-    });
+    throwAuthError();
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new BadRequestError({
-      errorCode: errorCodes.LOGIN_ERROR,
-      message: 'Invalid email or password try again',
-      details: {},
-    });
+    throwAuthError();
   }
 
   return createToken(user);
@@ -67,10 +61,7 @@ const registration = async (req) => {
   const candidate = await userRepository.findOne({ email });
 
   if (candidate) {
-    throw new BadRequestError({
-      message: 'Email already registered',
-      errorCode: errorCodes.EMAIL_ALREADY_EXISTED,
-    });
+    throwEmailReady();
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);

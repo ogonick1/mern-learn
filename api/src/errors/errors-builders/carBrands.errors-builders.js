@@ -1,5 +1,5 @@
 const { errorCodes } = require('../error-codes');
-const { NotFoundError } = require('../index');
+const { NotFoundError, BusinessLogicError } = require('../index');
 
 function throwCarBrandNotFound(id) {
   throw new NotFoundError({
@@ -11,6 +11,17 @@ function throwCarBrandNotFound(id) {
   });
 }
 
+function throwCarBrandUnicName(name) {
+  throw new BusinessLogicError({
+    errorCode: errorCodes.CAR_BRAND_NAME_NOT_UNIQUE,
+    message: `Car Brand with name ${name} already exist`,
+    details: {
+      name,
+    },
+  });
+}
+
 module.exports = {
   throwCarBrandNotFound,
+  throwCarBrandUnicName,
 };

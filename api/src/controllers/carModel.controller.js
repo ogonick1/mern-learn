@@ -33,6 +33,7 @@ const createCarModel = async (req, res) => {
     bodyTypes,
   });
   return res.json({
+    id: carModel._id,
     name: carModel.name,
     brandId: carModel.brandId,
     yearStart: carModel.yearStart,
@@ -87,7 +88,16 @@ const searchCarModel = async (req, res) => {
   });
   return res.json({
     count,
-    carModel,
+    carModel: carModel.map((item) => ({
+      id: item._id,
+      name: item.name,
+      brandId: item.brandId,
+      yearStart: item.yearStart,
+      yearEnd: item.yearEnd,
+      powerUnits: item.powerUnits,
+      extraFeaturesIds: item.extraFeaturesIds,
+      bodyTypes: item.bodyTypes,
+    })),
   });
 };
 

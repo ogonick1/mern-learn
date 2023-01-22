@@ -35,7 +35,7 @@ const create = async (model) => {
     throwExtraFeaturesNotFound(model.extraFeaturesIds);
   }
 
-  const existModelByNameAndBrand = await carModelRepository.findModelWithBrand({
+  const existModelByNameAndBrand = await carModelRepository.findModelByCriteria({
     name: model.name,
     brandId: model.brandId,
   });
@@ -66,7 +66,7 @@ const update = async (id, model) => {
     throwExtraFeaturesNotFound(model.extraFeaturesIds);
   }
 
-  const existModelByNameAndBrand = await carModelRepository.findModelWithBrand({
+  const existModelByNameAndBrand = await carModelRepository.findModelByCriteria({
     name: model.name,
     brandId: model.brandId,
     _id: { $ne: id },

@@ -14,7 +14,7 @@ const findById = (id) => {
     .exec();
 };
 
-const findModelWithBrand = (filter = {}) => {
+const findModelByCriteria = (filter = {}) => {
   return CarModelModel.findOne(filter).lean().exec();
 };
 
@@ -43,7 +43,7 @@ const search = (searchModel) => {
 module.exports = {
   create,
   findById,
-  findModelWithBrand,
+  findModelByCriteria,
   update,
   remove,
   search,

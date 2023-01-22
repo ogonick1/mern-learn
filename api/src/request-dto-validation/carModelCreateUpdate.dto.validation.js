@@ -3,9 +3,14 @@ const { arrayUnique } = require('../validation/array-unique.validations');
 const { FuelType } = require('../enums/FuelType.enum');
 const { GearBox } = require('../enums/GearBox.enum');
 const { DriveType } = require('../enums/DriveType.enum');
+const { getStringLengthValidationMessage } = require('./getSrtingLengthValidationMessage');
 
 const carModelCreateUpdateDtoValidation = [
-  check('name', 'incorrect title, min 3 symbols max 20').isLength({ min: 3, max: 20 }),
+  check('name', getStringLengthValidationMessage({
+    minLength: 3,
+    maxLength: 20,
+    fieldName: 'name',
+  })).isLength({ min: 3, max: 20 }),
   check('brandId', 'incorrect brand id').isMongoId(),
   check('yearStart', 'incorrect yearStart').isInt({ min: 1950 }),
   check('yearEnd', 'incorrect yearEnd').optional().custom((value, { req }) => (value > req.body.yearStart)),

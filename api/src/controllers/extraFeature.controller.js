@@ -49,7 +49,11 @@ const searchExtraFeature = async (req, res) => {
   });
   return res.json({
     count,
-    extraFeature,
+    extraFeature: extraFeature.map((extraFeatureitem) => ({
+      id: extraFeatureitem._id,
+      title: extraFeatureitem.title,
+      description: extraFeatureitem.description,
+    })),
   });
 };
 
