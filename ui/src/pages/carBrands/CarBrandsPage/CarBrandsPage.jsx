@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import { CarBrandsTable } from '../CarBrandsTable';
 
-export const CarBrands = () => {
+export const CarBrandsPage = () => {
   const { t } = useTranslation();
 
   return (

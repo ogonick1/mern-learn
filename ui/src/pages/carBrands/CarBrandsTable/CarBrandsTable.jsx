@@ -120,18 +120,18 @@ export const CarBrandsTable = () => {
           <TableBody>
             {data.length ? data.map((item) => {
               return (
-                <TableRow key={item._id}>
+                <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.country}</TableCell>
                   <TableCell>
                     <IconButton
-                      onClick={() => deleteCarBrandConfirmation(item._id)}
+                      onClick={() => deleteCarBrandConfirmation(item.id)}
                       color="error"
                     >
                       <DeleteIcon />
                     </IconButton>
                     <IconButton
-                      onClick={() => navigate(`/car-brands/edit/${item._id}`)}
+                      onClick={() => navigate(`/car-brands/edit/${item.id}`)}
                     >
                       <EditIcon />
                     </IconButton>

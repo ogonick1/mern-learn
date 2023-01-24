@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ExtraFeatureService } from '../../services/extraFeature.service';
+import { ExtraFeatureService } from '../../../services/extraFeature.service';
 
 export const ExtraFeatureEditPage = () => {
   const { id } = useParams();

@@ -6,9 +6,9 @@ import {
   Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { ExtraFeatureTable } from './ExtraFeatureTable/ExtraFeatureTable';
+import { ExtraFeatureTable } from '../ExtraFeatureTable';
 
-export const ExtraFeature = () => {
+export const ExtraFeaturePage = () => {
   const { t } = useTranslation();
   return (
     <Box className="container">

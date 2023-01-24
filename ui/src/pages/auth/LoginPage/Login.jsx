@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import './index.scss';
 import { NavLink } from 'react-router-dom';
-import { login } from '../../plugins/store/userSlice';
+import { login } from '../../../plugins/store/userSlice';
 
 export const Login = () => {
   const { t } = useTranslation();

@@ -9,15 +9,15 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import DatePicker from 'react-datepicker';
-import { CarModelService } from '../../services/carModel.service';
-import { CustomSelect } from '../../components/fields/CustomSelect';
-import { CarBrandService } from '../../services/carBrand.service';
-import { ExtraFeatureService } from '../../services/extraFeature.service';
-import { useBodyTypeOptions } from '../../hooks/staticOptions/useBodyTypeOptions';
-import { useDriveTypeOptions } from '../../hooks/staticOptions/useDriveTypeOptions';
-import { useFuelTypeOptions } from '../../hooks/staticOptions/useFuelTypeOptions';
-import { useGearBoxOptions } from '../../hooks/staticOptions/useGearBoxOptions';
-import { TextInput } from '../../components/fields/TextInput';
+import { CarModelService } from '../../../services/carModel.service';
+import { CustomSelect } from '../../../components/fields/CustomSelect';
+import { CarBrandService } from '../../../services/carBrand.service';
+import { ExtraFeatureService } from '../../../services/extraFeature.service';
+import { useBodyTypeOptions } from '../../../hooks/staticOptions/useBodyTypeOptions';
+import { useDriveTypeOptions } from '../../../hooks/staticOptions/useDriveTypeOptions';
+import { useFuelTypeOptions } from '../../../hooks/staticOptions/useFuelTypeOptions';
+import { useGearBoxOptions } from '../../../hooks/staticOptions/useGearBoxOptions';
+import { TextInput } from '../../../components/fields/TextInput';
 import { getValidationSchema } from './validation.schema';
 import {
   mapFormToInsertModel,
@@ -189,7 +189,6 @@ export const CarModelEditPage = () => {
                     const errorText = isFieldValid === false ? error?.message : '';
                     return (
                       <TextField
-                        // InputLabelProps={{ shrink: value }}
                         sx={{ marginBottom: 2, marginTop: 2 }}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -261,7 +260,6 @@ export const CarModelEditPage = () => {
                         onChange={onChange}
                         value={value || new Date()}
                         showYearPicker
-                        label="qdwqwd"
                         dateFormat="yyyy"
                         id="yearStart"
                       />
@@ -325,8 +323,8 @@ export const CarModelEditPage = () => {
                         id="extraFeaturesOptions"
                         label={t('extraFeature.title')}
                         getOptionLabel={(option) => option.title || ''}
-                        isOptionEqualToValue={(option, val) => val._id === option._id}
                         onChange={onChange}
+                        isOptionEqualToValue={(option, val) => val.id === option.id}
                         value={value || []}
                         onBlur={onBlur}
                         errorText={errorText}

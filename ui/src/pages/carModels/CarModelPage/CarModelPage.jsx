@@ -6,9 +6,9 @@ import {
   Container,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { CarModelTable } from './CarModelTable';
+import { CarModelTable } from '../CarModelTable/CarModelTable';
 
-export const CarModel = () => {
+export const CarModelPage = () => {
   const { t } = useTranslation();
   return (
     <div>

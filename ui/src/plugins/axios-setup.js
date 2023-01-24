@@ -16,19 +16,19 @@ const axiosSetup = () => {
   axios.interceptors.response.use((response) => {
     return response.data;
   }, (error) => {
-    // add error handler
-    // function with argument response
-    // which return next object
-    // {
-    //   originalError: error,
-    //   originalErrorData: error.data,
-    //   resolvedErrorMessage: 'Something went wrong',
-    //   errorCode: error.data?.errorCode,
-    //   statusCode: error.response.status,
-    //   isCancelled: true,
-    // }
-
-    return Promise.reject(error);
+    function errorHandler(err) {
+      return (
+        {
+          originalError: err,
+          originalErrorData: err.data,
+          resolvedErrorMessage: 'Something went wrong',
+          errorCode: err.data?.errorCode,
+          statusCode: err.response.status,
+          isCancelled: true,
+        }
+      );
+    }
+    return Promise.reject(errorHandler(error));
   });
 };
 

@@ -4,9 +4,8 @@ import { useTranslation } from 'react-i18next';
 import {
   Box, Select, MenuItem, Button,
 } from '@mui/material';
-
+import { logOut } from '../../../plugins/store/userSlice';
 import './index.scss';
-import { logOut } from '../../plugins/store/userSlice';
 
 export const Navbar = () => {
   const dispatch = useDispatch();
@@ -23,7 +22,6 @@ export const Navbar = () => {
       className="navbar__box"
     >
       <NavLink className="navbar__link" to="/">LOGO</NavLink>
-      {isAuth && <NavLink className="navbar__link" to="/">{t('homePage.title')}</NavLink>}
       {isAuth && <NavLink className="navbar__link" to="car-model">{t('carModel.title')}</NavLink>}
       {isAuth && <NavLink className="navbar__link" to="car-brands">{t('carBrands.title')}</NavLink>}
       {isAuth && <NavLink className="navbar__link" to="extra-feature">{t('extraFeature.title')}</NavLink>}

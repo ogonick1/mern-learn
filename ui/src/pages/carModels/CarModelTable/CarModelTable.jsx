@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useState, useEffect } from 'react';
+import { nanoid } from '@reduxjs/toolkit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'react-i18next';
@@ -152,7 +153,7 @@ export const CarModelTable = () => {
           <TableBody>
             {data?.length ? data.map((item) => {
               return (
-                <TableRow key={item._id}>
+                <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.brandId.name}</TableCell>
                   <TableCell>
@@ -162,10 +163,9 @@ export const CarModelTable = () => {
                   </TableCell>
                   <TableCell>
                     <ul className="carModel__powerUnits">
-                      {(item.powerUnits || []).map((powerUnit, index) => {
+                      {(item.powerUnits || []).map((powerUnit) => {
                         return (
-                          // eslint-disable-next-line react/no-array-index-key
-                          <li className="carModel__powerUnits-li" key={index}>
+                          <li className="carModel__powerUnits-li" key={nanoid()}>
                             <b>{t('carModel.engineVolume')}</b>
                             {powerUnit.engineVolume}
                             <br />
@@ -185,17 +185,16 @@ export const CarModelTable = () => {
                   <TableCell>
                     {(item.extraFeaturesIds || []).map((extrafeature) => {
                       return (
-                        <div key={extrafeature._id}>
+                        <div key={nanoid()}>
                           {extrafeature.title}
                         </div>
                       );
                     })}
                   </TableCell>
                   <TableCell>
-                    {(item.bodyTypes || []).map((bodyTypes, index) => {
+                    {(item.bodyTypes || []).map((bodyTypes) => {
                       return (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <div key={index}>
+                        <div key={nanoid()}>
                           {t(`enum.BodyType.${bodyTypes}`)}
                         </div>
                       );
@@ -208,13 +207,13 @@ export const CarModelTable = () => {
                       display="flex"
                     >
                       <IconButton
-                        onClick={() => deleteCarModelConfirmation(item._id)}
+                        onClick={() => deleteCarModelConfirmation(item.id)}
                         color="error"
                       >
                         <DeleteIcon />
                       </IconButton>
                       <IconButton
-                        onClick={() => navigate(`/car-model/edit/${item._id}`)}
+                        onClick={() => navigate(`/car-model/edit/${item.id}`)}
                       >
                         <EditIcon />
                       </IconButton>

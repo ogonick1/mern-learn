@@ -120,18 +120,18 @@ export const ExtraFeatureTable = () => {
           <TableBody>
             {data.length ? data.map((item) => {
               return (
-                <TableRow key={item._id}>
+                <TableRow key={item.id}>
                   <TableCell>{item.title}</TableCell>
                   <TableCell>{item.description}</TableCell>
                   <TableCell>
                     <IconButton
-                      onClick={() => deleteCarBrandConfirmation(item._id)}
+                      onClick={() => deleteCarBrandConfirmation(item.id)}
                       color="error"
                     >
                       <DeleteIcon />
                     </IconButton>
                     <IconButton
-                      onClick={() => navigate(`/extra-feature/edit/${item._id}`)}
+                      onClick={() => navigate(`/extra-feature/edit/${item.id}`)}
                     >
                       <EditIcon />
                     </IconButton>

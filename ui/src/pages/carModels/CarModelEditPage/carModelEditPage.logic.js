@@ -1,8 +1,8 @@
 export const mapFormToInsertModel = (form) => {
   return {
     name: form.name,
-    brandId: form.brandOption._id,
-    extraFeaturesIds: form.extraFeaturesOptions.map(({ _id }) => _id),
+    brandId: form.brandOption.id,
+    extraFeaturesIds: form.extraFeaturesOptions.map(({ id }) => id),
     yearStart: form.yearStart?.getFullYear(),
     yearEnd: form.yearEnd?.getFullYear(),
     powerUnits: form.powerUnits.map((powerUnit) => ({
@@ -27,7 +27,7 @@ export const mapModelToFormValues = ({
     brandOption: model.brandId,
     extraFeaturesOptions: model.extraFeaturesIds.map((extraFeature) => extraFeature),
     yearStart: new Date(`02-02-${model.yearStart}`),
-    yearEnd: new Date(`02-02-${model.yearEnd}`),
+    yearEnd: new Date(`02-02-${model.yearEnd || 2023}`),
     powerUnits: model.powerUnits.map((powerUnit) => ({
       engineVolume: powerUnit.engineVolume,
       fuelType: fuelTypeOptions

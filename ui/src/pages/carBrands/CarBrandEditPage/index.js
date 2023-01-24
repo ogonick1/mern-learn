@@ -1,0 +1,1 @@
+export { CarBrandEditPage } from './CarBrandEditPage';
