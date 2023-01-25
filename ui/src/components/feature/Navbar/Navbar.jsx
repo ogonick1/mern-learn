@@ -10,7 +10,7 @@ import './index.scss';
 export const Navbar = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuth);
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['languages', 'carModel', 'carBrands', 'extraFeature', 'loginPage']);
 
   const langs = {
     en: { nativeName: t('languages.en') },
@@ -22,10 +22,10 @@ export const Navbar = () => {
       className="navbar__box"
     >
       <NavLink className="navbar__link" to="/">LOGO</NavLink>
-      {isAuth && <NavLink className="navbar__link" to="car-model">{t('carModel.title')}</NavLink>}
-      {isAuth && <NavLink className="navbar__link" to="car-brands">{t('carBrands.title')}</NavLink>}
-      {isAuth && <NavLink className="navbar__link" to="extra-feature">{t('extraFeature.title')}</NavLink>}
-      {isAuth && <Button variant="contained" onClick={() => dispatch(logOut())}>{t('loginPage.logout')}</Button>}
+      {isAuth && <NavLink className="navbar__link" to="car-model">{t('carModel:carModel.title')}</NavLink>}
+      {isAuth && <NavLink className="navbar__link" to="car-brands">{t('carBrands:carBrands.title')}</NavLink>}
+      {isAuth && <NavLink className="navbar__link" to="extra-feature">{t('extraFeature:extraFeature.title')}</NavLink>}
+      {isAuth && <Button variant="contained" onClick={() => dispatch(logOut())}>{t('loginPage:loginPage.logout')}</Button>}
       <Select
         className="navbar__select"
         id="simple-select"

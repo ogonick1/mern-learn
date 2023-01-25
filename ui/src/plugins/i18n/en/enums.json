@@ -1,0 +1,27 @@
+{
+  "enums": {
+    "FuelType": {
+      "PETROL": "Petrol",
+      "DIESEL": "Diesel",
+      "GAS": "Gas",
+      "HYBRID": "Hybrid",
+      "ELECTRO": "Electro",
+      "GAS_PETROL": "Gas-Petrol"
+    },
+    "GearBox": {
+      "MECHANICAL": "Mechanical",
+      "AUTOMATIC": "Automatic"
+    },
+    "DriveType": {
+      "FRONT": "Front",
+      "BACK": "Back",
+      "FULL": "Full"
+    },
+    "BodyType": {
+      "SEDAN": "Sedan",
+      "STATION_WAGON": "Station Wagon",
+      "HATCHBACK": "Hatchback",
+      "COUPE": "Coupe"
+    }
+  }
+}

@@ -16,7 +16,7 @@ export const useFuelTypeOptions = () => {
 
   return useMemo(() => {
     return optionsValues.map((value) => ({
-      title: t(`enum.FuelType.${value}`),
+      title: t(`enums.FuelType.${value}`),
       value,
     }));
   }, [t]);

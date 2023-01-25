@@ -13,7 +13,7 @@ export const useGearBoxOptions = () => {
 
   return useMemo(() => {
     return optionsValues.map((value) => ({
-      title: t(`enum.GearBox.${value}`),
+      title: t(`enums.GearBox.${value}`),
       value,
     }));
   }, [t]);

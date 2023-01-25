@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 import { login } from '../../../plugins/store/userSlice';
 
 export const Login = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['loginPage', 'validationErrors', 'form']);
   const dispatch = useDispatch();
   const {
     register,
@@ -44,7 +44,7 @@ export const Login = () => {
                 required: true,
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message: t('validationErrors.email'),
+                  message: t('validationErrors:validationErrors.email'),
                 },
               },
             )}
@@ -61,7 +61,7 @@ export const Login = () => {
             {...register('password', {
               minLength: {
                 value: 5,
-                message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
+                message: t('validationErrors:validationErrors.minMaxLength', { min: 5, max: 20 }),
               },
               required: true,
             })}
@@ -69,13 +69,13 @@ export const Login = () => {
             helperText={errors.password?.message}
             type="password"
             id="Password"
-            label={t('form.password')}
+            label={t('form:form.password')}
             variant="outlined"
             margin="normal"
           />
           <Stack marginTop={2} spacing={5} direction="row" alignItems="center">
-            <Button disabled={!isValid} type="submit" variant="contained">{t('form.login')}</Button>
-            <NavLink to="/registration">{t('form.register')}</NavLink>
+            <Button disabled={!isValid} type="submit" variant="contained">{t('form:form.login')}</Button>
+            <NavLink to="/registration">{t('form:form.register')}</NavLink>
           </Stack>
         </form>
       </Box>

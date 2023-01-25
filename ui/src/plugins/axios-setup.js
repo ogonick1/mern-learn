@@ -20,11 +20,10 @@ const axiosSetup = () => {
       return (
         {
           originalError: err,
-          originalErrorData: err.data,
-          resolvedErrorMessage: 'Something went wrong',
-          errorCode: err.data?.errorCode,
-          statusCode: err.response.status,
-          isCancelled: true,
+          originalErrorData: err?.response?.data,
+          resolvedErrorMessage: err?.response?.data?.message,
+          errorCode: err?.code,
+          statusCode: err?.response?.status,
         }
       );
     }

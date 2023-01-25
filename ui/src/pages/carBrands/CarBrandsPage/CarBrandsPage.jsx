@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { CarBrandsTable } from '../CarBrandsTable';
 
 export const CarBrandsPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['carBrands']);
 
   return (
     <Container maxWidth="xl">
@@ -27,7 +27,7 @@ export const CarBrandsPage = () => {
         >
           {t('carBrands.title')}
         </Typography>
-        <Button component={Link} to="/car-brands/create">{t('createCarBrand.titleCreate')}</Button>
+        <Button component={Link} to="/car-brands/create">{t('carBrands.titleCreate')}</Button>
       </Stack>
       <CarBrandsTable />
     </Container>

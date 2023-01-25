@@ -59,7 +59,7 @@ export const TextInput = (props) => {
 
   return (
     <TextField
-      sx={{ marginTop: 2 }}
+      sx={{ marginTop: 2 } || sx}
       onChange={onChangeInner}
       onBlur={onBlurInner}
       value={value}

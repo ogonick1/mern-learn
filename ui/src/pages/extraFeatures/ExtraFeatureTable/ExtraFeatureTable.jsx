@@ -18,7 +18,7 @@ import { ExtraFeatureService } from '../../../services/extraFeature.service';
 
 export const ExtraFeatureTable = () => {
   const openConfirmation = useConfirmation();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['extraFeature', 'customDialog', 'carBrands']);
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
@@ -48,15 +48,15 @@ export const ExtraFeatureTable = () => {
   const columns = [
     {
       id: 'title',
-      label: t('extraFeature.title'),
+      label: t('extraFeature:extraFeature.title'),
     },
     {
       id: 'description',
-      label: t('extraFeature.description'),
+      label: t('extraFeature:extraFeature.description'),
     },
     {
       id: 'actions',
-      label: t('extraFeature.actions'),
+      label: t('extraFeature:extraFeature.actions'),
     },
   ];
 
@@ -70,8 +70,8 @@ export const ExtraFeatureTable = () => {
   };
   const deleteCarBrandConfirmation = (id) => {
     openConfirmation({
-      title: t('customDialog.titleExtraFeature'),
-      text: t('customDialog.textExtraFeature'),
+      title: t('customDialog:customDialog.titleExtraFeature'),
+      text: t('customDialog:customDialog.textExtraFeature'),
       confirmButtonAction: () => {
         deleteCarBrand(id);
       },
@@ -143,7 +143,7 @@ export const ExtraFeatureTable = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        labelRowsPerPage={t('carBrands.labelRowsPerPage')}
+        labelRowsPerPage={t('carBrands:carBrands.labelRowsPerPage')}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={totalCount}

@@ -18,7 +18,7 @@ import { useConfirmation } from '../../../hooks/useConfirmation';
 
 export const CarBrandsTable = () => {
   const openConfirmation = useConfirmation();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['carBrands', 'customDialog']);
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
@@ -38,7 +38,7 @@ export const CarBrandsTable = () => {
       setData(result.carBrands);
       setTotalCount(result.count);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
   useEffect(() => {
@@ -65,13 +65,13 @@ export const CarBrandsTable = () => {
       await CarBrandService.delete(id);
       await getData();
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
   const deleteCarBrandConfirmation = (id) => {
     openConfirmation({
-      title: t('customDialog.titleCarBrand'),
-      text: t('customDialog.textCarBrand'),
+      title: t('customDialog:customDialog.titleCarBrand'),
+      text: t('customDialog:customDialog.textCarBrand'),
       confirmButtonAction: () => {
         deleteCarBrand(id);
       },

@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { registration } from '../../../plugins/store/userSlice';
 
 export const Registration = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['registrationPage', 'validationErrors', 'form']);
   const dispatch = useDispatch();
   const {
     register,
@@ -33,7 +33,7 @@ export const Registration = () => {
           height: '80vh',
         }}
       >
-        <Typography variant="h4" component="h4">{t('registration.title')}</Typography>
+        <Typography variant="h4" component="h4">{t('registrationPage.title')}</Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             {...register(
@@ -42,7 +42,7 @@ export const Registration = () => {
                 required: true,
                 minLength: {
                   value: 5,
-                  message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
+                  message: t('validationErrors:validationErrors.minMaxLength', { min: 5, max: 20 }),
                 },
                 maxLength: 20,
               },
@@ -52,7 +52,7 @@ export const Registration = () => {
             helperText={errors.userName?.message}
             type="text"
             id="userName"
-            label={t('form.userName')}
+            label={t('form:form.userName')}
             variant="outlined"
             margin="normal"
           />
@@ -63,7 +63,7 @@ export const Registration = () => {
                 required: true,
                 minLength: {
                   value: 5,
-                  message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
+                  message: t('validationErrors:validationErrors.minMaxLength', { min: 5, max: 20 }),
                 },
                 maxLength: 20,
               },
@@ -72,7 +72,7 @@ export const Registration = () => {
             helperText={errors.firstName?.message}
             type="text"
             id="firstName"
-            label={t('form.firstName')}
+            label={t('form:form.firstName')}
             variant="outlined"
             margin="normal"
           />
@@ -83,7 +83,7 @@ export const Registration = () => {
                 required: true,
                 minLength: {
                   value: 5,
-                  message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
+                  message: t('validationErrors:validationErrors.minMaxLength', { min: 5, max: 20 }),
                 },
                 maxLength: 20,
               },
@@ -92,7 +92,7 @@ export const Registration = () => {
             helperText={errors.lastName?.message}
             type="text"
             id="lastName"
-            label={t('form.lastName')}
+            label={t('form:form.lastName')}
             variant="outlined"
             margin="normal"
           />
@@ -103,7 +103,7 @@ export const Registration = () => {
                 required: true,
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message: t('validationErrors.email'),
+                  message: t('validationErrors:validationErrors.email'),
                 },
               },
             )}
@@ -119,7 +119,7 @@ export const Registration = () => {
             {...register('password', {
               minLength: {
                 value: 5,
-                message: t('validationErrors.minMaxLength', { min: 5, max: 20 }),
+                message: t('validationErrors:validationErrors.minMaxLength', { min: 5, max: 20 }),
               },
               required: true,
             })}
@@ -127,13 +127,13 @@ export const Registration = () => {
             helperText={errors.password?.message}
             type="password"
             id="Password"
-            label={t('form.password')}
+            label={t('form:form.password')}
             variant="outlined"
             margin="normal"
           />
           <Stack marginTop={2} spacing={5} direction="row" alignItems="center">
-            <Button disabled={!isValid} type="submit" variant="contained">{t('form.register')}</Button>
-            <NavLink to="/login">{t('form.login')}</NavLink>
+            <Button disabled={!isValid} type="submit" variant="contained">{t('form:form.register')}</Button>
+            <NavLink to="/login">{t('form:form.login')}</NavLink>
           </Stack>
         </form>
       </Box>

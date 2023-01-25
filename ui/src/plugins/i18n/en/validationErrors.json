@@ -1,0 +1,10 @@
+{
+  "validationErrors": {
+    "email": "Invalid email",
+    "required": "required field",
+    "minMaxLength": "Length must be between {{min}} and {{max}} symbols.",
+    "yearsEnd": "Year End can't be less than year start",
+    "volume": "must be positiv integer",
+    "notUnique": "Params for this Power Unit is not unique"
+  }
+}

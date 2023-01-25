@@ -12,19 +12,19 @@ import { ExtraFeatureService } from '../../../services/extraFeature.service';
 
 export const ExtraFeatureEditPage = () => {
   const { id } = useParams();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['extraFeature', 'validationErrors', 'toast']);
   const navigate = useNavigate();
   const schema = yup
     .object()
     .shape({
       title: yup.string()
-        .required(t('validationErrors.required'))
-        .min(3, t('validationErrors.minMaxLength', { min: 3, max: 20 }))
-        .max(20, t('validationErrors.minMaxLength', { min: 3, max: 20 })),
+        .required(t('validationErrors:validationErrors.required'))
+        .min(3, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 20 }))
+        .max(20, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 20 })),
       description: yup.string()
-        .required(t('validationErrors.required'))
-        .min(3, t('validationErrors.minMaxLength', { min: 3, max: 200 }))
-        .max(200, t('validationErrors.minMaxLength', { min: 3, max: 200 })),
+        .required(t('validationErrors:validationErrors.required'))
+        .min(3, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 200 }))
+        .max(200, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 200 })),
     });
 
   const {
@@ -48,6 +48,7 @@ export const ExtraFeatureEditPage = () => {
         await ExtraFeatureService.create(form);
       }
       navigate('/extra-feature');
+      toast.success(id ? t('toast:toast.successfullyUpdated') : t('toast:toast.successfullyCreated'));
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -79,7 +80,7 @@ export const ExtraFeatureEditPage = () => {
         component="div"
         sx={{ margin: '15px' }}
       >
-        <Typography variant="h4" component="h4">{id ? t('extraFeature.titleEdit') : t('extraFeature.titleCreate')}</Typography>
+        <Typography variant="h4" component="h4">{id ? t('extraFeature:extraFeature.titleEdit') : t('extraFeature:extraFeature.titleCreate')}</Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
 
           <Controller
@@ -95,12 +96,11 @@ export const ExtraFeatureEditPage = () => {
               const errorText = isFieldValid === false ? error?.message : '';
               return (
                 <TextField
-                  InputLabelProps={{ shrink: value }}
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value || ''}
                   id="title"
-                  label={t('extraFeature.title')}
+                  label={t('extraFeature:extraFeature.title')}
                   variant="outlined"
                   margin="normal"
                   helperText={errorText}
@@ -122,12 +122,11 @@ export const ExtraFeatureEditPage = () => {
               const errorText = isFieldValid === false ? error?.message : '';
               return (
                 <TextField
-                  InputLabelProps={{ shrink: value }}
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value || ''}
                   id="description"
-                  label={t('extraFeature.description')}
+                  label={t('extraFeature:extraFeature.description')}
                   variant="outlined"
                   margin="normal"
                   helperText={errorText}
@@ -143,7 +142,7 @@ export const ExtraFeatureEditPage = () => {
             alignItems="center"
           >
             <Button disabled={(isSubmitted || isDirty) && !isValid} type="submit" variant="contained">
-              {t('extraFeature.save')}
+              {t('extraFeature:extraFeature.save')}
             </Button>
           </Stack>
         </form>

@@ -20,7 +20,7 @@ import './index.scss';
 
 export const CarModelTable = () => {
   const openConfirmation = useConfirmation();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['carModel', 'customDialog', 'enums']);
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
@@ -40,7 +40,7 @@ export const CarModelTable = () => {
       setData(result.carModels);
       setTotalCount(result.count);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
   useEffect(() => {
@@ -51,40 +51,40 @@ export const CarModelTable = () => {
 
     {
       id: 'name',
-      label: t('carModel.name'),
+      label: t('carModel:carModel.name'),
       isSortable: true,
       sortKey: 'name',
     },
     {
       id: 'brandName',
-      label: t('carModel.brandName'),
+      label: t('carModel:carModel.brandName'),
       isSortable: false,
     },
     {
       id: 'years',
-      label: t('carModel.years'),
+      label: t('carModel:carModel.years'),
       isSortable: true,
       sortKey: 'yearStart',
 
     },
     {
       id: 'powerUnits',
-      label: t('carModel.powerUnits'),
+      label: t('carModel:carModel.powerUnits'),
       isSortable: false,
     },
     {
       id: 'extraFeatures',
-      label: t('carModel.extraFeatures'),
+      label: t('carModel:carModel.extraFeatures'),
       isSortable: false,
     },
     {
       id: 'bodyTypes',
-      label: t('carModel.bodyTypes'),
+      label: t('carModel:carModel.bodyTypes'),
       isSortable: false,
     },
     {
       id: 'actions',
-      label: t('carModel.actions'),
+      label: t('carModel:carModel.actions'),
       isSortable: false,
     },
   ];
@@ -94,13 +94,13 @@ export const CarModelTable = () => {
       await CarModelService.delete(id);
       await getData();
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
   const deleteCarModelConfirmation = (id) => {
     openConfirmation({
-      title: t('customDialog.title'),
-      text: t('customDialog.text'),
+      title: t('customDialog:customDialog.title'),
+      text: t('customDialog:customDialog.text'),
       confirmButtonAction: () => {
         deleteCarModel(id);
       },
@@ -158,7 +158,7 @@ export const CarModelTable = () => {
                   <TableCell>{item.brandId.name}</TableCell>
                   <TableCell>
                     {item.yearStart}
-                    {item.yearEnd ? ' - ' : t('carModel.noData')}
+                    {item.yearEnd ? ' - ' : t('carModel:carModel.noData')}
                     {item.yearEnd}
                   </TableCell>
                   <TableCell>
@@ -166,17 +166,17 @@ export const CarModelTable = () => {
                       {(item.powerUnits || []).map((powerUnit) => {
                         return (
                           <li className="carModel__powerUnits-li" key={nanoid()}>
-                            <b>{t('carModel.engineVolume')}</b>
+                            <b>{t('carModel:carModel.engineVolume')}</b>
                             {powerUnit.engineVolume}
                             <br />
-                            <b>{t('carModel.fuelType')}</b>
-                            {t(`enum.FuelType.${powerUnit.fuelType}`)}
+                            <b>{t('carModel:carModel.fuelType')}</b>
+                            {t(`enums:enums.FuelType.${powerUnit.fuelType}`)}
                             <br />
-                            <b>{t('carModel.gearBox')}</b>
-                            {t(`enum.GearBox.${powerUnit.gearBox}`)}
+                            <b>{t('carModel:carModel.gearBox')}</b>
+                            {t(`enums:enums.GearBox.${powerUnit.gearBox}`)}
                             <br />
-                            <b>{t('carModel.driveType')}</b>
-                            {t(`enum.DriveType.${powerUnit.driveType}`)}
+                            <b>{t('carModel:carModel.driveType')}</b>
+                            {t(`enums:enums.DriveType.${powerUnit.driveType}`)}
                           </li>
                         );
                       })}
@@ -185,7 +185,7 @@ export const CarModelTable = () => {
                   <TableCell>
                     {(item.extraFeaturesIds || []).map((extrafeature) => {
                       return (
-                        <div key={nanoid()}>
+                        <div key={extrafeature.id}>
                           {extrafeature.title}
                         </div>
                       );
@@ -195,7 +195,7 @@ export const CarModelTable = () => {
                     {(item.bodyTypes || []).map((bodyTypes) => {
                       return (
                         <div key={nanoid()}>
-                          {t(`enum.BodyType.${bodyTypes}`)}
+                          {t(`enums:enums.BodyType.${bodyTypes}`)}
                         </div>
                       );
                     })}
@@ -226,7 +226,7 @@ export const CarModelTable = () => {
         </Table>
       </TableContainer>
       <TablePagination
-        labelRowsPerPage={t('carBrands.labelRowsPerPage')}
+        labelRowsPerPage={t('carBrands:carBrands.labelRowsPerPage')}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={totalCount}

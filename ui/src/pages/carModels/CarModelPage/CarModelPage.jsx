@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { CarModelTable } from '../CarModelTable/CarModelTable';
 
 export const CarModelPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['carModel']);
   return (
     <div>
       <Container maxWidth="false">

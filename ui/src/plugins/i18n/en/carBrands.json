@@ -1,0 +1,12 @@
+{
+  "carBrands": {
+    "title": "Car Brands",
+    "titleCreate": "Create Car Brand",
+    "titleEdit": "Edit Car Brand",
+    "name" : "Name",
+    "country": "Country",
+    "actions": "Actions",
+    "labelRowsPerPage": "Rows per page",
+    "save": "Save"
+  }
+}

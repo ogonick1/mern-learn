@@ -40,7 +40,7 @@ const getExtraFeaturesOptions = () => {
 
 export const CarModelEditPage = () => {
   const { id } = useParams();
-  const { t } = useTranslation();
+  const { t } = useTranslation('carModel', 'toast', 'carBrands', 'extraFeature', 'validationErrors');
   const navigate = useNavigate();
   const bodyTypeOptions = useBodyTypeOptions();
   const driveTypeOptions = useDriveTypeOptions();
@@ -126,11 +126,11 @@ export const CarModelEditPage = () => {
         await CarModelService.create(model);
       }
 
-      toast.success(id ? 'Car model successfully updated' : 'Car model successfully created');
+      toast.success(id ? t('toast:toast.successfullyUpdated') : t('toast:toast.successfullyCreated'));
 
       navigate('/car-model');
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
 
@@ -151,7 +151,7 @@ export const CarModelEditPage = () => {
         bodyTypeOptions,
       }));
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
   useEffect(() => {
@@ -171,7 +171,7 @@ export const CarModelEditPage = () => {
             variant="h4"
             component="h4"
           >
-            {t('carModel.title')}
+            {t('carModel:carModel.title')}
           </Typography>
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <Grid
@@ -198,7 +198,7 @@ export const CarModelEditPage = () => {
                         value={value || ''}
                         id="name"
                         fullWidth
-                        label={t('carModel.name')}
+                        label={t('carModel:carModel.name')}
                         helperText={errorText || ''}
                         error={!!errorText}
                       />
@@ -222,7 +222,7 @@ export const CarModelEditPage = () => {
                       <CustomSelect
                         searchCallback={getCarModelOptions}
                         id="brandOption"
-                        label={t('carBrands.title')}
+                        label={t('carBrands:carBrands.title')}
                         getOptionLabel={(option) => option.name || ''}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -253,7 +253,7 @@ export const CarModelEditPage = () => {
                         customInput={(
                           <TextField
                             onBlur={onBlur}
-                            label={t('carModel.yearStart')}
+                            label={t('carModel:carModel.yearStart')}
                             fullWidth
                             error={!!errorText}
                             helperText={errorText}
@@ -288,7 +288,7 @@ export const CarModelEditPage = () => {
                         customInput={(
                           <TextField
                             onBlur={onBlur}
-                            label={t('carModel.yearEnd')}
+                            label={t('carModel:carModel.yearEnd')}
                             fullWidth
                             error={!!errorText}
                             helperText={errorText}
@@ -324,7 +324,7 @@ export const CarModelEditPage = () => {
                         multiple
                         searchCallback={getExtraFeaturesOptions}
                         id="extraFeaturesOptions"
-                        label={t('extraFeature.title')}
+                        label={t('extraFeature:extraFeature.title')}
                         getOptionLabel={(option) => option.title || ''}
                         onChange={onChange}
                         isOptionEqualToValue={(option, val) => val.id === option.id}
@@ -353,7 +353,7 @@ export const CarModelEditPage = () => {
                         multiple
                         options={bodyTypeOptions}
                         id="bodyTypes"
-                        label={t('carModel.bodyTypes')}
+                        label={t('carModel:carModel.bodyTypes')}
                         getOptionLabel={(option) => option.title || ''}
                         isOptionEqualToValue={(option, val) => val.value === option.value}
                         onChange={onChange}
@@ -370,7 +370,7 @@ export const CarModelEditPage = () => {
               variant="h4"
               component="h4"
             >
-              {t('carModel.powerUnits')}
+              {t('carModel:carModel.powerUnits')}
             </Typography>
             <div>
               {powerUnitsFields.map((powerUnitsField, index) => {
@@ -406,7 +406,7 @@ export const CarModelEditPage = () => {
                               onChange={(newValue) => onChange(newValue || '')}
                               value={value}
                               id={`powerUnits.${index}.engineVolume`}
-                              label={t('carModel.engineVolume')}
+                              label={t('carModel:carModel.engineVolume')}
                               helperText={errorText || ''}
                               error={!!errorText}
                             />
@@ -429,7 +429,7 @@ export const CarModelEditPage = () => {
                           return (
                             <CustomSelect
                               id={`powerUnits.${index}.fuelType`}
-                              label={t('carModel.fuelType')}
+                              label={t('carModel:carModel.fuelType')}
                               options={fuelTypeOptions}
                               getOptionLabel={(option) => option.title || ''}
                               isOptionEqualToValue={(option, val) => option.value === val.value}
@@ -460,7 +460,7 @@ export const CarModelEditPage = () => {
                           return (
                             <CustomSelect
                               id={`powerUnits.${index}.gearBox`}
-                              label={t('carModel.gearBox')}
+                              label={t('carModel:carModel.gearBox')}
                               options={gearBoxOptions}
                               getOptionLabel={(option) => option.title || ''}
                               isOptionEqualToValue={(option, val) => option.value === val.value}
@@ -491,7 +491,7 @@ export const CarModelEditPage = () => {
                           return (
                             <CustomSelect
                               id={`powerUnits.${index}.driveType`}
-                              label={t('carModel.driveType')}
+                              label={t('carModel:carModel.driveType')}
                               options={driveTypeOptions}
                               getOptionLabel={(option) => option.title || ''}
                               isOptionEqualToValue={(option, val) => option.value === val.value}
@@ -521,7 +521,7 @@ export const CarModelEditPage = () => {
                     {notUniquePowerUnitsIndexes.includes(index) && (
                       <Grid item>
                         <div style={{ color: 'red' }}>
-                          {t('validationErrors.notUnique')}
+                          {t('validationErrors:validationErrors.notUnique')}
                         </div>
                       </Grid>
                     )}
@@ -538,7 +538,7 @@ export const CarModelEditPage = () => {
                   onClick={addPowerUnit}
                   variant="outlined"
                 >
-                  {t('carModel.addPowerUnit')}
+                  {t('carModel:carModel.addPowerUnit')}
                 </Button>
               </Stack>
             </div>
@@ -554,7 +554,7 @@ export const CarModelEditPage = () => {
                 type="submit"
                 variant="contained"
               >
-                {t('extraFeature.save')}
+                {t('carBrands:carBrands.save')}
               </Button>
             </Stack>
           </form>

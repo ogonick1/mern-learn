@@ -42,7 +42,7 @@ function BootstrapDialogTitle(props) {
 }
 
 export const CustomDialog = (props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['customDialog']);
 
   const {
     title,

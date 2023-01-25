@@ -1,6 +1,7 @@
 const carModelService = require('../services/carModel.service');
 
 const mapLeanDocumentToResponseDto = (carModel) => ({
+  id: carModel._id,
   name: carModel.name,
   brandId: {
     country: carModel.brandId?.country,

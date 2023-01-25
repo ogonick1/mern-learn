@@ -14,7 +14,7 @@ export const useBodyTypeOptions = () => {
 
   return useMemo(() => {
     return optionsValues.map((value) => ({
-      title: t(`enum.BodyType.${value}`),
+      title: t(`enums.BodyType.${value}`),
       value,
     }));
   }, [t]);

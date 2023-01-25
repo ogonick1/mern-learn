@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { ExtraFeatureTable } from '../ExtraFeatureTable';
 
 export const ExtraFeaturePage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['extraFeature']);
   return (
     <Box className="container">
       <Stack
@@ -24,9 +24,9 @@ export const ExtraFeaturePage = () => {
           variant="h4"
           component="h4"
         >
-          {t('extraFeature.title')}
+          {t('extraFeature:extraFeature.title')}
         </Typography>
-        <Button component={Link} to="/extra-feature/create">{t('extraFeature.create')}</Button>
+        <Button component={Link} to="/extra-feature/create">{t('extraFeature:extraFeature.create')}</Button>
       </Stack>
       <ExtraFeatureTable />
     </Box>

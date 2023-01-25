@@ -13,7 +13,7 @@ export const useDriveTypeOptions = () => {
 
   return useMemo(() => {
     return optionsValues.map((value) => ({
-      title: t(`enum.DriveType.${value}`),
+      title: t(`enums.DriveType.${value}`),
       value,
     }));
   }, [t]);
