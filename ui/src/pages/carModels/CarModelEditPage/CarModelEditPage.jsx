@@ -125,6 +125,9 @@ export const CarModelEditPage = () => {
       } else {
         await CarModelService.create(model);
       }
+
+      toast.success(id ? 'Car model successfully updated' : 'Car model successfully created');
+
       navigate('/car-model');
     } catch (error) {
       toast.error(error?.response?.data?.message);

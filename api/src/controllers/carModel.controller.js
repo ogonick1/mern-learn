@@ -1,18 +1,29 @@
 const carModelService = require('../services/carModel.service');
 
+const mapLeanDocumentToResponseDto = (carModel) => ({
+  name: carModel.name,
+  brandId: {
+    country: carModel.brandId?.country,
+    name: carModel.brandId?.name,
+    id: carModel.brandId?._id,
+  },
+  yearStart: carModel.yearStart,
+  yearEnd: carModel.yearEnd,
+  powerUnits: carModel.powerUnits,
+  extraFeaturesIds: (carModel.extraFeaturesIds || []).map((extraFeature) => ({
+    description: extraFeature.description,
+    title: extraFeature.title,
+    id: extraFeature._id,
+  })),
+  bodyTypes: carModel.bodyTypes,
+});
+
 const getCarModel = async (req, res) => {
   const { id } = req.params;
   const carModel = await carModelService.findById(id);
-  return res.json({
-    name: carModel.name,
-    brandId: carModel.brandId,
-    yearStart: carModel.yearStart,
-    yearEnd: carModel.yearEnd,
-    powerUnits: carModel.powerUnits,
-    extraFeaturesIds: carModel.extraFeaturesIds,
-    bodyTypes: carModel.bodyTypes,
-  });
+  return res.json(mapLeanDocumentToResponseDto(carModel));
 };
+
 const createCarModel = async (req, res) => {
   const {
     name,
@@ -80,7 +91,7 @@ const searchCarModel = async (req, res) => {
     sortField,
     descending,
   } = req.body;
-  const [carModel, count] = await carModelService.search({
+  const [carModels, count] = await carModelService.search({
     limit,
     offset,
     sortField,
@@ -88,16 +99,7 @@ const searchCarModel = async (req, res) => {
   });
   return res.json({
     count,
-    carModel: carModel.map((item) => ({
-      id: item._id,
-      name: item.name,
-      brandId: item.brandId,
-      yearStart: item.yearStart,
-      yearEnd: item.yearEnd,
-      powerUnits: item.powerUnits,
-      extraFeaturesIds: item.extraFeaturesIds,
-      bodyTypes: item.bodyTypes,
-    })),
+    carModels: carModels.map(mapLeanDocumentToResponseDto),
   });
 };
 

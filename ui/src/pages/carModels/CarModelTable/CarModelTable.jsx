@@ -37,7 +37,7 @@ export const CarModelTable = () => {
         descending,
       });
 
-      setData(result.carModel);
+      setData(result.carModels);
       setTotalCount(result.count);
     } catch (error) {
       toast.error(error?.response?.data?.message);
