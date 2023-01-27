@@ -2,6 +2,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Controller } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 export const CustomSelect = (props) => {
   const {
@@ -83,17 +84,17 @@ export const CustomSelect = (props) => {
   );
 };
 
-// CustomSelect.propTypes = {
-//  options: PropTypes.oneOfType([PropTypes.object]),
-//  searchCallback: PropTypes.func,
-//  getOptionLabel: PropTypes.oneOfType([PropTypes.object]),
-//  id: PropTypes.string,
-//  value: PropTypes.oneOfType([PropTypes.object]),
-//  multiple: PropTypes.bool,
-//  onChange: PropTypes.func,
-//  label: PropTypes.string,
-//  isOptionEqualToValue: PropTypes.oneOfType([PropTypes.object]),
-//  errorText: PropTypes.string,
-//  onBlur: PropTypes.func,
-// };
-// PropTypes.checkPropTypes();
+CustomSelect.propTypes = {
+  // eslint-disable-next-line
+  options: PropTypes.arrayOf(PropTypes.any),
+  searchCallback: PropTypes.func,
+  getOptionLabel: PropTypes.func,
+  id: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.object]),
+  multiple: PropTypes.bool,
+  onChange: PropTypes.func,
+  label: PropTypes.string,
+  isOptionEqualToValue: PropTypes.func,
+  onBlur: PropTypes.func,
+};
+PropTypes.checkPropTypes();

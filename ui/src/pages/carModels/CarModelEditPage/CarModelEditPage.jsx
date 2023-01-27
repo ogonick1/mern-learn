@@ -188,6 +188,7 @@ export const CarModelEditPage = () => {
                   name="brandOption"
                   searchCallback={getCarModelOptions}
                   id="brandOption"
+                  isOptionEqualToValue={(option, val) => option.id === val.id}
                   label={t('carBrands:carBrands.title')}
                   getOptionLabel={(option) => option.name || ''}
                   ifnovalue={null}
