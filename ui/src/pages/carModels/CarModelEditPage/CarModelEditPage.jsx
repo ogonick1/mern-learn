@@ -23,6 +23,7 @@ import {
   mapFormToInsertModel,
   mapModelToFormValues,
 } from './carModelEditPage.logic';
+import { CustomTextInput } from '../../../components/fields/CustomTextInput';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -179,32 +180,7 @@ export const CarModelEditPage = () => {
               spacing={2}
             >
               <Grid item xs={12} md={6}>
-                <Controller
-                  control={control}
-                  name="name"
-                  render={({
-                    field: {
-                      onChange, onBlur, value,
-                    },
-                    fieldState: { error },
-                  }) => {
-                    const isFieldValid = error ? false : undefined;
-                    const errorText = isFieldValid === false ? error?.message : '';
-                    return (
-                      <TextField
-                        sx={{ marginBottom: 2, marginTop: 2 }}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value || ''}
-                        id="name"
-                        fullWidth
-                        label={t('carModel:carModel.name')}
-                        helperText={errorText || ''}
-                        error={!!errorText}
-                      />
-                    );
-                  }}
-                />
+                <CustomTextInput name="name" label={t('carModel:carModel.name')} control={control} />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller

@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const isValidWhileInputNumber = (value) => {
   if (value === '' || value === '-') {
@@ -76,3 +77,20 @@ export const TextInput = (props) => {
     />
   );
 };
+
+TextInput.propTypes = {
+  sx: PropTypes.oneOfType([PropTypes.object]),
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  value: PropTypes.number,
+  id: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  variant: PropTypes.string,
+  helperText: PropTypes.string,
+  error: PropTypes.bool,
+  fullWidth: PropTypes.bool,
+  disabled: PropTypes.bool,
+  rows: PropTypes.number,
+};
+PropTypes.checkPropTypes();
