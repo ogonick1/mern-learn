@@ -1,5 +1,5 @@
 import {
-  TextField, Typography, Box, Stack, Button, Container, Grid, IconButton,
+  Typography, Box, Stack, Button, Container, Grid, IconButton,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import DatePicker from 'react-datepicker';
 import { CarModelService } from '../../../services/carModel.service';
 import { CustomSelect } from '../../../components/fields/CustomSelect';
 import { CarBrandService } from '../../../services/carBrand.service';
@@ -24,6 +23,7 @@ import {
   mapModelToFormValues,
 } from './carModelEditPage.logic';
 import { CustomTextInput } from '../../../components/fields/CustomTextInput';
+import { CustomDatePicker } from '../../../components/fields/CustomDatePicker';
 
 const getCarModelOptions = () => {
   return CarBrandService.search()
@@ -183,162 +183,60 @@ export const CarModelEditPage = () => {
                 <CustomTextInput name="name" label={t('carModel:carModel.name')} control={control} />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controller
+                <CustomSelect
                   control={control}
                   name="brandOption"
-                  render={({
-                    field: {
-                      onChange, onBlur, value,
-                    },
-                    fieldState: { error },
-                  }) => {
-                    const isFieldValid = error ? false : undefined;
-                    const errorText = isFieldValid === false ? error?.message : '';
-                    return (
-                      <CustomSelect
-                        searchCallback={getCarModelOptions}
-                        id="brandOption"
-                        label={t('carBrands:carBrands.title')}
-                        getOptionLabel={(option) => option.name || ''}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value || null}
-                        errorText={errorText}
-                      />
-                    );
-                  }}
+                  searchCallback={getCarModelOptions}
+                  id="brandOption"
+                  label={t('carBrands:carBrands.title')}
+                  getOptionLabel={(option) => option.name || ''}
+                  ifnovalue={null}
                 />
               </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Controller
+                <CustomDatePicker
                   control={control}
                   name="yearStart"
-                  render={({
-                    field: {
-                      onChange, onBlur, value,
-                    },
-                    fieldState: { error },
-                  }) => {
-                    const isFieldValid = error ? false : undefined;
-                    const errorText = isFieldValid === false ? error?.message : '';
-                    return (
-                      <DatePicker
-                        maxDate={new Date()}
-                        customInput={(
-                          <TextField
-                            onBlur={onBlur}
-                            label={t('carModel:carModel.yearStart')}
-                            fullWidth
-                            error={!!errorText}
-                            helperText={errorText}
-                          />
-                        )}
-                        selected={value}
-                        onChange={onChange}
-                        value={value || new Date()}
-                        showYearPicker
-                        dateFormat="yyyy"
-                        id="yearStart"
-                      />
-                    );
-                  }}
+                  id="yearStart"
+                  label={t('carModel:carModel.yearStart')}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controller
+                <CustomDatePicker
                   control={control}
                   name="yearEnd"
-                  render={({
-                    field: {
-                      onChange, onBlur, value,
-                    },
-                    fieldState: { error },
-                  }) => {
-                    const isFieldValid = error ? false : undefined;
-                    const errorText = isFieldValid === false ? error?.message : '';
-                    return (
-                      <DatePicker
-                        maxDate={new Date()}
-                        customInput={(
-                          <TextField
-                            onBlur={onBlur}
-                            label={t('carModel:carModel.yearEnd')}
-                            fullWidth
-                            error={!!errorText}
-                            helperText={errorText}
-                          />
-                        )}
-                        selected={value}
-                        onChange={onChange}
-                        value={value || new Date()}
-                        showYearPicker
-                        dateFormat="yyyy"
-                        id="yearEnd"
-                      />
-                    );
-                  }}
+                  id="yearEnd"
+                  label={t('carModel:carModel.yearEnd')}
                 />
               </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Controller
+                <CustomSelect
+                  ifnovalue={[]}
                   control={control}
                   name="extraFeaturesOptions"
-                  render={({
-                    field: {
-                      onChange, onBlur, value,
-                    },
-                    fieldState: { error },
-                  }) => {
-                    const isFieldValid = error ? false : undefined;
-                    const errorText = isFieldValid === false ? error?.message : '';
-                    return (
-                      <CustomSelect
-                        multiple
-                        searchCallback={getExtraFeaturesOptions}
-                        id="extraFeaturesOptions"
-                        label={t('extraFeature:extraFeature.title')}
-                        getOptionLabel={(option) => option.title || ''}
-                        onChange={onChange}
-                        isOptionEqualToValue={(option, val) => val.id === option.id}
-                        value={value || []}
-                        onBlur={onBlur}
-                        errorText={errorText}
-                      />
-                    );
-                  }}
+                  multiple
+                  searchCallback={getExtraFeaturesOptions}
+                  id="extraFeaturesOptions"
+                  label={t('extraFeature:extraFeature.title')}
+                  getOptionLabel={(option) => option.title || ''}
+                  isOptionEqualToValue={(option, val) => val.id === option.id}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controller
+                <CustomSelect
+                  ifnovalue={[]}
                   control={control}
                   name="bodyTypes"
-                  render={({
-                    field: {
-                      onChange, onBlur, value,
-                    },
-                    fieldState: { error },
-                  }) => {
-                    const isFieldValid = error ? false : undefined;
-                    const errorText = isFieldValid === false ? error?.message : '';
-                    return (
-                      <CustomSelect
-                        multiple
-                        options={bodyTypeOptions}
-                        id="bodyTypes"
-                        label={t('carModel:carModel.bodyTypes')}
-                        getOptionLabel={(option) => option.title || ''}
-                        isOptionEqualToValue={(option, val) => val.value === option.value}
-                        onChange={onChange}
-                        value={value || []}
-                        onBlur={onBlur}
-                        errorText={errorText}
-                      />
-                    );
-                  }}
+                  multiple
+                  options={bodyTypeOptions}
+                  id="bodyTypes"
+                  label={t('carModel:carModel.bodyTypes')}
+                  getOptionLabel={(option) => option.title || ''}
+                  isOptionEqualToValue={(option, val) => val.value === option.value}
                 />
               </Grid>
             </Grid>
@@ -391,96 +289,42 @@ export const CarModelEditPage = () => {
                       />
                     </Grid>
                     <Grid item xs={5} md={3}>
-                      <Controller
+                      <CustomSelect
                         control={control}
                         name={`powerUnits.${index}.fuelType`}
-                        render={({
-                          field: {
-                            onChange, onBlur, value,
-                          },
-                          fieldState: { error },
-                        }) => {
-                          const isFieldValid = error ? false : undefined;
-                          const errorText = isFieldValid === false ? error?.message : '';
-                          return (
-                            <CustomSelect
-                              id={`powerUnits.${index}.fuelType`}
-                              label={t('carModel:carModel.fuelType')}
-                              options={fuelTypeOptions}
-                              getOptionLabel={(option) => option.title || ''}
-                              isOptionEqualToValue={(option, val) => option.value === val.value}
-                              onChange={onChange}
-                              value={value || null}
-                              onBlur={() => {
-                                checkPowerUnitsUnique();
-                                onBlur();
-                              }}
-                              errorText={errorText}
-                            />
-                          );
-                        }}
+                        id={`powerUnits.${index}.fuelType`}
+                        label={t('carModel:carModel.fuelType')}
+                        options={fuelTypeOptions}
+                        getOptionLabel={(option) => option.title || ''}
+                        isOptionEqualToValue={(option, val) => option.value === val.value}
+                        ifnovalue={null}
+                        checkPowerUnitsUnique={checkPowerUnitsUnique}
                       />
                     </Grid>
                     <Grid item xs={5} md={3}>
-                      <Controller
+                      <CustomSelect
                         control={control}
                         name={`powerUnits.${index}.gearBox`}
-                        render={({
-                          field: {
-                            onChange, onBlur, value,
-                          },
-                          fieldState: { error },
-                        }) => {
-                          const isFieldValid = error ? false : undefined;
-                          const errorText = isFieldValid === false ? error?.message : '';
-                          return (
-                            <CustomSelect
-                              id={`powerUnits.${index}.gearBox`}
-                              label={t('carModel:carModel.gearBox')}
-                              options={gearBoxOptions}
-                              getOptionLabel={(option) => option.title || ''}
-                              isOptionEqualToValue={(option, val) => option.value === val.value}
-                              onChange={onChange}
-                              value={value || null}
-                              onBlur={() => {
-                                checkPowerUnitsUnique();
-                                onBlur();
-                              }}
-                              errorText={errorText}
-                            />
-                          );
-                        }}
+                        id={`powerUnits.${index}.gearBox`}
+                        label={t('carModel:carModel.gearBox')}
+                        options={gearBoxOptions}
+                        getOptionLabel={(option) => option.title || ''}
+                        isOptionEqualToValue={(option, val) => option.value === val.value}
+                        ifnovalue={null}
+                        checkPowerUnitsUnique={checkPowerUnitsUnique}
                       />
                     </Grid>
                     <Grid item xs={5} md={3}>
-                      <Controller
+                      <CustomSelect
                         control={control}
                         name={`powerUnits.${index}.driveType`}
-                        render={({
-                          field: {
-                            onChange, onBlur, value,
-                          },
-                          fieldState: { error },
-                        }) => {
-                          const isFieldValid = error ? false : undefined;
-                          const errorText = isFieldValid === false ? error?.message : '';
-                          return (
-                            <CustomSelect
-                              id={`powerUnits.${index}.driveType`}
-                              label={t('carModel:carModel.driveType')}
-                              options={driveTypeOptions}
-                              getOptionLabel={(option) => option.title || ''}
-                              isOptionEqualToValue={(option, val) => option.value === val.value}
-                              onChange={onChange}
-                              value={value || null}
-                              onBlur={() => {
-                                checkPowerUnitsUnique();
-                                onBlur();
-                              }}
-                              errorText={errorText}
-                            />
-                          );
-                        }}
+                        id={`powerUnits.${index}.driveType`}
+                        label={t('carModel:carModel.driveType')}
+                        options={driveTypeOptions}
+                        getOptionLabel={(option) => option.title || ''}
+                        isOptionEqualToValue={(option, val) => option.value === val.value}
+                        ifnovalue={null}
+                        checkPowerUnitsUnique={checkPowerUnitsUnique}
                       />
                     </Grid>
                     <Grid item xs={2} md={1}>
