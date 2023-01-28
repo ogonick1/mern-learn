@@ -11,7 +11,7 @@ function throwCarBrandNotFound(id) {
   });
 }
 
-function throwCarBrandUnicName(name) {
+function throwCarBrandUniqueName(name) {
   throw new BusinessLogicError({
     errorCode: errorCodes.CAR_BRAND_NAME_NOT_UNIQUE,
     message: `Car Brand with name ${name} already exist`,
@@ -23,5 +23,5 @@ function throwCarBrandUnicName(name) {
 
 module.exports = {
   throwCarBrandNotFound,
-  throwCarBrandUnicName,
+  throwCarBrandUniqueName,
 };

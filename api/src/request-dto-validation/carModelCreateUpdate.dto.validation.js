@@ -3,7 +3,7 @@ const { arrayUnique } = require('../validation/array-unique.validations');
 const { FuelType } = require('../enums/FuelType.enum');
 const { GearBox } = require('../enums/GearBox.enum');
 const { DriveType } = require('../enums/DriveType.enum');
-const { getStringLengthValidationMessage } = require('./getSrtingLengthValidationMessage');
+const { getStringLengthValidationMessage } = require('./getStringLengthValidationMessage');
 
 const carModelCreateUpdateDtoValidation = [
   check('name', getStringLengthValidationMessage({
@@ -28,7 +28,7 @@ const carModelCreateUpdateDtoValidation = [
   check('powerUnits.*.driveType', 'invalid driverType').isIn(Object.values(DriveType)),
   check(
     'extraFeaturesIds',
-    'incorect extraFeaturesIds',
+    'incorrect extraFeaturesIds',
   )
     .optional()
     .isArray()

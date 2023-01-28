@@ -10,22 +10,56 @@ import './index.scss';
 export const Navbar = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuth);
-  const { t, i18n } = useTranslation(['languages', 'carModel', 'carBrands', 'extraFeature', 'loginPage']);
+  const { t, i18n } = useTranslation([
+    'languages',
+    'carModel',
+    'carBrands',
+    'extraFeature',
+    'loginPage',
+  ]);
 
   const langs = {
     en: { nativeName: t('languages.en') },
     ua: { nativeName: t('languages.ua') },
   };
+  const navBarItem = [
+    {
+      title: t('carModel:carModel.title'),
+      to: 'car-model',
+    },
+    {
+      title: t('carModel:carBrands.title'),
+      to: 'car-brands',
+    },
+    {
+      title: t('extraFeature:extraFeature.title'),
+      to: 'extra-feature',
+    },
+  ];
   return (
     <Box
       component="div"
       className="navbar__box"
     >
       <NavLink className="navbar__link" to="/">LOGO</NavLink>
-      {isAuth && <NavLink className="navbar__link" to="car-model">{t('carModel:carModel.title')}</NavLink>}
-      {isAuth && <NavLink className="navbar__link" to="car-brands">{t('carBrands:carBrands.title')}</NavLink>}
-      {isAuth && <NavLink className="navbar__link" to="extra-feature">{t('extraFeature:extraFeature.title')}</NavLink>}
-      {isAuth && <Button variant="contained" onClick={() => dispatch(logOut())}>{t('loginPage:loginPage.logout')}</Button>}
+      {isAuth && navBarItem.map((nav) => (
+        <NavLink
+          key={nav.to}
+          className="navbar__link"
+          to={nav.to}
+        >
+          {nav.title}
+        </NavLink>
+      ))}
+      {isAuth
+        && (
+          <Button
+            variant="contained"
+            onClick={() => dispatch(logOut())}
+          >
+            {t('loginPage:loginPage.logout')}
+          </Button>
+        )}
       <Select
         className="navbar__select"
         id="simple-select"
@@ -33,7 +67,13 @@ export const Navbar = () => {
         onChange={(e) => i18n.changeLanguage(e.target.value)}
       >
         {Object.keys(langs).map((lng) => (
-          <MenuItem className="navbar__select-item" key={lng} value={lng}>{langs[lng].nativeName}</MenuItem>
+          <MenuItem
+            className="navbar__select-item"
+            key={lng}
+            value={lng}
+          >
+            {langs[lng].nativeName}
+          </MenuItem>
         ))}
       </Select>
     </Box>

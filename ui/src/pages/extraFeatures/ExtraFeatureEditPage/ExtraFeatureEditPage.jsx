@@ -1,31 +1,21 @@
 import {
-  TextField, Typography, Box, Stack, Button, Container,
+  Typography, Box, Stack, Button, Container,
 } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { ExtraFeatureService } from '../../../services/extraFeature.service';
+import { getValidationSchema } from './validation.schema';
+import { CustomTextInput } from '../../../components/fields/CustomTextInput/CustomTextInput';
 
 export const ExtraFeatureEditPage = () => {
   const { id } = useParams();
   const { t } = useTranslation(['extraFeature', 'validationErrors', 'toast']);
   const navigate = useNavigate();
-  const schema = yup
-    .object()
-    .shape({
-      title: yup.string()
-        .required(t('validationErrors:validationErrors.required'))
-        .min(3, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 20 }))
-        .max(20, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 20 })),
-      description: yup.string()
-        .required(t('validationErrors:validationErrors.required'))
-        .min(3, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 200 }))
-        .max(200, t('validationErrors:validationErrors.minMaxLength', { min: 3, max: 200 })),
-    });
+  const schema = getValidationSchema(t);
 
   const {
     handleSubmit,
@@ -82,58 +72,15 @@ export const ExtraFeatureEditPage = () => {
       >
         <Typography variant="h4" component="h4">{id ? t('extraFeature:extraFeature.titleEdit') : t('extraFeature:extraFeature.titleCreate')}</Typography>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
-
-          <Controller
+          <CustomTextInput
             control={control}
             name="title"
-            render={({
-              field: {
-                onChange, onBlur, value,
-              },
-              fieldState: { error },
-            }) => {
-              const isFieldValid = error ? false : undefined;
-              const errorText = isFieldValid === false ? error?.message : '';
-              return (
-                <TextField
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value || ''}
-                  id="title"
-                  label={t('extraFeature:extraFeature.title')}
-                  variant="outlined"
-                  margin="normal"
-                  helperText={errorText}
-                  error={!!errorText}
-                />
-              );
-            }}
+            label={t('extraFeature:extraFeature.title')}
           />
-          <Controller
+          <CustomTextInput
             control={control}
             name="description"
-            render={({
-              field: {
-                onChange, onBlur, value,
-              },
-              fieldState: { error },
-            }) => {
-              const isFieldValid = error ? false : undefined;
-              const errorText = isFieldValid === false ? error?.message : '';
-              return (
-                <TextField
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value || ''}
-                  id="description"
-                  label={t('extraFeature:extraFeature.description')}
-                  variant="outlined"
-                  margin="normal"
-                  helperText={errorText}
-                  error={!!errorText}
-                />
-              );
-            }}
+            label={t('extraFeature:extraFeature.description')}
           />
           <Stack
             marginTop={2}

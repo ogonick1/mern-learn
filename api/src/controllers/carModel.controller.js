@@ -44,16 +44,7 @@ const createCarModel = async (req, res) => {
     extraFeaturesIds,
     bodyTypes,
   });
-  return res.json({
-    id: carModel._id,
-    name: carModel.name,
-    brandId: carModel.brandId,
-    yearStart: carModel.yearStart,
-    yearEnd: carModel.yearEnd,
-    powerUnits: carModel.powerUnits,
-    extraFeaturesIds: carModel.extraFeaturesIds,
-    bodyTypes: carModel.bodyTypes,
-  });
+  return res.json(mapLeanDocumentToResponseDto(carModel));
 };
 
 const updateCarModel = async (req, res) => {

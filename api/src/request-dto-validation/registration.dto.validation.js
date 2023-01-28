@@ -1,5 +1,5 @@
 const { check } = require('express-validator');
-const { getStringLengthValidationMessage } = require('./getSrtingLengthValidationMessage');
+const { getStringLengthValidationMessage } = require('./getStringLengthValidationMessage');
 
 const registrationDtoValidation = [
   check('email', 'incorrect email address').isEmail(),

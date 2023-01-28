@@ -1,7 +1,7 @@
 const carBrandRepository = require('../repositories/carBrand.repository');
 const {
   throwCarBrandNotFound,
-  throwCarBrandUnicName,
+  throwCarBrandUniqueName,
 } = require('../errors/errors-builders/carBrands.errors-builders');
 
 const create = async (model) => {
@@ -9,7 +9,7 @@ const create = async (model) => {
     .findOneByCriteria({ name: model.name });
 
   if (carBrandWithSameName) {
-    throwCarBrandUnicName(model.name);
+    throwCarBrandUniqueName(model.name);
   }
 
   return carBrandRepository.create(model);
@@ -36,7 +36,7 @@ const update = async (id, model) => {
     .findOneByCriteria({ name: model.name, _id: { $ne: id } });
 
   if (carBrandWithSameName) {
-    throwCarBrandUnicName(model.name);
+    throwCarBrandUniqueName(model.name);
   }
 
   return carBrandRepository.update(id, model);
