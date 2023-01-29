@@ -26,11 +26,11 @@ const findManyByIds = (ids) => {
 };
 
 const search = (searchModel) => {
-  const { queryOptions } = mapSearchRequestToMongoDbFindQuery(searchModel);
+  const { queryOptions, filterQuery } = mapSearchRequestToMongoDbFindQuery(searchModel);
 
   return Promise.all([
-    ExtraFeatureModel.find({}, null, queryOptions).lean().exec(),
-    ExtraFeatureModel.countDocuments().exec(),
+    ExtraFeatureModel.find(filterQuery, null, queryOptions).lean().exec(),
+    ExtraFeatureModel.countDocuments(filterQuery).exec(),
   ]);
 };
 

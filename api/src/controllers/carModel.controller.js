@@ -82,12 +82,14 @@ const searchCarModel = async (req, res) => {
     offset,
     sortField,
     descending,
+    stringFilters,
   } = req.body;
   const [carModels, count] = await carModelService.search({
     limit,
     offset,
     sortField,
     descending,
+    stringFilters,
   });
   return res.json({
     count,

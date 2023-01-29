@@ -44,12 +44,16 @@ const searchCarBrands = async (req, res) => {
     offset,
     sortField,
     descending,
+    nameFilter,
+    stringFilters,
   } = req.body;
   const [carBrands, count] = await carBrandService.search({
     limit,
     offset,
     sortField,
     descending,
+    nameFilter,
+    stringFilters,
   });
   return res.json({
     count,

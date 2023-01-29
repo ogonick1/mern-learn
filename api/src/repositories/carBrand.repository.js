@@ -23,11 +23,11 @@ const remove = (id) => {
 };
 
 const search = (searchModel) => {
-  const { queryOptions } = mapSearchRequestToMongoDbFindQuery(searchModel);
+  const { queryOptions, filterQuery } = mapSearchRequestToMongoDbFindQuery(searchModel);
 
   return Promise.all([
-    CarBrandModel.find({}, null, queryOptions).lean().exec(),
-    CarBrandModel.countDocuments().exec(),
+    CarBrandModel.find(filterQuery, null, queryOptions).lean().exec(),
+    CarBrandModel.countDocuments(filterQuery).exec(),
   ]);
 };
 

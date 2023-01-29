@@ -38,12 +38,14 @@ const searchExtraFeature = async (req, res) => {
     offset,
     sortField,
     descending,
+    stringFilters,
   } = req.body;
   const [extraFeature, count] = await extraFeatureService.search({
     limit,
     offset,
     sortField,
     descending,
+    stringFilters,
   });
   return res.json({
     count,
