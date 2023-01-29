@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 export const CustomSelect = (props) => {
   const {
-    ifnovalue,
+    ifNoValue,
     name,
     control,
     options,
@@ -73,7 +73,7 @@ export const CustomSelect = (props) => {
                 }}
               />
             )}
-            value={value || ifnovalue}
+            value={value || ifNoValue}
             onChange={(action, option) => {
               onChange(option);
             }}

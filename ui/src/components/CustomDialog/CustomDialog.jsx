@@ -7,6 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -18,10 +19,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 function BootstrapDialogTitle(props) {
-  const { children, onClose, ...other } = props;
+  const { children, onClose, id } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle sx={{ m: 0, p: 2 }} id={id}>
       {children}
       {onClose ? (
         <IconButton
@@ -85,3 +86,16 @@ export const CustomDialog = (props) => {
     </BootstrapDialog>
   );
 };
+
+CustomDialog.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.string,
+  closeDialog: PropTypes.func,
+  onSubmit: PropTypes.func,
+  cancelButtonText: PropTypes.string,
+  submitButtonText: PropTypes.string,
+  cancelButtonVariant: PropTypes.string,
+  submitButtonVariant: PropTypes.string,
+
+};
+PropTypes.checkPropTypes();

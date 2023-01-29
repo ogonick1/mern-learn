@@ -17,9 +17,11 @@ const getCarBrandById = async (req, res) => {
 
   const carBrand = await carBrandService.findById(id);
   return res.json({
-    id: carBrand._id,
-    name: carBrand.name,
-    country: carBrand.country,
+    carBrand: carBrand.map((carBrandItem) => ({
+      id: carBrandItem._id,
+      name: carBrandItem.name,
+      country: carBrandItem.country,
+    })),
   });
 };
 

@@ -191,7 +191,7 @@ export const CarModelEditPage = () => {
                   isOptionEqualToValue={(option, val) => option.id === val.id}
                   label={t('carBrands:carBrands.title')}
                   getOptionLabel={(option) => option.name || ''}
-                  ifnovalue={null}
+                  ifNoValue={null}
                 />
               </Grid>
             </Grid>
@@ -216,7 +216,7 @@ export const CarModelEditPage = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <CustomSelect
-                  ifnovalue={[]}
+                  ifNoValue={[]}
                   control={control}
                   name="extraFeaturesOptions"
                   multiple
@@ -229,7 +229,7 @@ export const CarModelEditPage = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <CustomSelect
-                  ifnovalue={[]}
+                  ifNoValue={[]}
                   control={control}
                   name="bodyTypes"
                   multiple
@@ -298,7 +298,7 @@ export const CarModelEditPage = () => {
                         options={fuelTypeOptions}
                         getOptionLabel={(option) => option.title || ''}
                         isOptionEqualToValue={(option, val) => option.value === val.value}
-                        ifnovalue={null}
+                        ifNoValue={null}
                         checkPowerUnitsUnique={checkPowerUnitsUnique}
                       />
                     </Grid>
@@ -311,7 +311,7 @@ export const CarModelEditPage = () => {
                         options={gearBoxOptions}
                         getOptionLabel={(option) => option.title || ''}
                         isOptionEqualToValue={(option, val) => option.value === val.value}
-                        ifnovalue={null}
+                        ifNoValue={null}
                         checkPowerUnitsUnique={checkPowerUnitsUnique}
                       />
                     </Grid>
@@ -324,7 +324,7 @@ export const CarModelEditPage = () => {
                         options={driveTypeOptions}
                         getOptionLabel={(option) => option.title || ''}
                         isOptionEqualToValue={(option, val) => option.value === val.value}
-                        ifnovalue={null}
+                        ifNoValue={null}
                         checkPowerUnitsUnique={checkPowerUnitsUnique}
                       />
                     </Grid>
