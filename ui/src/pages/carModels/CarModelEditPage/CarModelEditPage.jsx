@@ -25,15 +25,35 @@ import {
 import { CustomTextInput } from '../../../components/fields/CustomTextInput';
 import { CustomDatePicker } from '../../../components/fields/CustomDatePicker';
 
-const getCarModelOptions = () => {
-  return CarBrandService.search()
+const getCarModelOptions = (brandNameFilter = '') => {
+  const requestModel = {};
+  if (brandNameFilter) {
+    requestModel.stringFilters = [
+      {
+        fieldName: 'name',
+        values: [brandNameFilter],
+        exactMatch: false,
+      },
+    ];
+  }
+  return CarBrandService.search(requestModel)
     .then((result) => {
       return result.carBrands;
     });
 };
 
-const getExtraFeaturesOptions = () => {
-  return ExtraFeatureService.search()
+const getExtraFeaturesOptions = (titleFilter = '') => {
+  const requestModel = {};
+  if (titleFilter) {
+    requestModel.stringFilters = [
+      {
+        fieldName: 'title',
+        values: [titleFilter],
+        exactMatch: false,
+      },
+    ];
+  }
+  return ExtraFeatureService.search(requestModel)
     .then((result) => {
       return result.extraFeature;
     });

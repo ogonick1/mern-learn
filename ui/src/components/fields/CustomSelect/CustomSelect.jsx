@@ -20,11 +20,13 @@ export const CustomSelect = (props) => {
   } = props;
   const [internalOptions, setInternalOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [inputSearch, setInputSearch] = useState('');
+
   const getOptions = async () => {
     setLoading(true);
     try {
       if (searchCallback) {
-        const result = await searchCallback();
+        const result = await searchCallback(inputSearch);
         setInternalOptions(result);
       }
     } catch (err) {
@@ -37,7 +39,7 @@ export const CustomSelect = (props) => {
     if (searchCallback) {
       getOptions();
     }
-  }, []);
+  }, [inputSearch]);
 
   return (
 
@@ -73,7 +75,15 @@ export const CustomSelect = (props) => {
                 }}
               />
             )}
+            onClose={() => {
+              setInputSearch('');
+            }}
             value={value || ifNoValue}
+            onInputChange={(action, inputChangeValue) => {
+              if (action?.type === 'change') {
+                setInputSearch(inputChangeValue);
+              }
+            }}
             onChange={(action, option) => {
               onChange(option);
             }}
