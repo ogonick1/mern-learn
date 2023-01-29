@@ -19,13 +19,12 @@ const mapSearchRequestToMongoDbFindQuery = (searchModel) => {
 
   // filterQuery
   const filterQuery = {};
-
   if (searchModel.stringFilters) {
     searchModel.stringFilters.forEach((filter) => {
       filterQuery.$and = filterQuery.$and || [];
       filterQuery.$and.push({
         [filter.fieldName]: {
-          $in: filter.value.map((value) => {
+          $in: filter.values.map((value) => {
             if (filter.exactMatch) {
               return value;
             }
@@ -35,7 +34,6 @@ const mapSearchRequestToMongoDbFindQuery = (searchModel) => {
       });
     });
   }
-
   return {
     queryOptions,
     filterQuery,

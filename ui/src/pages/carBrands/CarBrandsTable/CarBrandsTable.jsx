@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { CarBrandService } from '../../../services/carBrand.service';
 import { useConfirmation } from '../../../hooks/useConfirmation';
+import { TextInput } from '../../../components/fields/TextInput';
 
 export const CarBrandsTable = () => {
   const openConfirmation = useConfirmation();
@@ -25,14 +26,34 @@ export const CarBrandsTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortBy, setSortBy] = useState('name');
   const [descending, setDescending] = useState(true);
+  const [nameFilter, setNameFilter] = useState('');
+  const [countryFilter, setCountryFilter] = useState('');
 
   const getData = async () => {
     try {
+      const stringFilters = [];
+
+      if (nameFilter) {
+        stringFilters.push({
+          fieldName: 'name',
+          values: [nameFilter],
+          exactMatch: false,
+        });
+      }
+      if (countryFilter) {
+        stringFilters.push({
+          fieldName: 'country',
+          values: [countryFilter],
+          exactMatch: false,
+        });
+      }
+
       const result = await CarBrandService.search({
         limit: rowsPerPage,
         offset: rowsPerPage * page,
         sortField: sortBy,
         descending,
+        stringFilters,
       });
 
       setData(result.carBrands);
@@ -43,7 +64,14 @@ export const CarBrandsTable = () => {
   };
   useEffect(() => {
     getData();
-  }, [rowsPerPage, page, descending, sortBy]);
+  }, [
+    rowsPerPage,
+    page,
+    descending,
+    sortBy,
+    nameFilter,
+    countryFilter,
+  ]);
 
   const columns = [
     {
@@ -93,6 +121,24 @@ export const CarBrandsTable = () => {
   const navigate = useNavigate();
   return (
     <div>
+      <div>
+        <TextInput
+          fullWidth={false}
+          value={nameFilter}
+          onChange={setNameFilter}
+          label="Name Filter"
+        />
+        <br />
+        <br />
+        <TextInput
+          fullWidth={false}
+          value={countryFilter}
+          onChange={setCountryFilter}
+          label="Country Filter"
+        />
+        <br />
+        <br />
+      </div>
       <TableContainer>
         <Table>
           <TableHead>
