@@ -1,6 +1,6 @@
 const carModelService = require('../services/carModel.service');
 
-const mapLeanDocumentToResponseDto = (carModel) => ({
+const mapCarModelDocumentToResponseDto = (carModel) => ({
   id: carModel._id,
   name: carModel.name,
   brandId: {
@@ -22,7 +22,7 @@ const mapLeanDocumentToResponseDto = (carModel) => ({
 const getCarModel = async (req, res) => {
   const { id } = req.params;
   const carModel = await carModelService.findById(id);
-  return res.json(mapLeanDocumentToResponseDto(carModel));
+  return res.json(mapCarModelDocumentToResponseDto(carModel));
 };
 
 const createCarModel = async (req, res) => {
@@ -44,7 +44,7 @@ const createCarModel = async (req, res) => {
     extraFeaturesIds,
     bodyTypes,
   });
-  return res.json(mapLeanDocumentToResponseDto(carModel));
+  return res.json(mapCarModelDocumentToResponseDto(carModel));
 };
 
 const updateCarModel = async (req, res) => {
@@ -91,7 +91,7 @@ const searchCarModel = async (req, res) => {
   });
   return res.json({
     count,
-    carModels: carModels.map(mapLeanDocumentToResponseDto),
+    carModels: carModels.map(mapCarModelDocumentToResponseDto),
   });
 };
 

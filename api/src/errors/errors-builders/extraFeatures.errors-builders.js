@@ -10,6 +10,7 @@ function throwExtraFeaturesNotFound(ids) {
     },
   });
 }
+
 function throwExtraFeatureNotUnic(title) {
   throw new BusinessLogicError({
     errorCode: errorCodes.EXTRA_FEATURE_NAME_NOT_UNIQUE,

@@ -1,24 +1,22 @@
 const extraFeatureService = require('../services/extraFeature.service');
 
+const mapExtraFeatureDocumentToResponseDto = (extraFeature) => ({
+  id: extraFeature._id,
+  title: extraFeature.title,
+  description: extraFeature.description,
+});
+
 const createExtraFeature = async (req, res) => {
   const { title, description } = req.body;
 
   const extraFeature = await extraFeatureService.create({ title, description });
-  return res.json({
-    id: extraFeature._id,
-    title: extraFeature.title,
-    description: extraFeature.description,
-  });
+  return res.json(mapExtraFeatureDocumentToResponseDto(extraFeature));
 };
 
 const getExtraFeatureById = async (req, res) => {
   const { id } = req.params;
   const extraFeature = await extraFeatureService.findById(id);
-  return res.json({
-    id: extraFeature._id,
-    title: extraFeature.title,
-    description: extraFeature.description,
-  });
+  return res.json(mapExtraFeatureDocumentToResponseDto(extraFeature));
 };
 
 const updateExtraFeature = async (req, res) => {
@@ -49,11 +47,7 @@ const searchExtraFeature = async (req, res) => {
   });
   return res.json({
     count,
-    extraFeature: extraFeature.map((extraFeatureItem) => ({
-      id: extraFeatureItem._id,
-      title: extraFeatureItem.title,
-      description: extraFeatureItem.description,
-    })),
+    extraFeature: extraFeature.map(mapExtraFeatureDocumentToResponseDto),
   });
 };
 

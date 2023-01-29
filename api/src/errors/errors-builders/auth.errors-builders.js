@@ -15,6 +15,7 @@ function throwEmailReady() {
     errorCode: errorCodes.EMAIL_ALREADY_EXISTED,
   });
 }
+
 module.exports = {
   throwAuthError,
   throwEmailReady,
