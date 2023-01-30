@@ -1,101 +1,48 @@
-import {
-  TablePagination, TableSortLabel, IconButton,
-} from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { useState, useEffect } from 'react';
+import { IconButton, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useRef, useState } from 'react';
 import { CarBrandService } from '../../../services/carBrand.service';
+import { CustomTable } from '../../../components/CustomTable';
 import { useConfirmation } from '../../../hooks/useConfirmation';
 import { TextInput } from '../../../components/fields/TextInput';
+import { useFirstMountState } from '../../../hooks/useFirstMountState';
 
 export const CarBrandsTable = () => {
-  const openConfirmation = useConfirmation();
   const { t } = useTranslation(['carBrands', 'customDialog']);
-  const [data, setData] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortBy, setSortBy] = useState('name');
-  const [descending, setDescending] = useState(true);
+  const openConfirmation = useConfirmation();
+  const navigate = useNavigate();
+  const customTableRef = useRef(null);
+  const isFirstMount = useFirstMountState();
   const [nameFilter, setNameFilter] = useState('');
   const [countryFilter, setCountryFilter] = useState('');
 
-  const getData = async () => {
-    try {
-      const stringFilters = [];
-
-      if (nameFilter) {
-        stringFilters.push({
-          fieldName: 'name',
-          values: [nameFilter],
-          exactMatch: false,
-        });
-      }
-      if (countryFilter) {
-        stringFilters.push({
-          fieldName: 'country',
-          values: [countryFilter],
-          exactMatch: false,
-        });
-      }
-
-      const result = await CarBrandService.search({
-        limit: rowsPerPage,
-        offset: rowsPerPage * page,
-        sortField: sortBy,
-        descending,
-        stringFilters,
-      });
-
-      setData(result.carBrands);
-      setTotalCount(result.count);
-    } catch (error) {
-      toast.error(error?.resolvedErrorMessage);
-    }
+  const reloadTable = () => {
+    customTableRef.current?.getTableData();
   };
-  useEffect(() => {
-    getData();
-  }, [
-    rowsPerPage,
-    page,
-    descending,
-    sortBy,
-    nameFilter,
-    countryFilter,
-  ]);
 
-  const columns = [
-    {
-      id: 'name',
-      label: t('carBrands.name'),
-    },
-    {
-      id: 'country',
-      label: t('carBrands.country'),
-    },
-    {
-      id: 'actions',
-      label: t('carBrands.actions'),
-    },
-  ];
+  const onFilterChanged = () => {
+    customTableRef.current?.onFilterChanged();
+  };
+
+  useEffect(() => {
+    if (!isFirstMount) {
+      onFilterChanged();
+    }
+  }, [nameFilter, countryFilter]);
 
   const deleteCarBrand = async (id) => {
     try {
       await CarBrandService.delete(id);
-      await getData();
+      reloadTable();
     } catch (error) {
       toast.error(error?.resolvedErrorMessage);
     }
   };
+
   const deleteCarBrandConfirmation = (id) => {
     openConfirmation({
       title: t('customDialog:customDialog.titleCarBrand'),
@@ -105,99 +52,117 @@ export const CarBrandsTable = () => {
       },
     });
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+
+  const requestAdapter = ({
+    limit,
+    offset,
+    orderBy,
+    orderDescending,
+  }) => ({
+    limit,
+    offset,
+    sortField: orderBy,
+    descending: orderDescending,
+  });
+
+  const requestFunction = (args) => {
+    const {
+      limit,
+      offset,
+      sortField,
+      descending,
+    } = args;
+
+    const stringFilters = [];
+
+    if (nameFilter) {
+      stringFilters.push({
+        fieldName: 'name',
+        values: [nameFilter],
+        exactMatch: false,
+      });
+    }
+    if (countryFilter) {
+      stringFilters.push({
+        fieldName: 'country',
+        values: [countryFilter],
+        exactMatch: false,
+      });
+    }
+    return CarBrandService.search({
+      limit,
+      offset,
+      sortField,
+      descending,
+      stringFilters,
+    });
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  const handleRequestSort = (id) => {
-    const thisSort = sortBy === id && descending === true;
-    setDescending(!thisSort);
-    setSortBy(id);
-  };
-  const navigate = useNavigate();
+  const responseAdapter = ({ carBrands, count }) => ({
+    items: carBrands,
+    count,
+  });
+
+  const columns = [
+    {
+      accessor: 'name',
+      Header: t('carBrands.name'),
+    },
+    {
+      accessor: 'country',
+      Header: t('carBrands.country'),
+    },
+    {
+      accessor: 'actions',
+      Header: t('carBrands.actions'),
+      width: '10%',
+      Cell({ row: { original } }) {
+        return (
+          <Stack direction="row">
+            <IconButton
+              onClick={() => deleteCarBrandConfirmation(original.id)}
+              color="error"
+            >
+              <DeleteIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => navigate(`/car-brands/edit/${original.id}`)}
+            >
+              <EditIcon />
+            </IconButton>
+          </Stack>
+        );
+      },
+    },
+  ];
+
   return (
     <div>
-      <div>
-        <TextInput
-          fullWidth={false}
-          value={nameFilter}
-          onChange={setNameFilter}
-          label="Name Filter"
-        />
-        <br />
-        <br />
+      <Stack direction="row">
+        <div style={{ marginRight: 12 }}>
+          <TextInput
+            fullWidth={false}
+            value={nameFilter}
+            onChange={setNameFilter}
+            label="Name Filter"
+          />
+        </div>
         <TextInput
           fullWidth={false}
           value={countryFilter}
           onChange={setCountryFilter}
           label="Country Filter"
         />
-        <br />
-        <br />
-      </div>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map(({ id, label }) => {
-                return (
-                  <TableCell
-                    key={id}
-                  >
-                    {id !== 'actions'
-                      ? (
-                        <TableSortLabel
-                          active={sortBy === id}
-                          direction={descending ? 'desc' : 'asc'}
-                          onClick={() => handleRequestSort(id)}
-                        >
-                          {label}
-                        </TableSortLabel>
-                      ) : label}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.length ? data.map((item) => {
-              return (
-                <TableRow key={item.id}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.country}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() => deleteCarBrandConfirmation(item.id)}
-                      color="error"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => navigate(`/car-brands/edit/${item.id}`)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              );
-            }) : null}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        labelRowsPerPage={t('carBrands.labelRowsPerPage')}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-
+      </Stack>
+      <CustomTable
+        ref={customTableRef}
+        columns={columns}
+        sortableFields={['name', 'country']}
+        defaultOrderBy="name"
+        defaultOrderDescending={false}
+        requestAdapter={requestAdapter}
+        requestFunction={requestFunction}
+        responseAdapter={responseAdapter}
       />
     </div>
   );
