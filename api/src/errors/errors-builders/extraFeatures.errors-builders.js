@@ -1,5 +1,5 @@
 const { errorCodes } = require('../error-codes');
-const { NotFoundError } = require('../index');
+const { NotFoundError, BusinessLogicError } = require('../index');
 
 function throwExtraFeaturesNotFound(ids) {
   throw new NotFoundError({
@@ -11,6 +11,17 @@ function throwExtraFeaturesNotFound(ids) {
   });
 }
 
+function throwExtraFeatureNotUnic(title) {
+  throw new BusinessLogicError({
+    errorCode: errorCodes.EXTRA_FEATURE_NAME_NOT_UNIQUE,
+    message: `Extra Feature with name ${title} alredy exist`,
+    details: {
+      title,
+    },
+  });
+}
+
 module.exports = {
   throwExtraFeaturesNotFound,
+  throwExtraFeatureNotUnic,
 };

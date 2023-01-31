@@ -1,0 +1,12 @@
+{
+  "form": {
+    "userName": "Логін",
+		"email": "Пошта: ",
+		"password": "Пароль: ",
+		"repeatPassword": "Повторіть пароль: ",
+		"firstName": "Ім'я: ",
+		"lastName": "Прізвище: ",
+		"register": "Зареєструватися",
+    "login": "Увійти"
+	}
+}

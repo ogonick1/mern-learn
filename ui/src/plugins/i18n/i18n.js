@@ -3,13 +3,28 @@ import { initReactI18next } from 'react-i18next';
 import en from './en';
 import ua from './ua';
 
+export const resources = {
+  en,
+  ua,
+};
+
 i18n
   .use(initReactI18next)
   .init({
-    resources: {
-      en: { translation: en },
-      ua: { translation: ua },
-    },
+    ns: [
+      'enums',
+      'carModel',
+      'extraFeature',
+      'carBrands',
+      'customDialog',
+      'loginPage',
+      'registrationPage',
+      'validationErrors',
+      'toast',
+      'languages',
+      'form',
+    ],
+    resources,
     lng: 'en',
     fallbackLng: 'en',
   });

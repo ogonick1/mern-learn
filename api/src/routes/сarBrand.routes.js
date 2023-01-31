@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
 const {
   createCarBrand,
   getCarBrandById,
@@ -10,15 +9,13 @@ const {
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
 const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
 const { searchRequestValidation } = require('../validation/search-request.validation');
+const { carBrandDtoValidations } = require('../request-dto-validation/carBrand.dto.validations');
 
 const router = Router();
 
 router.post(
   '',
-  [
-    check('name', 'incorrect name, min 3 symbols and max 20').isLength({ min: 3, max: 20 }),
-    check('country', 'incorrect country, min 3 symbols and max 20').isLength({ min: 3, max: 20 }),
-  ],
+  carBrandDtoValidations,
   validatorErrorHandlerMiddleware,
   createCarBrand,
 );
@@ -32,10 +29,7 @@ router.get(
 router.patch(
   '/:id',
   objectIdParamValidationMiddleware(),
-  [
-    check('name', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
-    check('country', 'incorrect password, min 3 symbols').isLength({ min: 3 }),
-  ],
+  carBrandDtoValidations,
   updateCarBrand,
 );
 

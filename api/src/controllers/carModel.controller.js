@@ -1,18 +1,30 @@
 const carModelService = require('../services/carModel.service');
 
+const mapCarModelDocumentToResponseDto = (carModel) => ({
+  id: carModel._id,
+  name: carModel.name,
+  brandId: {
+    country: carModel.brandId?.country,
+    name: carModel.brandId?.name,
+    id: carModel.brandId?._id,
+  },
+  yearStart: carModel.yearStart,
+  yearEnd: carModel.yearEnd,
+  powerUnits: carModel.powerUnits,
+  extraFeaturesIds: (carModel.extraFeaturesIds || []).map((extraFeature) => ({
+    description: extraFeature.description,
+    title: extraFeature.title,
+    id: extraFeature._id,
+  })),
+  bodyTypes: carModel.bodyTypes,
+});
+
 const getCarModel = async (req, res) => {
   const { id } = req.params;
   const carModel = await carModelService.findById(id);
-  return res.json({
-    name: carModel.name,
-    brandId: carModel.brandId,
-    yearStart: carModel.yearStart,
-    yearEnd: carModel.yearEnd,
-    powerUnits: carModel.powerUnits,
-    extraFeaturesIds: carModel.extraFeaturesIds,
-    bodyTypes: carModel.bodyTypes,
-  });
+  return res.json(mapCarModelDocumentToResponseDto(carModel));
 };
+
 const createCarModel = async (req, res) => {
   const {
     name,
@@ -32,15 +44,7 @@ const createCarModel = async (req, res) => {
     extraFeaturesIds,
     bodyTypes,
   });
-  return res.json({
-    name: carModel.name,
-    brandId: carModel.brandId,
-    yearStart: carModel.yearStart,
-    yearEnd: carModel.yearEnd,
-    powerUnits: carModel.powerUnits,
-    extraFeaturesIds: carModel.extraFeaturesIds,
-    bodyTypes: carModel.bodyTypes,
-  });
+  return res.json(mapCarModelDocumentToResponseDto(carModel));
 };
 
 const updateCarModel = async (req, res) => {
@@ -78,16 +82,18 @@ const searchCarModel = async (req, res) => {
     offset,
     sortField,
     descending,
+    stringFilters,
   } = req.body;
-  const [carModel, count] = await carModelService.search({
+  const [carModels, count] = await carModelService.search({
     limit,
     offset,
     sortField,
     descending,
+    stringFilters,
   });
   return res.json({
     count,
-    carModel,
+    carModels: carModels.map(mapCarModelDocumentToResponseDto),
   });
 };
 

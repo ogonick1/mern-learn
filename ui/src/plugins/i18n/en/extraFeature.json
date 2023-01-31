@@ -1,0 +1,12 @@
+{
+  "extraFeature": {
+    "titleCreate": "Create Extra Feature",
+    "titleEdit": "Edit Extra Feature",
+    "title": "Extra Feature",
+    "description": "Description",
+    "actions": "Actions",
+    "create": "Create Extra Feature",
+    "edit": "Edit",
+    "save": "Save"
+}
+}

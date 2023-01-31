@@ -1,0 +1,12 @@
+{
+  "customDialog": {
+    "buttonClose": "Відмінити",
+    "buttonConfirm": "Підтвердити",
+    "title": "Підтвердження",
+    "text": "Ви бажаєте видалити ?",
+    "titleCarBrand": "Підтвердження",
+    "textCarBrand": "Ви бажаєте видалити цю марку автомобіля ?",
+    "titleExtraFeature": "Підтвердження",
+    "textExtraFeature": "Ви бажаєте видалити цю додаткову функцію ??"
+  }
+}

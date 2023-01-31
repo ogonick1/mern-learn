@@ -1,0 +1,22 @@
+{
+  "carModel": {
+    "title": "Модель авто",
+    "create": "Створити Модель авто",
+    "name": "Назва",
+    "brandName": "Марка",
+    "years": "Роки випуску",
+    "yearStart": "Рік початку випуску",
+    "yearEnd": "Рік закінчення випуску",
+    "powerUnits": "Параметри",
+    "addPowerUnit": "Додади Параметр",
+    "extraFeatures": "Додаткові Функції",
+    "bodyTypes": "Тип Кузова: ",
+    "engineVolume": "Об'єм: ",
+    "fuelType": "Тип Палива: ",
+    "gearBox": "Коробка передач: ",
+    "driveType": "Привід: ",
+    "actions": "Дії",
+    "noData": " - Не вказано",
+    "remove": "Видалити"
+  }
+}

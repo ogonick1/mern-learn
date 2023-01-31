@@ -1,0 +1,12 @@
+{
+  "carBrands": {
+    "title": "Марки Авто",
+    "titleCreate": "Створити Марку Авто",
+    "titleEdit": "Редагувати Марку Авто",
+    "name" : "Назва",
+    "country": "Країна",
+    "actions": "Дії",
+    "labelRowsPerPage": "Рядків на сторінці",
+    "save": "Зберегти"
+  }
+}

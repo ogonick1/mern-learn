@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/auth.service';
 
 const initialState = {
   authToken: null,

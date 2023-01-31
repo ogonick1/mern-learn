@@ -1,0 +1,6 @@
+{
+  "loginPage": {
+    "title": "Login",
+    "logout": "logOut"
+  }
+}

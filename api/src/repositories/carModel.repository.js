@@ -14,7 +14,7 @@ const findById = (id) => {
     .exec();
 };
 
-const findModelWithBrand = (filter = {}) => {
+const findModelByCriteria = (filter = {}) => {
   return CarModelModel.findOne(filter).lean().exec();
 };
 
@@ -27,23 +27,23 @@ const remove = (id) => {
 };
 
 const search = (searchModel) => {
-  const { queryOptions } = mapSearchRequestToMongoDbFindQuery(searchModel);
+  const { queryOptions, filterQuery } = mapSearchRequestToMongoDbFindQuery(searchModel);
 
   return Promise.all([
     CarModelModel
-      .find({}, null, queryOptions)
+      .find(filterQuery, null, queryOptions)
       .populate('brandId')
       .populate('extraFeaturesIds')
       .lean()
       .exec(),
-    CarModelModel.countDocuments().exec(),
+    CarModelModel.countDocuments(filterQuery).exec(),
   ]);
 };
 
 module.exports = {
   create,
   findById,
-  findModelWithBrand,
+  findModelByCriteria,
   update,
   remove,
   search,

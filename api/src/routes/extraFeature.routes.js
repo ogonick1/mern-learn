@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
 const {
   createExtraFeature,
   getExtraFeatureById,
@@ -10,15 +9,15 @@ const {
 const { validatorErrorHandlerMiddleware } = require('../middlewares/validatorErrorHandler.middleware');
 const { objectIdParamValidationMiddleware } = require('../middlewares/objectIdParamValidation.middleware');
 const { searchRequestValidation } = require('../validation/search-request.validation');
+const {
+  extraFeatureCreateUpdateDtoValidations,
+} = require('../request-dto-validation/extraFeatureCreateUpdate.dto.validations');
 
 const router = Router();
 
 router.post(
   '',
-  [
-    check('title', 'incorrect title, min 3 symbols max 20').isLength({ min: 3, max: 20 }),
-    check('description', 'incorrect description, min 3 symbols, max 120symbol').isLength({ min: 3, max: 120 }),
-  ],
+  extraFeatureCreateUpdateDtoValidations,
   validatorErrorHandlerMiddleware,
   createExtraFeature,
 );
@@ -32,10 +31,7 @@ router.get(
 router.patch(
   '/:id',
   objectIdParamValidationMiddleware(),
-  [
-    check('title', 'incorrect title, min 3 symbols max 20').isLength({ min: 3, max: 20 }),
-    check('description', 'incorrect description, min 3 symbols, max 120symbol').isLength({ min: 3, max: 120 }),
-  ],
+  extraFeatureCreateUpdateDtoValidations,
   updateExtraFeature,
 );
 

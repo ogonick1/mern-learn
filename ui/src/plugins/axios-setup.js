@@ -16,7 +16,18 @@ const axiosSetup = () => {
   axios.interceptors.response.use((response) => {
     return response.data;
   }, (error) => {
-    return Promise.reject(error);
+    function errorHandler(err) {
+      return (
+        {
+          originalError: err,
+          originalErrorData: err?.response?.data,
+          resolvedErrorMessage: err?.response?.data?.message,
+          errorCode: err?.code,
+          statusCode: err?.response?.status,
+        }
+      );
+    }
+    return Promise.reject(errorHandler(error));
   });
 };
 

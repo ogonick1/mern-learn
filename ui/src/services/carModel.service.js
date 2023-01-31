@@ -15,11 +15,11 @@ export class CarModelService {
     return axios.delete(`${CarModelService.pathPrefix}/${id}`);
   }
 
-  static getCarBrandById(id) {
+  static getModelById(id) {
     return axios.get(`${CarModelService.pathPrefix}/${id}`);
   }
 
-  static patchCarBrandById(id, form) {
+  static patchModelById(id, form) {
     return axios.patch(`${CarModelService.pathPrefix}/${id}`, form);
   }
 }

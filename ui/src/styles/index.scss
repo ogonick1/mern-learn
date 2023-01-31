@@ -1,5 +1,6 @@
 @import "./variables";
 @import "react-toastify/dist/ReactToastify.css";
+@import "react-datepicker/dist/react-datepicker.css";
 
 body {
   background: $body-bg;
@@ -8,4 +9,7 @@ body {
   font-family: Roboto, sans-serif !important;
   margin: 0 auto;
   width: 100%;
+}
+.react-datepicker-popper {
+  z-index: 3;
 }

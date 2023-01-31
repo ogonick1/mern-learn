@@ -1,0 +1,22 @@
+{
+  "carModel": {
+    "title": "Car Model",
+    "create": "Create Car Model",
+    "name": "Name",
+    "brandName": "Brand Name",
+    "years": "Years",
+    "yearStart": "Year Start",
+    "yearEnd": "Year End",
+    "powerUnits": "Power Units",
+    "addPowerUnit": "Add Power Unit",
+    "extraFeatures": "Extra Feature",
+    "bodyTypes": "Body Types: ",
+    "engineVolume": "Engine Volume: ",
+    "fuelType": "Fuel Type: ",
+    "gearBox": "Gear Box: ",
+    "driveType": "Drive Type: ",
+    "actions": "Actions",
+    "noData": " - No data",
+    "remove": "Remove"
+  }
+}
