@@ -85,13 +85,6 @@ export const CarModelTable = () => {
         exactMatch: false,
       });
     }
-    if (yearsFilter) {
-      stringFilters.push({
-        fieldName: 'yearStart',
-        values: [yearsFilter],
-        exactMatch: false,
-      });
-    }
     return CarModelService.search({
       limit,
       offset,
@@ -102,7 +95,19 @@ export const CarModelTable = () => {
   };
 
   const responseAdapter = ({ carModels, count }) => ({
-    items: carModels,
+    items: carModels.map((carModel) => ({
+      name: carModel.name,
+      id: carModel.id,
+      bodyTypes: carModel.bodyTypes
+        .map((bodyType) => t(`enums:enums.BodyType.${bodyType}`))
+        .join(', '),
+      years: `${carModel.yearStart} - ${carModel.yearEnd || t('carModel:carModel.noData')}`,
+      brandName: carModel.brandId?.name || '',
+      extraFeatures: carModel.extraFeaturesIds
+        .map((extraFeature) => extraFeature.title)
+        .join(', '),
+      powerUnits: carModel.powerUnits,
+    })),
     count,
   });
 
@@ -122,6 +127,33 @@ export const CarModelTable = () => {
     {
       accessor: 'powerUnits',
       Header: t('carModel:carModel.powerUnits'),
+      Cell({ row: { original } }) {
+        return (
+          <ul className="carModel__powerUnits">
+            {(original.powerUnits || []).map((powerUnit, index) => {
+              return (
+                <li
+                  className="carModel__powerUnits-li"
+                  // eslint-disable-next-line
+                  key={index}
+                >
+                  <b>{t('carModel:carModel.engineVolume')}</b>
+                  {powerUnit.engineVolume}
+                  <br />
+                  <b>{t('carModel:carModel.fuelType')}</b>
+                  {t(`enums:enums.FuelType.${powerUnit.fuelType}`)}
+                  <br />
+                  <b>{t('carModel:carModel.gearBox')}</b>
+                  {t(`enums:enums.GearBox.${powerUnit.gearBox}`)}
+                  <br />
+                  <b>{t('carModel:carModel.driveType')}</b>
+                  {t(`enums:enums.DriveType.${powerUnit.driveType}`)}
+                </li>
+              );
+            })}
+          </ul>
+        );
+      },
     },
     {
       accessor: 'extraFeatures',
@@ -158,19 +190,11 @@ export const CarModelTable = () => {
   return (
     <div>
       <Stack direction="row">
-        <div style={{ marginRight: 12 }}>
-          <TextInput
-            fullWidth={false}
-            value={nameFilter}
-            onChange={setNameFilter}
-            label={t('carBrands.name')}
-          />
-        </div>
         <TextInput
           fullWidth={false}
-          value={yearsFilter}
-          onChange={setYearsFilter}
-          label={t('carModel:carModel.years')}
+          value={nameFilter}
+          onChange={setNameFilter}
+          label={t('carBrands.name')}
         />
       </Stack>
       <CustomTable
@@ -225,25 +249,25 @@ export const CarModelTable = () => {
     //                {item.yearEnd}
     //              </TableCell>
     //              <TableCell>
-    //                <ul className="carModel__powerUnits">
-    //                  {(item.powerUnits || []).map((powerUnit) => {
-    //                    return (
-    //                      <li className="carModel__powerUnits-li" key={nanoid()}>
-    //                        <b>{t('carModel:carModel.engineVolume')}</b>
-    //                        {powerUnit.engineVolume}
-    //                        <br />
-    //                        <b>{t('carModel:carModel.fuelType')}</b>
-    //                        {t(`enums:enums.FuelType.${powerUnit.fuelType}`)}
-    //                        <br />
-    //                        <b>{t('carModel:carModel.gearBox')}</b>
-    //                        {t(`enums:enums.GearBox.${powerUnit.gearBox}`)}
-    //                        <br />
-    //                        <b>{t('carModel:carModel.driveType')}</b>
-    //                        {t(`enums:enums.DriveType.${powerUnit.driveType}`)}
-    //                      </li>
-    //                    );
-    //                  })}
-    //                </ul>
+    //  <ul className="carModel__powerUnits">
+    //    {(item.powerUnits || []).map((powerUnit) => {
+    //      return (
+    //        <li className="carModel__powerUnits-li" key={nanoid()}>
+    //          <b>{t('carModel:carModel.engineVolume')}</b>
+    //          {powerUnit.engineVolume}
+    //          <br />
+    //          <b>{t('carModel:carModel.fuelType')}</b>
+    //          {t(`enums:enums.FuelType.${powerUnit.fuelType}`)}
+    //          <br />
+    //          <b>{t('carModel:carModel.gearBox')}</b>
+    //          {t(`enums:enums.GearBox.${powerUnit.gearBox}`)}
+    //          <br />
+    //          <b>{t('carModel:carModel.driveType')}</b>
+    //          {t(`enums:enums.DriveType.${powerUnit.driveType}`)}
+    //        </li>
+    //      );
+    //    })}
+    //  </ul>
     //              </TableCell>
     //              <TableCell>
     //                {(item.extraFeaturesIds || []).map((extrafeature) => {
