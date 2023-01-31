@@ -85,6 +85,13 @@ export const CarModelTable = () => {
         exactMatch: false,
       });
     }
+    if (yearsFilter) {
+      stringFilters.push({
+        fieldName: 'yearStart',
+        values: [yearsFilter],
+        exactMatch: true,
+      });
+    }
     return CarModelService.search({
       limit,
       offset,
@@ -190,11 +197,19 @@ export const CarModelTable = () => {
   return (
     <div>
       <Stack direction="row">
+        <div style={{ marginRight: 12 }}>
+          <TextInput
+            fullWidth={false}
+            value={nameFilter}
+            onChange={setNameFilter}
+            label={t('carBrands.name')}
+          />
+        </div>
         <TextInput
           fullWidth={false}
-          value={nameFilter}
-          onChange={setNameFilter}
-          label={t('carBrands.name')}
+          value={yearsFilter}
+          onChange={setYearsFilter}
+          label={t('carModel:carModel.years')}
         />
       </Stack>
       <CustomTable
