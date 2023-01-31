@@ -7,7 +7,7 @@ const DriveType = require('../enums/DriveType.enum');
 const BodyType = require('../enums/BodyType.enum');
 
 const schema = new Schema({
-  modelId: {
+  carModelId: {
     type: Schema.Types.ObjectId,
     ref: carModelSchemaName,
   },
@@ -42,6 +42,10 @@ const schema = new Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  plateNumberRegistrationDate: {
+    type: Date,
+    required: true,
   },
 });
 
