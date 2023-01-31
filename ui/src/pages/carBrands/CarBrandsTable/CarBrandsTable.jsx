@@ -144,14 +144,14 @@ export const CarBrandsTable = () => {
             fullWidth={false}
             value={nameFilter}
             onChange={setNameFilter}
-            label="Name Filter"
+            label={t('carBrands.name')}
           />
         </div>
         <TextInput
           fullWidth={false}
           value={countryFilter}
           onChange={setCountryFilter}
-          label="Country Filter"
+          label={t('carBrands.country')}
         />
       </Stack>
       <CustomTable

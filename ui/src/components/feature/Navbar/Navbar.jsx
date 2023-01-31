@@ -28,7 +28,7 @@ export const Navbar = () => {
       to: 'car-model',
     },
     {
-      title: t('carModel:carBrands.title'),
+      title: t('carBrands:carBrands.title'),
       to: 'car-brands',
     },
     {
