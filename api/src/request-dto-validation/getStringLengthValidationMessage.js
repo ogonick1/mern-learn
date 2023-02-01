@@ -14,7 +14,7 @@ const getStringLengthValidationMessage = ({
   if (hasMinLength) {
     return `Field length ${fieldName} grater or equal ${hasMinLength} symbols`;
   }
-  return 'Invalid value';
+  return ` ${fieldName} Invalid value`;
 };
 
 module.exports = {

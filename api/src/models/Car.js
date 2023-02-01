@@ -12,24 +12,31 @@ const schema = new Schema({
     ref: carModelSchemaName,
   },
   powerUnit: {
-    engineVolume: Number,
+    engineVolume: {
+      type: Number,
+      required: true,
+    },
     fuelType: {
       type: String,
-      enum: FuelType,
+      required: true,
+      enum: Object.values(FuelType),
     },
     gearBox: {
       type: String,
-      enum: GearBox,
+      required: true,
+      enum: Object.values(GearBox),
     },
     driveType: {
       type: String,
-      enum: DriveType,
+      required: true,
+      enum: Object.values(DriveType),
     },
   },
   year: Number,
   bodyTypes: {
     type: String,
-    enum: BodyType,
+    required: true,
+    enum: Object.values(BodyType),
   },
   extraFeaturesIds: [
     {

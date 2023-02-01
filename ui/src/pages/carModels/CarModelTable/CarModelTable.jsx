@@ -202,7 +202,7 @@ export const CarModelTable = () => {
             fullWidth={false}
             value={nameFilter}
             onChange={setNameFilter}
-            label={t('carBrands.name')}
+            label={t('carModel:carModel.name')}
           />
         </div>
         <TextInput
