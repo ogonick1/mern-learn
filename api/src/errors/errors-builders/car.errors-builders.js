@@ -14,6 +14,7 @@ function throwCarNotFound(id) {
 function throwCarPlateNumberNotUnique(plateNumber) {
   throw new BusinessLogicError({
     errorCode: errorCodes.CAR_PLATE_NUMBER_NOT_UNIQUE,
+    // TODO typo
     message: 'Card Plate Number must be unique',
     details: {
       plateNumber,

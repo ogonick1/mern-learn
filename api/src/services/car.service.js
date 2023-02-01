@@ -7,7 +7,10 @@ const {
 const {
   throwExtraFeaturesNotFound,
 } = require('../errors/errors-builders/extraFeatures.errors-builders');
-const { throwCarNotFound, throwCarPlateNumberNotUnique } = require('../errors/errors-builders/car.errors-builders');
+const {
+  throwCarNotFound,
+  throwCarPlateNumberNotUnique,
+} = require('../errors/errors-builders/car.errors-builders');
 
 const findById = async (id) => {
   const car = await carRepository.findById(id);
@@ -20,6 +23,7 @@ const findById = async (id) => {
 };
 
 const create = async (model) => {
+  // TODO rename to carWithSamePlateNumber
   const plateNumber = await carRepository.findByCriteria({
     plateNumber: model.plateNumber,
   });
@@ -27,6 +31,8 @@ const create = async (model) => {
   if (plateNumber) {
     throwCarPlateNumberNotUnique(model.plateNumber);
   }
+
+  // TODO rename to carModel
   const carModelId = await carModelRepository.findById(model.carModelId);
 
   if (!carModelId) {
@@ -43,6 +49,9 @@ const create = async (model) => {
 };
 
 const update = async (id, model) => {
+  // TODO WHERE check on unique plateNumber like for create ???
+
+  // TODO rename to carModel
   const carModelId = await carModelRepository.findById(id);
 
   if (!carModelId) {

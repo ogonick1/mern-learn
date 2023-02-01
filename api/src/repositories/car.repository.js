@@ -1,6 +1,7 @@
 const { CarModel } = require('../models/Car');
 const { mapSearchRequestToMongoDbFindQuery } = require('../utils/search/mongo-search.utils');
 
+// TODO rename to findOneByCriteria
 const findByCriteria = (filter = {}) => {
   return CarModel.findOne(filter).lean().exec();
 };

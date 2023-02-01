@@ -14,6 +14,8 @@ const getStringLengthValidationMessage = ({
   if (hasMinLength) {
     return `Field length ${fieldName} grater or equal ${hasMinLength} symbols`;
   }
+  // TODO
+  // ` ${fieldName} Invalid value`; -> `Field: ${fieldName} must be string`;
   return ` ${fieldName} Invalid value`;
 };
 

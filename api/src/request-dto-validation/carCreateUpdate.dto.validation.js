@@ -17,9 +17,13 @@ const carCreateUpdateDtoValidation = [
     .withMessage(getMongoIdInvalidFieldMessage('carModelId')),
   check('powerUnit')
     .isObject()
+    // TODO getStringLengthValidationMessage for isObject ???
     .withMessage(getStringLengthValidationMessage({
       fieldName: 'powerUnit',
     })),
+
+  // TODO - mistake powerUnits.*.engineVolume -> powerUnit.engineVolume
+  // ALL FORM THIS LINE
   check('powerUnits.*.engineVolume')
     .isInt()
     .withMessage(getIntInvalidFieldMessage({
@@ -43,12 +47,15 @@ const carCreateUpdateDtoValidation = [
       fieldName: 'powerUnits.*.driveType',
       validValues: Object.values(DriveType),
     })),
+  // TO THIS LINE
+
   check('year')
     .isInt({ min: 1950 })
     .withMessage(getIntInvalidFieldMessage({
       fieldName: 'year',
       min: 1950,
     })),
+  // TODO rename bodyTypes -> bodyType (in model too)
   check('bodyTypes')
     .isIn(Object.values(BodyType))
     .withMessage(getEnumInvalidFieldMessage({
@@ -82,6 +89,7 @@ const carCreateUpdateDtoValidation = [
   check('plateNumberRegistrationDate')
     .isISO8601()
     .toDate()
+    // TODO the same getStringLengthValidationMessage for toDate ???
     .withMessage(getStringLengthValidationMessage({
       fieldName: 'plateNumberRegistrationDate',
     })),
