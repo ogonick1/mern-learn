@@ -25,19 +25,19 @@ const carCreateUpdateDtoValidation = [
     .withMessage(getIntInvalidFieldMessage({
       fieldName: 'engineVolume',
     })),
-  check('powerUnits.*.fuelType')
+  check('powerUnit.fuelType')
     .isIn(Object.values(FuelType))
     .withMessage(getEnumInvalidFieldMessage({
       fieldName: 'powerUnits.fuelType',
       validValues: Object.values(FuelType),
     })),
-  check('powerUnits.*.gearBox')
+  check('powerUnit.gearBox')
     .isIn(Object.values(GearBox))
     .withMessage(getEnumInvalidFieldMessage({
       fieldName: 'powerUnits.gearBox',
       validValues: Object.values(GearBox),
     })),
-  check('powerUnits.*.driveType')
+  check('powerUnit.driveType')
     .isIn(Object.values(DriveType))
     .withMessage(getEnumInvalidFieldMessage({
       fieldName: 'powerUnits.driveType',
