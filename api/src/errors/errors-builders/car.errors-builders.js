@@ -11,11 +11,10 @@ function throwCarNotFound(id) {
   });
 }
 
-function throwCarPlateNumberNotUnique(plateNumber) {
+function throwNotUnique(plateNumber) {
   throw new BusinessLogicError({
-    errorCode: errorCodes.CAR_PLATE_NUMBER_NOT_UNIQUE,
-    // TODO typo
-    message: 'Card Plate Number must be unique',
+    errorCode: errorCodes.NOT_UNIQUE,
+    message: `${plateNumber} must be unique`,
     details: {
       plateNumber,
     },
@@ -24,5 +23,5 @@ function throwCarPlateNumberNotUnique(plateNumber) {
 
 module.exports = {
   throwCarNotFound,
-  throwCarPlateNumberNotUnique,
+  throwNotUnique,
 };

@@ -1,8 +1,7 @@
 const { CarModel } = require('../models/Car');
 const { mapSearchRequestToMongoDbFindQuery } = require('../utils/search/mongo-search.utils');
 
-// TODO rename to findOneByCriteria
-const findByCriteria = (filter = {}) => {
+const findOneByCriteria = (filter = {}) => {
   return CarModel.findOne(filter).lean().exec();
 };
 
@@ -47,5 +46,5 @@ module.exports = {
   update,
   remove,
   search,
-  findByCriteria,
+  findOneByCriteria,
 };

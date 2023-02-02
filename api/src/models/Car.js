@@ -33,7 +33,7 @@ const schema = new Schema({
     },
   },
   year: Number,
-  bodyTypes: {
+  bodyType: {
     type: String,
     required: true,
     enum: Object.values(BodyType),

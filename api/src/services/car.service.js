@@ -3,13 +3,14 @@ const carModelRepository = require('../repositories/carModel.repository');
 const extraFeatureRepository = require('../repositories/extraFeature.repository');
 const {
   throwCarModelNotFound,
+  throwCarModelNotInclude,
 } = require('../errors/errors-builders/carModels.errors-builders');
 const {
   throwExtraFeaturesNotFound,
 } = require('../errors/errors-builders/extraFeatures.errors-builders');
 const {
   throwCarNotFound,
-  throwCarPlateNumberNotUnique,
+  throwNotUnique,
 } = require('../errors/errors-builders/car.errors-builders');
 
 const findById = async (id) => {
@@ -23,20 +24,25 @@ const findById = async (id) => {
 };
 
 const create = async (model) => {
-  // TODO rename to carWithSamePlateNumber
-  const plateNumber = await carRepository.findByCriteria({
+  const carWithSamePlateNumber = await carRepository.findOneByCriteria({
     plateNumber: model.plateNumber,
   });
 
-  if (plateNumber) {
-    throwCarPlateNumberNotUnique(model.plateNumber);
+  if (carWithSamePlateNumber) {
+    throwNotUnique(model.plateNumber);
   }
 
-  // TODO rename to carModel
-  const carModelId = await carModelRepository.findById(model.carModelId);
+  const carModel = await carModelRepository.findById(model.carModelId);
+  console.log(carModel);
 
-  if (!carModelId) {
+  if (!carModel) {
     throwCarModelNotFound(model.carModelId);
+  }
+  if (!carModel.bodyTypes.includes(model.bodyType)) {
+    throwCarModelNotInclude(model.bodyType);
+  }
+  if (!carModel.powerUnits.find(((element) => JSON.stringify(element) === JSON.stringify(model.powerUnit)))) {
+    throwCarModelNotInclude(model.powerUnit);
   }
 
   const extraFeatures = await extraFeatureRepository.findManyByIds(model.extraFeaturesIds);
@@ -49,13 +55,25 @@ const create = async (model) => {
 };
 
 const update = async (id, model) => {
-  // TODO WHERE check on unique plateNumber like for create ???
+  const carWithSamePlateNumber = await carRepository.findOneByCriteria({
+    plateNumber: model.plateNumber,
+  });
 
-  // TODO rename to carModel
-  const carModelId = await carModelRepository.findById(id);
+  if (carWithSamePlateNumber) {
+    throwNotUnique(model.plateNumber);
+  }
 
-  if (!carModelId) {
-    throwCarModelNotFound(id);
+  const carModel = await carModelRepository.findById(model.carModelId);
+  console.log(carModel);
+
+  if (!carModel) {
+    throwCarModelNotFound(model.carModelId);
+  }
+  if (!carModel.bodyTypes.includes(model.bodyType)) {
+    throwCarModelNotInclude(model.bodyType);
+  }
+  if (!carModel.powerUnits.find(((element) => JSON.stringify(element) === JSON.stringify(model.powerUnit)))) {
+    throwCarModelNotInclude(model.powerUnit);
   }
 
   const extraFeatures = await extraFeatureRepository.findManyByIds(model.extraFeaturesIds);

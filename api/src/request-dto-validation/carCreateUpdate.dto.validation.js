@@ -9,6 +9,7 @@ const {
   getMongoIdInvalidFieldMessage,
   getIntInvalidFieldMessage,
   getEnumInvalidFieldMessage,
+  getDateInvalidFieldMessage,
 } = require('../utils/validation-error-builders.utils');
 
 const carCreateUpdateDtoValidation = [
@@ -17,14 +18,9 @@ const carCreateUpdateDtoValidation = [
     .withMessage(getMongoIdInvalidFieldMessage('carModelId')),
   check('powerUnit')
     .isObject()
-    // TODO getStringLengthValidationMessage for isObject ???
-    .withMessage(getStringLengthValidationMessage({
-      fieldName: 'powerUnit',
-    })),
+    .withMessage('invalid Power Unit'),
 
-  // TODO - mistake powerUnits.*.engineVolume -> powerUnit.engineVolume
-  // ALL FORM THIS LINE
-  check('powerUnits.*.engineVolume')
+  check('powerUnit.engineVolume')
     .isInt()
     .withMessage(getIntInvalidFieldMessage({
       fieldName: 'engineVolume',
@@ -32,37 +28,33 @@ const carCreateUpdateDtoValidation = [
   check('powerUnits.*.fuelType')
     .isIn(Object.values(FuelType))
     .withMessage(getEnumInvalidFieldMessage({
-      fieldName: 'powerUnits.*.fuelType',
+      fieldName: 'powerUnits.fuelType',
       validValues: Object.values(FuelType),
     })),
   check('powerUnits.*.gearBox')
     .isIn(Object.values(GearBox))
     .withMessage(getEnumInvalidFieldMessage({
-      fieldName: 'powerUnits.*.gearBox',
+      fieldName: 'powerUnits.gearBox',
       validValues: Object.values(GearBox),
     })),
   check('powerUnits.*.driveType')
     .isIn(Object.values(DriveType))
     .withMessage(getEnumInvalidFieldMessage({
-      fieldName: 'powerUnits.*.driveType',
+      fieldName: 'powerUnits.driveType',
       validValues: Object.values(DriveType),
     })),
-  // TO THIS LINE
-
   check('year')
     .isInt({ min: 1950 })
     .withMessage(getIntInvalidFieldMessage({
       fieldName: 'year',
       min: 1950,
     })),
-  // TODO rename bodyTypes -> bodyType (in model too)
-  check('bodyTypes')
+  check('bodyType')
     .isIn(Object.values(BodyType))
     .withMessage(getEnumInvalidFieldMessage({
-      fieldName: 'bodyTypes',
+      fieldName: 'bodyType',
       validValues: Object.values(BodyType),
     })),
-
   check('extraFeaturesIds')
     .optional()
     .isArray()
@@ -89,8 +81,7 @@ const carCreateUpdateDtoValidation = [
   check('plateNumberRegistrationDate')
     .isISO8601()
     .toDate()
-    // TODO the same getStringLengthValidationMessage for toDate ???
-    .withMessage(getStringLengthValidationMessage({
+    .withMessage(getDateInvalidFieldMessage({
       fieldName: 'plateNumberRegistrationDate',
     })),
 
