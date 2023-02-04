@@ -16,9 +16,9 @@ import { mapCarToFormValues, mapFormToInsertModel } from './carEditPage.logic';
 import { getValidationSchema } from './validation.schema';
 
 export const CarEditPage = () => {
-  const [modelId, setModelId] = useState('');
   const { id } = useParams();
   const { t } = useTranslation('carModel', 'toast', 'carBrands', 'extraFeature', 'validationErrors');
+  const [extraFeaturesOptions, setExtraFeaturesOptions] = useState([]);
   const navigate = useNavigate();
 
   const schema = getValidationSchema(t);
@@ -27,6 +27,7 @@ export const CarEditPage = () => {
     handleSubmit,
     control,
     getValues,
+    setValue,
     trigger,
     watch,
     reset,
@@ -64,9 +65,10 @@ export const CarEditPage = () => {
   const getCarById = async (model) => {
     try {
       const result = await CarService.getCarById(model);
-      reset(mapCarToFormValues({
-        model: result,
-      }));
+      // TODO
+      // reset(mapCarToFormValues({
+      //   model: result,
+      // }));
     } catch (error) {
       toast.error(error?.resolvedErrorMessage);
     }
@@ -77,6 +79,7 @@ export const CarEditPage = () => {
       getCarById(id);
     }
   }, []);
+
   const getCarModelOptions = (modelNameFilter = '') => {
     const requestModel = {};
     if (modelNameFilter) {
@@ -94,17 +97,24 @@ export const CarEditPage = () => {
       });
   };
 
-  const modelStartWatcher = watch('carModel');
+  const modelWatcher = watch('carModel');
   useEffect(() => {
-    setModelId(getValues('carModel'));
-  }, [modelStartWatcher]);
+    // handle extra features
+    const selectedExtraFeatureOptions = getValues('extraFeaturesOptions');
+    const selectedExtraFeatureIds = (selectedExtraFeatureOptions || [])
+      .map((selectedExtraFeatureOption) => selectedExtraFeatureOption.id);
+    const newSelectedExtraFeatureOptions = (modelWatcher?.extraFeaturesIds || [])
+      .filter((extraFeature) => selectedExtraFeatureIds.includes(extraFeature.id));
+    setValue('extraFeaturesOptions', newSelectedExtraFeatureOptions);
+    setExtraFeaturesOptions(modelWatcher?.extraFeaturesIds || []);
+  }, [modelWatcher]);
 
-  const getExtraFeaturesOptions = () => {
-    return CarModelService.getModelById()
-      .then((result) => {
-        return result.extraFeaturesIds;
-      });
-  };
+  // handle bodyTypes
+  // TODO
+
+  // handle powerUnits
+  // TODO
+
   return (
     <div>
       <Container>
@@ -141,7 +151,7 @@ export const CarEditPage = () => {
                   control={control}
                   name="extraFeaturesOptions"
                   multiple
-                  searchCallback={getExtraFeaturesOptions}
+                  options={extraFeaturesOptions}
                   id="extraFeaturesOptions"
                   label={t('extraFeature:extraFeature.title')}
                   getOptionLabel={(option) => option.title || ''}

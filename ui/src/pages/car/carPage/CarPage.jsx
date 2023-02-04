@@ -31,7 +31,6 @@ export const CarPage = () => {
         </Stack>
         <CarTable />
       </Container>
-
     </div>
   );
 };
