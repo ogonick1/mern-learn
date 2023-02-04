@@ -23,6 +23,7 @@ i18n
       'toast',
       'languages',
       'form',
+      'car',
     ],
     resources,
     lng: 'en',

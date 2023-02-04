@@ -9,6 +9,7 @@ import validationErrors from './validationErrors.json';
 import toast from './toast.json';
 import languages from './languages.json';
 import form from './form.json';
+import car from './car.json';
 
 const ua = {
   enums,
@@ -22,6 +23,7 @@ const ua = {
   toast,
   languages,
   form,
+  car,
 };
 
 export default ua;
