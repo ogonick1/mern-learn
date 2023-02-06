@@ -32,7 +32,7 @@ export const getValidationSchema = (t) => {
         .typeError()
         .min(1970)
         .required(t('validationErrors:validationErrors.required')),
-      bodyType: yup.string().required(t('validationErrors:validationErrors.required')),
+      bodyType: yup.object().required(t('validationErrors:validationErrors.required')),
       extraFeaturesOptions: yup.array(),
     });
 };

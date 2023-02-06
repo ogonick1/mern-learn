@@ -104,7 +104,7 @@ export const CarTable = () => {
 
   const responseAdapter = ({ car, count }) => ({
     items: car.map((carItem) => ({
-      name: carItem.carModelId.name,
+      name: carItem.carModelId?.name,
       powerUnit: carItem.powerUnit,
       id: carItem.id,
       year: carItem.year,

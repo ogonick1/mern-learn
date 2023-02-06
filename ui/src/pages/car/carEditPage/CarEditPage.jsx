@@ -10,6 +10,10 @@ import { toast } from 'react-toastify';
 import { CustomDatePicker } from '../../../components/fields/CustomDatePicker';
 import { CustomSelect } from '../../../components/fields/CustomSelect';
 import { CustomTextInput } from '../../../components/fields/CustomTextInput';
+import { useBodyTypeOptions } from '../../../hooks/staticOptions/useBodyTypeOptions';
+import { useDriveTypeOptions } from '../../../hooks/staticOptions/useDriveTypeOptions';
+import { useFuelTypeOptions } from '../../../hooks/staticOptions/useFuelTypeOptions';
+import { useGearBoxOptions } from '../../../hooks/staticOptions/useGearBoxOptions';
 import { CarService } from '../../../services/car.service';
 import { CarModelService } from '../../../services/carModel.service';
 import { mapCarToFormValues, mapFormToInsertModel } from './carEditPage.logic';
@@ -19,8 +23,21 @@ export const CarEditPage = () => {
   const { id } = useParams();
   const { t } = useTranslation('carModel', 'toast', 'carBrands', 'extraFeature', 'validationErrors');
   const [extraFeaturesOptions, setExtraFeaturesOptions] = useState([]);
-  const navigate = useNavigate();
+  const [bodyTypeOption, setBodyTypeOption] = useState([]);
+  const [yearStart, setYearStart] = useState(1970);
+  const [yearEnd, setYearEnd] = useState(2023);
+  const [yearRegistration, setYearRegistration] = useState(2023);
+  const [powerUnits, setPowerUnits] = useState([]);
+  // const [engineVolumeOption, setEngineVolumeOption] = useState([]);
+  // const [fuelTypeOption, setFuelTypeOption] = useState([]);
+  // const [gearBoxOption, setGearBoxOption] = useState([]);
+  // const [driveTypeOption, setDriveTypeOption] = useState([]);
+  // const bodyTypeOptions = useBodyTypeOptions();
+  // const driveTypeOptions = useDriveTypeOptions();
+  // const fuelTypeOptions = useFuelTypeOptions();
+  // const gearBoxOptions = useGearBoxOptions();
 
+  const navigate = useNavigate();
   const schema = getValidationSchema(t);
 
   const {
@@ -28,7 +45,6 @@ export const CarEditPage = () => {
     control,
     getValues,
     setValue,
-    trigger,
     watch,
     reset,
     formState: {
@@ -61,14 +77,21 @@ export const CarEditPage = () => {
   const onSubmit = async (value) => {
     createCar(value);
   };
+  const bodyTypeOptions = useBodyTypeOptions();
+  const driveTypeOptions = useDriveTypeOptions();
+  const fuelTypeOptions = useFuelTypeOptions();
+  const gearBoxOptions = useGearBoxOptions();
 
   const getCarById = async (model) => {
     try {
       const result = await CarService.getCarById(model);
-      // TODO
-      // reset(mapCarToFormValues({
-      //   model: result,
-      // }));
+      reset(mapCarToFormValues({
+        model: result,
+        fuelTypeOptions,
+        gearBoxOptions,
+        driveTypeOptions,
+        bodyTypeOptions,
+      }));
     } catch (error) {
       toast.error(error?.resolvedErrorMessage);
     }
@@ -98,6 +121,11 @@ export const CarEditPage = () => {
   };
 
   const modelWatcher = watch('carModel');
+  const yearWatcher = watch('year');
+  useEffect(() => {
+    setYearRegistration(yearWatcher);
+  }, [yearWatcher]);
+
   useEffect(() => {
     // handle extra features
     const selectedExtraFeatureOptions = getValues('extraFeaturesOptions');
@@ -109,12 +137,27 @@ export const CarEditPage = () => {
     setExtraFeaturesOptions(modelWatcher?.extraFeaturesIds || []);
   }, [modelWatcher]);
 
-  // handle bodyTypes
-  // TODO
+  useEffect(() => {
+    const newSelectedBodyTypeOptions = (bodyTypeOptions || [])
+      .filter((bodyType) => bodyType.value.includes(modelWatcher?.bodyTypes));
+    setValue('bodyType', newSelectedBodyTypeOptions);
+    setBodyTypeOption(newSelectedBodyTypeOptions || []);
+  }, [modelWatcher]);
+  useEffect(() => {
+    setYearStart(modelWatcher?.yearStart || 1970);
+    setYearEnd(modelWatcher?.yearEnd || new Date());
+  }, [modelWatcher]);
 
-  // handle powerUnits
-  // TODO
-
+  useEffect(() => {
+    // handle powerUnits
+    const selectedPowerUnitOptions = getValues('powerUnit');
+    const selectedPowerUnits = (selectedPowerUnitOptions || [])
+      .map((selectedPowerUnit) => selectedPowerUnit);
+    const newSelectedPowerUnitOptions = (modelWatcher?.powerUnits || [])
+      .filter((powerUnit) => selectedPowerUnits.includes(powerUnit));
+    setValue('powerUnit', newSelectedPowerUnitOptions);
+    setPowerUnits(modelWatcher?.powerUnits || []);
+  }, [modelWatcher]);
   return (
     <div>
       <Container>
@@ -147,6 +190,40 @@ export const CarEditPage = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <CustomSelect
+                  control={control}
+                  name="powerUnit"
+                  id="powerUnit"
+                  label={t('car:car.powerUnit')}
+                  options={powerUnits}
+                  getOptionLabel={(option) => Object.entries(option) || ''}
+                  isOptionEqualToValue={(option, val) => option.value === val.value}
+                  ifNoValue={null}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomDatePicker
+                  maxDate={new Date(yearEnd.toString())}
+                  minDate={new Date(yearStart.toString())}
+                  control={control}
+                  name="year"
+                  id="year"
+                  label={t('carModel:carModel.year')}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomSelect
+                  ifNoValue={[]}
+                  control={control}
+                  name="bodyType"
+                  options={bodyTypeOption}
+                  id="bodyType"
+                  label={t('car:car.bodyType')}
+                  getOptionLabel={(option) => option.title || ''}
+                  isOptionEqualToValue={(option, val) => val.value === option.value}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomSelect
                   ifNoValue={[]}
                   control={control}
                   name="extraFeaturesOptions"
@@ -156,6 +233,31 @@ export const CarEditPage = () => {
                   label={t('extraFeature:extraFeature.title')}
                   getOptionLabel={(option) => option.title || ''}
                   isOptionEqualToValue={(option, val) => val.id === option.id}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomTextInput
+                  control={control}
+                  name="color"
+                  label={t('car:car.color')}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomTextInput
+                  control={control}
+                  name="plateNumber"
+                  label={t('car:car.plateNumber')}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomDatePicker
+                  showYearPicker={false}
+                  minDate={new Date(yearRegistration)}
+                  control={control}
+                  name="plateNumberRegistrationDate"
+                  id="plateNumberRegistrationDate"
+                  label={t('car:car.plateNumberRegistrationDate')}
+                  dateFormat="dd/MM/yyyy"
                 />
               </Grid>
             </Grid>
