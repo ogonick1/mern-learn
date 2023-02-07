@@ -2,7 +2,15 @@ const carService = require('../services/car.service');
 
 const mapCarDocumentToResponseDto = (car) => ({
   id: car._id,
-  carModelId: car.carModelId,
+  carModelId: {
+    ...car.carModelId,
+    id: car.carModelId._id,
+    extraFeaturesIds: car.carModelId.extraFeaturesIds.map((extraFeature) => ({
+      description: extraFeature.description,
+      id: extraFeature._id,
+      title: extraFeature.title,
+    })),
+  },
   powerUnit: car.powerUnit,
   year: car.year,
   bodyType: car.bodyType,

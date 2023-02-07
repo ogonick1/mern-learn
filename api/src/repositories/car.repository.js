@@ -13,6 +13,12 @@ const findById = (id) => {
   return CarModel
     .findById(id)
     .populate('carModelId')
+    .populate({
+      path: 'carModelId',
+      populate: {
+        path: 'extraFeaturesIds',
+      },
+    })
     .populate('extraFeaturesIds')
     .lean()
     .exec();
