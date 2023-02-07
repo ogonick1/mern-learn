@@ -5,7 +5,7 @@ const mapCarDocumentToResponseDto = (car) => ({
   carModelId: {
     ...car.carModelId,
     id: car.carModelId._id,
-    extraFeaturesIds: car.carModelId.extraFeaturesIds.map((extraFeature) => ({
+    extraFeaturesIds: (car.carModelId.extraFeaturesIds || []).map((extraFeature) => ({
       description: extraFeature.description,
       id: extraFeature._id,
       title: extraFeature.title,

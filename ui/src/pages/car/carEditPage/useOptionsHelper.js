@@ -7,7 +7,7 @@ export const useOptionsHelper = () => {
     if (!powerUnit) {
       return '';
     }
-    return `${powerUnit.engineVolume}-${powerUnit.driveType}-${powerUnit.fuelType}-${powerUnit.gearBox}`;
+    return [powerUnit.engineVolume, t(`enums:enums.FuelType.${powerUnit.fuelType}`), t(`enums:enums.GearBox.${powerUnit.gearBox}`), t(`enums:enums.DriveType.${powerUnit.driveType}`)].join('  ');
   };
 
   const getBodyTypeOptionLabel = (bodyType) => {

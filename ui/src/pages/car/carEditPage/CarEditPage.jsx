@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box, Button, Container, Grid, Stack, Typography,
@@ -11,10 +10,6 @@ import { toast } from 'react-toastify';
 import { CustomDatePicker } from '../../../components/fields/CustomDatePicker';
 import { CustomSelect } from '../../../components/fields/CustomSelect';
 import { CustomTextInput } from '../../../components/fields/CustomTextInput';
-import { useBodyTypeOptions } from '../../../hooks/staticOptions/useBodyTypeOptions';
-import { useDriveTypeOptions } from '../../../hooks/staticOptions/useDriveTypeOptions';
-import { useFuelTypeOptions } from '../../../hooks/staticOptions/useFuelTypeOptions';
-import { useGearBoxOptions } from '../../../hooks/staticOptions/useGearBoxOptions';
 import { CarService } from '../../../services/car.service';
 import { CarModelService } from '../../../services/carModel.service';
 import { mapCarToFormValues, mapFormToInsertModel } from './carEditPage.logic';
@@ -25,6 +20,9 @@ export const CarEditPage = () => {
   const { id } = useParams();
   const { t } = useTranslation('carModel', 'toast', 'carBrands', 'extraFeature', 'validationErrors');
   const navigate = useNavigate();
+  const [yearStart, setYearStart] = useState(1970);
+  const [yearEnd, setYearEnd] = useState(2023);
+  const [year, setYear] = useState(2023);
 
   const schema = getValidationSchema(t);
   const {
@@ -50,6 +48,16 @@ export const CarEditPage = () => {
   });
 
   const carModelOptionWatcher = watch('carModelOption');
+  const yearWatcher = watch('year');
+
+  useEffect(() => {
+    setYearStart(carModelOptionWatcher?.yearStart || 2020);
+    setYearEnd(carModelOptionWatcher?.yearEnd || 2022);
+  }, [carModelOptionWatcher]);
+
+  useEffect(() => {
+    setYear(yearWatcher);
+  }, [yearWatcher]);
 
   const onSubmit = async (formValues) => {
     const model = mapFormToInsertModel(formValues);
@@ -127,8 +135,10 @@ export const CarEditPage = () => {
       setValue('bodyType', null);
     }
 
+    // eslint-disable-next-line no-shadow
     const allowedExtraFeaturesIds = optionsByCarModel.extraFeaturesOptions.map(({ id }) => id);
     const newExtraFeaturesOptions = (selectedExtraFeaturesOptions || [])
+      // eslint-disable-next-line no-shadow
       .filter(({ id }) => allowedExtraFeaturesIds.includes(id));
 
     setValue('extraFeaturesOptions', newExtraFeaturesOptions);
@@ -145,7 +155,7 @@ export const CarEditPage = () => {
             variant="h4"
             component="h4"
           >
-            {t('carModel:carModel.title')}
+            {t('car:car.title')}
           </Typography>
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <Grid
@@ -172,19 +182,11 @@ export const CarEditPage = () => {
                   label={t('car:car.powerUnit')}
                   options={optionsByCarModel.powerUnitOptions}
                   getOptionLabel={getPowerUnitOptionLabel}
-                  isOptionEqualToValue={(option, val) => getPowerUnitOptionLabel(option) === getPowerUnitOptionLabel(val)}
+                  isOptionEqualToValue={(option, val) => (
+                    getPowerUnitOptionLabel(option) === getPowerUnitOptionLabel(val)
+                  )}
                   ifNoValue={null}
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                {/* <CustomDatePicker
-                  maxDate={new Date(yearEnd.toString())}
-                  minDate={new Date(yearStart.toString())}
-                  control={control}
-                  name="year"
-                  id="year"
-                  label={t('carModel:carModel.year')}
-                /> */}
               </Grid>
               <Grid item xs={12} md={6}>
                 <CustomSelect
@@ -211,29 +213,39 @@ export const CarEditPage = () => {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                {/* <CustomTextInput
+                <CustomTextInput
                   control={control}
                   name="color"
                   label={t('car:car.color')}
-                /> */}
+                />
               </Grid>
               <Grid item xs={12} md={6}>
-                {/* <CustomTextInput
+                <CustomTextInput
                   control={control}
                   name="plateNumber"
                   label={t('car:car.plateNumber')}
-                /> */}
+                />
               </Grid>
               <Grid item xs={12} md={6}>
-                {/* <CustomDatePicker
+                <CustomDatePicker
+                  maxDate={new Date(yearEnd.toString())}
+                  minDate={new Date(yearStart.toString())}
+                  control={control}
+                  name="year"
+                  id="year"
+                  label={t('car:car.year')}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <CustomDatePicker
+                  minDate={year}
                   showYearPicker={false}
-                  minDate={new Date(yearRegistration)}
                   control={control}
                   name="plateNumberRegistrationDate"
                   id="plateNumberRegistrationDate"
                   label={t('car:car.plateNumberRegistrationDate')}
                   dateFormat="dd/MM/yyyy"
-                /> */}
+                />
               </Grid>
             </Grid>
             <Stack

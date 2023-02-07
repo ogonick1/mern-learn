@@ -8,9 +8,15 @@ export const getValidationSchema = (t) => {
       powerUnit: yup.object().required(t('validationErrors:validationErrors.required')),
       bodyType: yup.string().required(t('validationErrors:validationErrors.required')),
       extraFeaturesOptions: yup.array(),
-      // year: yup.date('error date')
-      //   .typeError()
-      //   .min(1970)
-      //   .required(t('validationErrors:validationErrors.required')),
+      year: yup.date('error date')
+        .typeError()
+        .min(1970)
+        .required(t('validationErrors:validationErrors.required')),
+      color: yup.string().required(t('validationErrors:validationErrors.required')),
+      plateNumber: yup.string().required(t('validationErrors:validationErrors.required')),
+      plateNumberRegistrationDate: yup.date('error date')
+        .typeError()
+        .min(1970)
+        .required(t('validationErrors:validationErrors.required')),
     });
 };
