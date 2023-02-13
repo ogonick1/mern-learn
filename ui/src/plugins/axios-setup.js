@@ -7,7 +7,7 @@ const axiosSetup = () => {
     (config) => {
       const newConfig = config;
       newConfig.baseURL = appConfig.baseUrl;
-      const token = store.getState().authToken;
+      const token = store.getState().user.authToken;
       newConfig.headers.Authorization = `Bearer ${token}`;
       return config;
     },
