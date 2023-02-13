@@ -4,13 +4,14 @@ const carBrandRoutes = require('./сarBrand.routes');
 const extraFeatureRoutes = require('./extraFeature.routes');
 const carModel = require('./carModel.routes');
 const car = require('./car.routes');
+const { authMiddlewares } = require('../middlewares/auth.middlewares');
 
 const router = Router();
 
 router.use('/auth', authRoutes);
-router.use('/car-brand', carBrandRoutes);
-router.use('/extra-feature', extraFeatureRoutes);
-router.use('/car-model', carModel);
-router.use('/car', car);
+router.use('/car-brand', authMiddlewares, carBrandRoutes);
+router.use('/extra-feature', authMiddlewares, extraFeatureRoutes);
+router.use('/car-model', authMiddlewares, carModel);
+router.use('/car', authMiddlewares, car);
 
 module.exports = router;
