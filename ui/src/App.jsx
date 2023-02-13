@@ -15,6 +15,8 @@ import { CarModelPage } from './pages/carModels/CarModelPage/CarModelPage';
 import { CarModelEditPage } from './pages/carModels/CarModelEditPage/CarModelEditPage';
 import { ExtraFeaturePage } from './pages/extraFeatures/ExtraFeaturePage';
 import { ExtraFeatureEditPage } from './pages/extraFeatures/ExtraFeatureEditPage';
+import { CarPage } from './pages/car/carPage';
+import { CarEditPage } from './pages/car/carEditPage';
 
 export const App = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
@@ -33,6 +35,9 @@ export const App = () => {
           {isAuth && <Route path="car-model" element={<CarModelPage />} />}
           {isAuth && <Route path="car-model/create" element={<CarModelEditPage />} />}
           {isAuth && <Route path="car-model/edit/:id" element={<CarModelEditPage />} />}
+          {isAuth && <Route path="car" element={<CarPage />} />}
+          {isAuth && <Route path="car/create" element={<CarEditPage />} />}
+          {isAuth && <Route path="car/edit/:id" element={<CarEditPage />} />}
           {!isAuth && <Route path="login" element={<Login />} />}
           {!isAuth && <Route path="registration" element={<Registration />} />}
           <Route

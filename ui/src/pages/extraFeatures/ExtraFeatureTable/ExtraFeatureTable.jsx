@@ -1,13 +1,7 @@
 import {
-  TablePagination, TableSortLabel, IconButton,
+  IconButton, Stack,
 } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from 'react-i18next';
@@ -15,143 +9,161 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useConfirmation } from '../../../hooks/useConfirmation';
 import { ExtraFeatureService } from '../../../services/extraFeature.service';
+import { TextInput } from '../../../components/fields/TextInput';
+import { CustomTable } from '../../../components/CustomTable';
+import { useFirstMountState } from '../../../hooks/useFirstMountState';
 
 export const ExtraFeatureTable = () => {
   const openConfirmation = useConfirmation();
   const { t } = useTranslation(['extraFeature', 'customDialog', 'carBrands']);
-  const [data, setData] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortBy, setSortBy] = useState('title');
-  const [descending, setDescending] = useState(true);
+  const navigate = useNavigate();
+  const customTableRef = useRef(null);
+  const isFirstMount = useFirstMountState();
+  const [titleFilter, setTitleFilter] = useState('');
+  const [descriptionFilter, setDescriptionFilter] = useState('');
 
-  const getData = async () => {
-    try {
-      const result = await ExtraFeatureService.search({
-        limit: rowsPerPage,
-        offset: rowsPerPage * page,
-        sortField: sortBy,
-        descending,
-      });
-
-      setData(result.extraFeature);
-      setTotalCount(result.count);
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-    }
+  const reloadTable = () => {
+    customTableRef.current?.getTableData();
   };
+
+  const onFilterChanged = () => {
+    customTableRef.current?.onFilterChanged();
+  };
+
   useEffect(() => {
-    getData();
-  }, [rowsPerPage, page, descending, sortBy]);
+    if (!isFirstMount) {
+      onFilterChanged();
+    }
+  }, [titleFilter, descriptionFilter]);
 
-  const columns = [
-    {
-      id: 'title',
-      label: t('extraFeature:extraFeature.title'),
-    },
-    {
-      id: 'description',
-      label: t('extraFeature:extraFeature.description'),
-    },
-    {
-      id: 'actions',
-      label: t('extraFeature:extraFeature.actions'),
-    },
-  ];
-
-  const deleteCarBrand = async (id) => {
+  const deleteExtraFeature = async (id) => {
     try {
       await ExtraFeatureService.delete(id);
-      await getData();
+      reloadTable();
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.resolvedErrorMessage);
     }
   };
-  const deleteCarBrandConfirmation = (id) => {
+
+  const deleteExtraFeatureConfirmation = (id) => {
     openConfirmation({
       title: t('customDialog:customDialog.titleExtraFeature'),
       text: t('customDialog:customDialog.textExtraFeature'),
       confirmButtonAction: () => {
-        deleteCarBrand(id);
+        deleteExtraFeature(id);
       },
     });
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const requestAdapter = ({
+    limit,
+    offset,
+    orderBy,
+    orderDescending,
+  }) => ({
+    limit,
+    offset,
+    sortField: orderBy,
+    descending: orderDescending,
+  });
+
+  const requestFunction = (args) => {
+    const {
+      limit,
+      offset,
+      sortField,
+      descending,
+    } = args;
+
+    const stringFilters = [];
+
+    if (titleFilter) {
+      stringFilters.push({
+        fieldName: 'title',
+        values: [titleFilter],
+        exactMatch: false,
+      });
+    }
+    if (descriptionFilter) {
+      stringFilters.push({
+        fieldName: 'description',
+        values: [descriptionFilter],
+        exactMatch: false,
+      });
+    }
+    return ExtraFeatureService.search({
+      limit,
+      offset,
+      sortField,
+      descending,
+      stringFilters,
+    });
   };
-  const handleRequestSort = (id) => {
-    const thisSort = sortBy === id && descending === true;
-    setDescending(!thisSort);
-    setSortBy(id);
-  };
-  const navigate = useNavigate();
+  const responseAdapter = ({ extraFeature, count }) => ({
+    items: extraFeature,
+    count,
+  });
+
+  const columns = [
+    {
+      accessor: 'title',
+      Header: t('extraFeature:extraFeature.title'),
+    },
+    {
+      accessor: 'description',
+      Header: t('extraFeature:extraFeature.description'),
+    },
+    {
+      accessor: 'actions',
+      Header: t('extraFeature:extraFeature.actions'),
+      width: '10%',
+      Cell({ row: { original } }) {
+        return (
+          <Stack direction="row">
+            <IconButton
+              onClick={() => deleteExtraFeatureConfirmation(original.id)}
+              color="error"
+            >
+              <DeleteIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => navigate(`/extra-feature/edit/${original.id}`)}
+            >
+              <EditIcon />
+            </IconButton>
+          </Stack>
+        );
+      },
+    },
+  ];
+
   return (
     <div>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map(({ id, label }) => {
-                return (
-                  <TableCell
-                    key={id}
-                  >
-                    {id !== 'actions'
-                      ? (
-                        <TableSortLabel
-                          active={sortBy === id}
-                          direction={descending ? 'desc' : 'asc'}
-                          onClick={() => handleRequestSort(id)}
-                        >
-                          {label}
-                        </TableSortLabel>
-                      ) : label}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.length ? data.map((item) => {
-              return (
-                <TableRow key={item.id}>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>{item.description}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() => deleteCarBrandConfirmation(item.id)}
-                      color="error"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => navigate(`/extra-feature/edit/${item.id}`)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              );
-            }) : null}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        labelRowsPerPage={t('carBrands:carBrands.labelRowsPerPage')}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-
+      <Stack direction="row">
+        <div style={{ marginRight: 12 }}>
+          <TextInput
+            fullWidth={false}
+            value={titleFilter}
+            onChange={setTitleFilter}
+            label={t('extraFeature:extraFeature.titleFilter')}
+          />
+        </div>
+        <TextInput
+          fullWidth={false}
+          value={descriptionFilter}
+          onChange={setDescriptionFilter}
+          label={t('extraFeature:extraFeature.descriptionFilter')}
+        />
+      </Stack>
+      <CustomTable
+        ref={customTableRef}
+        columns={columns}
+        sortableFields={['title', 'description']}
+        defaultOrderBy="title"
+        defaultOrderDescending={false}
+        requestAdapter={requestAdapter}
+        requestFunction={requestFunction}
+        responseAdapter={responseAdapter}
       />
     </div>
   );

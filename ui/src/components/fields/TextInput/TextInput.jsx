@@ -82,7 +82,7 @@ TextInput.propTypes = {
   sx: PropTypes.oneOfType([PropTypes.object]),
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
-  value: PropTypes.number,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   id: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,

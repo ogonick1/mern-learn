@@ -1,0 +1,20 @@
+{
+  "car": {
+    "title": "Авто",
+    "create": "Створити Авто",
+    "name": "Назва",
+    "year": "Рік",
+    "powerUnit": "Параметри",
+    "extraFeatures": "Додаткові Функції",
+    "bodyType": "Тип Кузова: ",
+    "engineVolume": "Об'єм: ",
+    "fuelType": "Тип Палива: ",
+    "gearBox": "Коробка передач: ",
+    "driveType": "Привід: ",
+    "actions": "Дії",
+    "remove": "Видалити",
+    "color": "Колір",
+    "plateNumber": "Номер",
+    "plateNumberRegistrationDate": "Дата Реєстрації"
+  }
+}

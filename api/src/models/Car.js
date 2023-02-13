@@ -7,29 +7,36 @@ const DriveType = require('../enums/DriveType.enum');
 const BodyType = require('../enums/BodyType.enum');
 
 const schema = new Schema({
-  modelId: {
+  carModelId: {
     type: Schema.Types.ObjectId,
     ref: carModelSchemaName,
   },
   powerUnit: {
-    engineVolume: Number,
+    engineVolume: {
+      type: Number,
+      required: true,
+    },
     fuelType: {
       type: String,
-      enum: FuelType,
+      required: true,
+      enum: Object.values(FuelType),
     },
     gearBox: {
       type: String,
-      enum: GearBox,
+      required: true,
+      enum: Object.values(GearBox),
     },
     driveType: {
       type: String,
-      enum: DriveType,
+      required: true,
+      enum: Object.values(DriveType),
     },
   },
   year: Number,
-  bodyTypes: {
+  bodyType: {
     type: String,
-    enum: BodyType,
+    required: true,
+    enum: Object.values(BodyType),
   },
   extraFeaturesIds: [
     {
@@ -42,6 +49,10 @@ const schema = new Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  plateNumberRegistrationDate: {
+    type: Date,
+    required: true,
   },
 });
 

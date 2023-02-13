@@ -1,5 +1,7 @@
 const getMongoIdInvalidFieldMessage = (fieldName) => `Field "${fieldName}" must be valid MongoId`;
 
+const getDateInvalidFieldMessage = (fieldName) => `Field "${fieldName}" must be valid Date`;
+
 const getIntInvalidFieldMessage = ({
   fieldName,
   min,
@@ -29,4 +31,5 @@ module.exports = {
   getMongoIdInvalidFieldMessage,
   getIntInvalidFieldMessage,
   getEnumInvalidFieldMessage,
+  getDateInvalidFieldMessage,
 };

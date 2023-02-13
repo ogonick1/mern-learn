@@ -16,6 +16,7 @@ export const Navbar = () => {
     'carBrands',
     'extraFeature',
     'loginPage',
+    'car',
   ]);
 
   const langs = {
@@ -28,7 +29,11 @@ export const Navbar = () => {
       to: 'car-model',
     },
     {
-      title: t('carModel:carBrands.title'),
+      title: t('car:car.title'),
+      to: 'car',
+    },
+    {
+      title: t('carBrands:carBrands.title'),
       to: 'car-brands',
     },
     {

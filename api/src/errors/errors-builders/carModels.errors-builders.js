@@ -10,6 +10,15 @@ function throwCarModelNotFound(id) {
     },
   });
 }
+function throwCarModelNotInclude(field) {
+  throw new BusinessLogicError({
+    errorCode: errorCodes.CAR_MODEL_NOT_INCLUDE,
+    message: `The car model does not include ${field}`,
+    details: {
+      field,
+    },
+  });
+}
 
 function throwCarModelNamePerBrandNotUnique({ name, brandId }) {
   throw new BusinessLogicError({
@@ -25,4 +34,5 @@ function throwCarModelNamePerBrandNotUnique({ name, brandId }) {
 module.exports = {
   throwCarModelNotFound,
   throwCarModelNamePerBrandNotUnique,
+  throwCarModelNotInclude,
 };
